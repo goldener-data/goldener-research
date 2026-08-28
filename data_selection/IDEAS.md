@@ -44,3 +44,10 @@
 - **Context:** Model training
 
 ---
+
+- **Question:** Is it better to train multiple models than one model after clustering from embeddings?
+- **Date:** 08/2026
+- **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
+- **Context:** Model training
+
+---

@@ -58,3 +58,10 @@
 - **Context:** N/A
 
 ---
+
+- **Question:** Is it possible to choose the model architecture from the dataset difficulty assessment from embeddings?
+- **Date:** 08/2026
+- **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
+- **Context:** N/A
+
+---

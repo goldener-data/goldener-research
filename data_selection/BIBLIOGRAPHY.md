@@ -20,6 +20,7 @@
 [Language model-driven data pruning enables efficient active learning](https://aclanthology.org/2026.findings-eacl.229/): data selection from LLM perpexity and LLM based data quality assessment
 [Predictive data selection: The data that predicts is the data that teaches](https://arxiv.org/abs/2503.00808): Train a selector by linking loss and performance of pretrained models (loss is aligned with performance means the sample is good to use)
 [Mates: Model-aware data selection for efficient pretraining with data influence models](https://proceedings.neurips.cc/paper_files/paper/2024/hash/c4bec0d2fd217e6c2c3eafeced432582-Abstract-Conference.html): Train a model allowing to specify for each epoch which will be the data that will have the biggest influence. The training data evolve for each epoch.
+[DAFT: Data-Aware Fine-Tuning of Foundation Models for Efficient and Effective Medical Image Segmentation]([https://proceedings.iclr.cc/paper_files/paper/2025/hash/3a9bbcfde7cbcf2a4b14e3c952e0aee4-Abstract-Conference.html](https://openreview.net/pdf?id=PObXviy706)): Train different model depending on the data source.
 
 ---
 
@@ -31,6 +32,7 @@
 [A bitter lesson for data filtering](https://arxiv.org/abs/2605.19407): demonstrate that data filtering during LLM pretraining is useless if you have unlimited compute.
 [Analyzing similarity metrics for data selection for language model pretraining](https://proceedings.neurips.cc/paper_files/paper/2025/hash/c6b508249ffd707720885d7a5bba5cb5-Abstract-Conference.html): Big LLM embeddings are not well suited for similarity measures 
 [Zero-Shot Coreset Selection via Iterative Subspace Sampling](https://openaccess.thecvf.com/content/WACV2026/html/Griffin_Zero-Shot_Coreset_Selection_via_Iterative_Subspace_Sampling_WACV_2026_paper.html): Select most interesting samples for computer vision training
+[Advancing Cost Efficiency and Robustness of Machine Learning through the Lens of Data](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:NhqRSupF_l8C)
 
 ### Smarter selection based on clustering
 [Nemotron-climb: Clustering-based iterative data mixture bootstrapping for language model pre-training](https://proceedings.neurips.cc/paper_files/paper/2025/hash/24a8968affe71ffe4067d022b9d16566-Abstract-Datasets_and_Benchmarks_Track.html): Data selection during LLM pretraining

@@ -1,14 +1,9 @@
 # Model design - Researchers
 
-- Andreas Krause - ETH Zurich
-[All models are wrong, some are useful: Model Selection with Limited Labels](https://arxiv.org/abs/2410.13609)
-
 - Nezihe Merve Gürel - Delft University
 [Large Language Model Selection with Limited Annotations](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:eq2jaN3J8jMC)
 [All models are wrong, some are useful: Model Selection with Limited Labels](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:XiVPGOgt02cC)
 [Repeated random sampling for minimizing the time-to-accuracy of learning](https://proceedings.iclr.cc/paper_files/paper/2024/hash/68b8d2bc77268facfc75a78782da9559-Abstract-Conference.html)
-[DMLR: Data-centric Machine Learning Research - Past, Present and Future](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:8AbLer7MMksC)
-[Advancing Cost Efficiency and Robustness of Machine Learning through the Lens of Data](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:NhqRSupF_l8C)
 
 - Joaquin Vanschoren - Eindhoven university
 [AutoML Benchmark with shorter time constraints and early stopping](https://arxiv.org/abs/2504.01222)
@@ -23,3 +18,9 @@
 
 - Elisa Ricci - Trento University
 [LT-Soups: Bridging Head and Tail Classes via Subsampled Model Soups](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=xf1T870AAAAJ&sortby=pubdate&citation_for_view=xf1T870AAAAJ:QUX0mv85b1cC)
+
+- Jeffrey A. Bilmes - University of Washington - Seattle
+[How Much Is a Dataset Worth? Scaling Laws, the Vendi Score, and Matrix Spectral Functions](https://arxiv.org/abs/2605.29448)
+
+- Adji Bousso Dieng - Princeton University
+[The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)

@@ -5,3 +5,4 @@
 
 - Adji Bousso Dieng - Princeton University
 [Vendi Novelty Scores for Out-of-Distribution Detection](https://arxiv.org/abs/2602.10062)
+[The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
