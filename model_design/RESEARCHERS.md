@@ -20,3 +20,6 @@
 
 - Carola Doerr -  Sorbonnes CNRS
 [Selecting pre-trained models for transfer learning with data-centric meta-features](https://openreview.net/forum?id=W92wb1TBWd)
+
+- Elisa Ricci - Trento University
+[LT-Soups: Bridging Head and Tail Classes via Subsampled Model Soups](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=xf1T870AAAAJ&sortby=pubdate&citation_for_view=xf1T870AAAAJ:QUX0mv85b1cC)

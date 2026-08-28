@@ -30,3 +30,7 @@
 [The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
 [Building machine learning challenges for anomaly detection in science](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=ZCniP_MAAAAJ&sortby=pubdate&citation_for_view=ZCniP_MAAAAJ:i2xiXl-TujoC)
 [DMLR: Data-centric Machine Learning Research--Past, Present and Future](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=ZCniP_MAAAAJ&cstart=20&pagesize=80&sortby=pubdate&citation_for_view=ZCniP_MAAAAJ:Fu2w8maKXqMC)
+
+- Robert D. Nowak: Wisconsin University - Madison
+[An experimental design framework for label-efficient supervised finetuning of large language models](https://aclanthology.org/2024.findings-acl.390/)
+[Labelbench: A comprehensive framework for benchmarking adaptive label-efficient learning](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=fn13u8IAAAAJ&cstart=20&pagesize=80&sortby=pubdate&citation_for_view=fn13u8IAAAAJ:KKiikWAUrRgC)
