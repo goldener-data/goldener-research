@@ -5,7 +5,7 @@
 [All models are wrong, some are useful: Model Selection with Limited Labels](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:XiVPGOgt02cC)
 [Repeated random sampling for minimizing the time-to-accuracy of learning](https://proceedings.iclr.cc/paper_files/paper/2024/hash/68b8d2bc77268facfc75a78782da9559-Abstract-Conference.html)
 
-- Joaquin Vanschoren - Eindhoven university
+- Joaquin Vanschoren - Eindhoven University
 [AutoML Benchmark with shorter time constraints and early stopping](https://arxiv.org/abs/2504.01222)
 [CLAMS: A System for Zero-Shot Model Selection for Clustering](https://arxiv.org/abs/2407.11286)
 
@@ -13,7 +13,7 @@
 [On the Effect of Training Data Selection in Automated Algorithm Selection](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CP.2026.38)
 [Advancing Automated Machine Learning](https://shonan.nii.ac.jp/docs/No.223.pdf)
 
-- Carola Doerr -  Sorbonnes CNRS
+- Carola Doerr - Sorbonne CNRS
 [Selecting pre-trained models for transfer learning with data-centric meta-features](https://openreview.net/forum?id=W92wb1TBWd)
 
 - Elisa Ricci - Trento University

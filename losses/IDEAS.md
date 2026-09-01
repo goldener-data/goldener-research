@@ -3,7 +3,7 @@
 
 ---
 
-- **Question:** Can pseudo labels based on embedding location boost performances?
+- **Question:** Can pseudo labels based on embedding location boost performance?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
@@ -17,7 +17,7 @@
 
 ---
 
-- **Question:** Is embedding comparison a possible loss for generative models training?
+- **Question:** Is embedding comparison a possible loss for generative model training?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A

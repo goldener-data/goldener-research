@@ -1,0 +1,19 @@
+# GitHub Copilot local artifacts
+.copilot/
+.copilot-cache/
+.copilot-cli/
+
+# Copilot and editor transient logs
+copilot-debug.log
+copilot-*.log
+
+# Common AI agent/editor local artifacts
+.claude/
+.claude-code/
+.codex/
+.cursor/
+.windsurf/
+.aider/
+.continue/
+.roo/
+.llm/

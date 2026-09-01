@@ -1,16 +1,16 @@
 # Training strategy - Researchers
 
 
-- Elisa Ricci - Trento University
+- Elisa Ricci - University of Trento
 [Unsupervised point cloud representation learning by clustering and neural rendering](https://link.springer.com/article/10.1007/s11263-024-02027-5)
 [Semi-supervised learning made simple with self-supervised clustering](http://openaccess.thecvf.com/content/CVPR2023/html/Fini_Semi-Supervised_Learning_Made_Simple_With_Self-Supervised_Clustering_CVPR_2023_paper.html)
 
 - Julian McAuley - UC San Diego
-[From selection to generation: A survey of llm-based active learning](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=icbo4M0AAAAJ&cstart=100&pagesize=100&sortby=pubdate&citation_for_view=icbo4M0AAAAJ:W2uZP3ddy8sC)
-[How to train data-efficient llms](https://arxiv.org/abs/2402.09668)
+[From selection to generation: A survey of LLM-based active learning](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=icbo4M0AAAAJ&cstart=100&pagesize=100&sortby=pubdate&citation_for_view=icbo4M0AAAAJ:W2uZP3ddy8sC)
+[How to train data-efficient LLMs](https://arxiv.org/abs/2402.09668)
 [Contrastive post-training large language models on data curriculum](https://openreview.net/forum?id=mmSmQ0gNyZ)
 
-- Robert D. Nowak: Wisconsin University - Madison
+- Robert D. Nowak: University of Wisconsin-Madison
 [Algorithm Selection for Deep Active Learning with Imbalanced Datasets](https://arxiv.org/pdf/2302.07317)
 [Similarity search for efficient active learning and search of rare concepts](https://ojs.aaai.org/index.php/AAAI/article/view/20591)
 
@@ -27,5 +27,5 @@
 - Andreas Krause - ETH Zurich
 [Semi-supervised batch active learning via bilevel optimization](https://ieeexplore.ieee.org/abstract/document/9414206/)
 
-- Joaquin Vanschoren - Eindhoven university
+- Joaquin Vanschoren - Eindhoven University
 [Coresets are more than replay: a data-centric view of continual learning](https://link.springer.com/article/10.1007/s00521-026-12273-y)

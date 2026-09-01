@@ -3,7 +3,7 @@
 ## Large language models
 
 [How to train data-efficient llms](https://arxiv.org/abs/2402.09668)
-[Data-centric ai in the age of large language models](https://arxiv.org/abs/2406.14473)
+[Data-centric AI in the age of large language models](https://arxiv.org/abs/2406.14473)
 
 ---
 

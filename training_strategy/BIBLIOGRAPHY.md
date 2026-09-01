@@ -2,7 +2,7 @@
 
 ## Active learning
 
-[From selection to generation: A survey of llm-based active learning](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=icbo4M0AAAAJ&cstart=100&pagesize=100&sortby=pubdate&citation_for_view=icbo4M0AAAAJ:W2uZP3ddy8sC)
+[From selection to generation: A survey of LLM-based active learning](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=icbo4M0AAAAJ&cstart=100&pagesize=100&sortby=pubdate&citation_for_view=icbo4M0AAAAJ:W2uZP3ddy8sC)
 [Algorithm Selection for Deep Active Learning with Imbalanced Datasets](https://arxiv.org/pdf/2302.07317)
 [Similarity search for efficient active learning and search of rare concepts](https://ojs.aaai.org/index.php/AAAI/article/view/20591)
 [BatchBALD: Efficient and Diverse Batch Acquisition for Deep Bayesian Active Learning](https://proceedings.neurips.cc/paper_files/paper/2019/hash/95323660ed2124450caaac2c46b5ed90-Abstract.html)
@@ -29,4 +29,3 @@
 
 [Unsupervised point cloud representation learning by clustering and neural rendering](https://link.springer.com/article/10.1007/s11263-024-02027-5)
 [Semi-supervised learning made simple with self-supervised clustering](http://openaccess.thecvf.com/content/CVPR2023/html/Fini_Semi-Supervised_Learning_Made_Simple_With_Self-Supervised_Clustering_CVPR_2023_paper.html)
-

@@ -19,19 +19,19 @@ helping teams optimize AI performance while reducing costs in annotation, traini
 
 ## Why open research?
 
-This open research repository aims to centralize information helpful to drive [Goldener](https://github.com/goldener-data/goldener): bibliography, 
+This open research repository aims to centralize information helpful for driving [Goldener](https://github.com/goldener-data/goldener): bibliography, 
 promising directions, research plans, experiment results, ...
 
 [Goldener](https://github.com/goldener-data/goldener) is open source. It evolves mostly through 
 the commitment of its community. Goldener's contributors are all convinced the standard practices 
 within the Artificial Intelligence (AI) lifecycle are suffering from inefficiencies and inadequacies. 
-These convictions are either coming from proven demonstrations, publicly released or not, or assumptions driven 
-by their skills and experiences. Our mutual goal is to improve the efficiency and reliability all along the full AI lifecycle. 
+These convictions come either from proven demonstrations, whether public or not, or from assumptions driven 
+by their skills and experiences. Our mutual goal is to improve efficiency and reliability throughout the full AI lifecycle. 
 
-[Goldener](https://github.com/goldener-data/goldener) target is wide (full AI lifecycle, data and task agnostic, customizable), 
-and the feature possibilities are numerous all along the AI lifecycle. In addition, Goldener is a mix between the infrastructure 
-allowing to orchestrate data and the algorithms fixing the inefficiencies. Thus, its development requires a collaborative approach
-between developers making it production ready, and researchers designing algorithms.
+[Goldener](https://github.com/goldener-data/goldener)'s target is broad (full AI lifecycle, data- and task-agnostic, customizable), 
+and the feature possibilities are numerous throughout the AI lifecycle. In addition, Goldener is a combination of the infrastructure 
+for orchestrating data and the algorithms that fix the inefficiencies. Thus, its development requires a collaborative approach
+between developers making it production ready and researchers designing algorithms.
 
 By sharing knowledge and results in this repository, our community aims to:
 - **Inspire researchers**: Some information might lead people to reflect on a topic
@@ -39,19 +39,19 @@ and design their own research plan about it. Hopefully, heading to peer-reviewed
 - **Encourage contribution**: Some content might be a starting point for useful new features, leading contributors
 to propose and implement them.
 - **Build practitioner trust**: Openly available results demonstrate the effectiveness and reliability 
-of Goldener's features, ensuring the proofness of our claims.
+of Goldener's features, ensuring the soundness of our claims.
 - **Foster collaboration**: The community can benefit from each other's insights and experiences.
-- **Empower AI agents**: The coding/research Agents require context to be efficient, this source of information can 
-lead them to better decision while running their task to contribute in Goldener. 
+- **Empower AI agents**: The coding/research agents require context to be efficient; this source of information can 
+lead them to better decisions while running their tasks to contribute to Goldener. 
 
 ## What organisation?
 
 This repository is meant to gather research material and results that can be useful to the community. 
-It is organized around topics/themes, each of them having a dedicated folder which might include:
+It is organized around topics/themes, each with a dedicated folder that might include:
 
 - Resources: The most important papers and researchers contributing to the theme. 
 Researchers can quickly identify relevant prior work, compare methods, and build on established foundations. 
-In addition, practitioners can find relevant demonstrations of [Goldener](https://github.com/goldener-data/goldener) added value. 
+In addition, practitioners can find relevant demonstrations of [Goldener](https://github.com/goldener-data/goldener)'s added value.
 Finally, it can become as well a useful inspiration for new Goldener features.
 
 - Ideas/Questions: A collection of research ideas/questions shared by the community. This is like
@@ -62,7 +62,7 @@ For instance, it can correspond to experiments already run by the Goldener commu
 for research funding, or proposals for student projects.
 
 - Results: Documented outcomes of experiments and studies conducted using Goldener. 
-This section allows the community to review findings, validate approaches, and build/research upon previous work.
+This section allows the community to review findings, validate approaches, and build on previous work.
 
 ## Our open research themes
 
@@ -85,10 +85,3 @@ This section allows the community to review findings, validate approaches, and b
 - **[Out of distribution](out_of_distribution/README.md)**: Detection of out-of-distribution data in AI pipelines.
 
 - **[Training strategy](training_strategy/README.md)**: Selection of the best training strategy in AI pipelines.
-
-In addition
-
-
-
-
-

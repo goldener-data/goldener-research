@@ -10,21 +10,19 @@ and managing physical VRAM constraints.
 
 The standard practice for batching is to divide the training dataset into mini-batches of size 
 `batch_size` and iterate over the mini-batches. Between the different iterations over the full dataset,
-the mini-batches are created from random drawing among the samples.
+the mini-batches are created from random draws among the samples.
 
 The random selection of mini-batches acts as an implicit regularizer. The resulting noisy 
 updates help optimizer trajectories escape shallow local minima and flat saddle points, 
 pushing parameter weights toward flatter, higher-generalizing regions of the loss landscape.
-However, this randomness might as well be pushing the model toward unwanted areas, mostly when the concept distribution
+However, this randomness might also be pushing the model toward unwanted areas, especially when the concept distribution
 in batches is skewed.
 
 The [Goldener](https://github.com/goldener-data/goldener) community aims to explore and implement 
 smarter batching strategies that can improve training efficiency and model performance. The different resources useful
-to explore batching strategies are gathered in this folder, including:
+for exploring batching strategies are gathered in this folder, including:
 
 - A [bibliography](BIBLIOGRAPHY.md) of research papers
 - A collection of [ideas](IDEAS.md)
-
-
 
 

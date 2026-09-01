@@ -10,7 +10,7 @@
 
 ---
 
-- **Question:** Is Smart split from embeddings useful for cross-validation set generation?
+- **Question:** Is a smart split from embeddings useful for cross-validation set generation?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
@@ -31,35 +31,35 @@
 
 ---
 
-- **Question:** Does best model+config for datasetA is the same for datasetB if the datasets have similar in embeddings?
+- **Question:** Is the best model+config for dataset A the same for dataset B if the datasets are similar in embeddings?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
 
 ---
 
-- **Question:** How many well selected samples allows to match/surpass full training dataset performance?
+- **Question:** How many well-selected samples allow matching or surpassing full training-dataset performance?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** Model training
 
 ---
 
-- **Question:** How many selected samples to match a given population per class? Is it balanced? variable enough?
+- **Question:** How many selected samples are needed to match a given population per class? Is it balanced? Is it variable enough?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
 
 ---
 
-- **Question:** What is the impact of randomness on downstream performances when using smart sampling? Is it correlated to the sampling stability?
+- **Question:** What is the impact of randomness on downstream performance when using smart sampling? Is it correlated with sampling stability?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
 
 ---
 
-- **Question:** Is it possible to choose the model architecture from the dataset difficulty assessment from embeddings?
+- **Question:** Is it possible to choose the model architecture from the dataset difficulty assessment using embeddings?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A

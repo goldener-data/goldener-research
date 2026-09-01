@@ -1,13 +1,13 @@
 # Data selection - Researchers
 
 
-- Dan Feldman - Haifa university
+- Dan Feldman - Haifa University
 [Linear Time Small Coresets for k-Mean Clustering of Segments with Applications](https://link.springer.com/chapter/10.1007/978-981-95-7127-7_8)
 [Turning Big Data Into Tiny Data: Coresets for Unsupervised Learning Problems](https://epubs.siam.org/doi/abs/10.1137/25M1799684)
 [Provable data subset selection for efficient neural networks training](http://proceedings.mlr.press/v202/tukan23a.html)
 [A unified approach to coreset learning](https://ieeexplore.ieee.org/abstract/document/9941065/)
 
-- Joaquin Vanschoren - Eindhoven university
+- Joaquin Vanschoren - Eindhoven University
 [Automatic combination of sample selection strategies for few-shot learning](https://aclanthology.org/2026.findings-acl.2008/)
 
 - Jeffrey A. Bilmes - University of Washington - Seattle
@@ -37,10 +37,10 @@
 - Surya Ganguli - Stanford University
 [Deep learning on a data diet: Finding important examples early in training](https://proceedings.neurips.cc/paper/2021/hash/ac56f8fe9eea3e4a365f29f0f1957c55-Abstract.html)
 [Semdedup: Data-efficient learning at web-scale through semantic deduplication](https://arxiv.org/abs/2303.09540)
-[Beyond neural scaling laws: beating power law scaling via data pruning]([https://proceedings.neurips.cc/paper_files/paper/2022/hash/7b75da9b61eda40fa35453ee5d077df6-Abstract-Conference.html](https://proceedings.neurips.cc/paper_files/paper/2022/file/7b75da9b61eda40fa35453ee5d077df6-Paper-Conference.pdf))
+[Beyond neural scaling laws: beating power law scaling via data pruning](https://proceedings.neurips.cc/paper_files/paper/2022/file/7b75da9b61eda40fa35453ee5d077df6-Paper-Conference.pdf)
 
 - Nezihe Merve Gürel - Delft University
 [Advancing Cost Efficiency and Robustness of Machine Learning through the Lens of Data](https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:NhqRSupF_l8C)
 
 - Frank Hutter - Freiburg University
-[DAFT: Data-Aware Fine-Tuning of Foundation Models for Efficient and Effective Medical Image Segmentation]([https://proceedings.iclr.cc/paper_files/paper/2025/hash/3a9bbcfde7cbcf2a4b14e3c952e0aee4-Abstract-Conference.html](https://openreview.net/pdf?id=PObXviy706))
+[DAFT: Data-Aware Fine-Tuning of Foundation Models for Efficient and Effective Medical Image Segmentation](https://openreview.net/pdf?id=PObXviy706)

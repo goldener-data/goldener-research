@@ -10,7 +10,7 @@
 
 ---
 
-- **Question:** Does smart sampling from external embedding compete with active learning based on in-training models?
+- **Question:** Does smart sampling from external embeddings compete with active learning based on in-training models?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
@@ -25,7 +25,7 @@
 ---
 
 - **Question:** Would it be possible to make efficient model checkpointing by updating the train/val 
-composition during the training?
+composition during training?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
@@ -39,7 +39,7 @@ composition during the training?
 
 ---
 
-- **Question:** Are embeddings useful to down or over-sample when training with imbalanced datasets?
+- **Question:** Are embeddings useful to downsample or oversample when training with imbalanced datasets?
 - **Date:** 08/2026
 - **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)
 - **Context:** N/A
