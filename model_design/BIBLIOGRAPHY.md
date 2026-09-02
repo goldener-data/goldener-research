@@ -11,7 +11,7 @@
   <small><em>Origin: arXiv.org (2026)</em></small><br>
   Note: use scaling laws applied after a few training steps to select the best configuration.
 </div>
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2410.13609">
     <strong>All models are wrong, some are useful: Model Selection with Limited Labels</strong>
@@ -20,7 +20,7 @@
   <small><em>Origin: Proceedings of The 28th International Conference on Artificial Intelligence and Statistics (AISTATS) (2025)</em></small><br>
   Note: use less data to find the best model and training config before training on the full data.
 </div>
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2605.24981">
     <strong>Large Language Model Selection with Limited Annotations</strong>
@@ -29,7 +29,7 @@
   <small><em>Origin: International Conference on Learning Representations (ICLR) (2026)</em></small><br>
   Note: select the best LLM from restricted data selected from a reference model output.
 </div>
-
+<br>
 <div>
   <a href="https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=xf1T870AAAAJ&sortby=pubdate&citation_for_view=xf1T870AAAAJ:QUX0mv85b1cC">
     <strong>LT-Soups: Bridging Head and Tail Classes via Subsampled Model Soups</strong>
@@ -43,7 +43,7 @@
 
 ## Leverage embeddings
 
-- Dataset assessment
+### Dataset assessment
 
 <div>
   <a href="https://arxiv.org/abs/2605.29448">
@@ -53,7 +53,7 @@
   <small><em>Origin: arXiv.org (2026)</em></small><br>
   Note: No note provided.
 </div>
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2210.02410">
     <strong>The vendi score: A diversity evaluation metric for machine learning</strong>

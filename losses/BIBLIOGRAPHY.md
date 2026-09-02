@@ -27,7 +27,7 @@
   <small><em>Origin: arXiv.org (2024)</em></small><br>
   Note: identify negative pairs from clusters inside the mini-batch.
 </div>
-
+<br>
 <div>
   <a href="https://proceedings.neurips.cc/paper_files/paper/2025/hash/21aa6840fcaa0cc3a1d16bafede47a2f-Abstract-Conference.html">
     <strong>Breaking the batch barrier (b3) of contrastive learning via smart batch mining</strong>
@@ -36,5 +36,3 @@
   <small><em>Origin: Advances in Neural Information Processing Systems (2026)</em></small><br>
   Note: qualify the whole dataset and then optimize batch configurations.
 </div>
-
-
