@@ -10,7 +10,7 @@
   <small><em>Origin: International Conference on Learning Representations (ICLR) (2026)</em></small><br>
   Note: No note provided.
 </div>
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2406.14473">
     <strong>Data-centric AI in the age of large language models</strong>
@@ -32,7 +32,7 @@
   <small><em>Origin: ACM Digital Library</em></small><br>
   Note: No note provided.
 </div>
-
+<br>
 <div>
   <a href="https://scholar.google.fr/citations?view_op=view_citation&hl=fr&user=5yYPHwYAAAAJ&sortby=pubdate&citation_for_view=5yYPHwYAAAAJ:8AbLer7MMksC">
     <strong>DMLR: Data-centric Machine Learning Research - Past, Present and Future</strong>

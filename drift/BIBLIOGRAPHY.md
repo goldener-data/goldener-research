@@ -26,7 +26,7 @@
   <small><em>Origin: arXiv.org (2023)</em></small><br>
   Note: propose a new method based on embeddings
 </div>
-
+<br>
 <div>
   <a href="https://link.springer.com/chapter/10.1007/978-3-030-91608-4_11">
     <strong>Drift detection in text data with document embeddings</strong>

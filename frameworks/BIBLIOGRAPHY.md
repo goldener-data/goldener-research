@@ -3,7 +3,7 @@
 
 
 ---
-  
+
 ## Full-stack framework
 
 <div>
@@ -14,7 +14,7 @@
   <small><em>Origin: Journal of Data-centric Machine Learning Research (DMLR) (2024)</em></small><br>
   Note: No note provided.
 </div>
-
+<br>
 <div>
   <a href="https://dl.acm.org/doi/abs/10.1145/3709705">
     <strong>Modyn: Data-centric machine learning pipeline orchestration</strong>
@@ -36,7 +36,7 @@
   <small><em>Origin: ACL Anthology (2024)</em></small><br>
   Note: No note provided.
 </div>
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2603.26164">
     <strong>Dataflex: A unified framework for data-centric dynamic training of large language models</strong>
