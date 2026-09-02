@@ -40,7 +40,7 @@
     <strong>Batch mode active sampling based on marginal probability distribution matching</strong>
   </a><br>
   <small><em>First author: Rita Chattopadhyay</em></small><br>
-  <small><em>Origin: ACM Digital Library</em></small><br>
+  <small><em>Origin: ACM Digital Library (2013)</em></small><br>
   Note: select the next samples so that they match the distribution of already available labeled data (no embedding model)
 </div>
 

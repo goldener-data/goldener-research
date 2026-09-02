@@ -20,7 +20,7 @@
     <strong>Modyn: Data-centric machine learning pipeline orchestration</strong>
   </a><br>
   <small><em>First author: Maximilian Böther</em></small><br>
-  <small><em>Origin: ACM Digital Library</em></small><br>
+  <small><em>Origin: ACM Digital Library (2025)</em></small><br>
   Note: from data selection to training and evaluation with a specialization on continuous training
 </div>
 
