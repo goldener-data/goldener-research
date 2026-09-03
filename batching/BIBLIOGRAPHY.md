@@ -1,10 +1,5 @@
 # Batching - Bibliography
 
-
-
-
-
-
 ## No embeddings
 
 <div>
