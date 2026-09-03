@@ -1,9 +1,5 @@
 # Frameworks - Bibliography
 
-
-
----
-
 ## Full-stack framework
 
 <div>

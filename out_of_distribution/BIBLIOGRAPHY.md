@@ -1,6 +1,5 @@
 # Out-of-distribution - Bibliography
 
-
 ## Survey/Benchmark
 
 <div>

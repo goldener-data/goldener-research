@@ -1,6 +1,5 @@
 # Model design - Bibliography
 
-
 ## No embeddings
 
 <div>

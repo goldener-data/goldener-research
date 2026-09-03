@@ -4,6 +4,8 @@
 
 ## At a glance
 [💡 Ideas](IDEAS.md)
+[📚 Bibliography](BIBLIOGRAPHY.md)
+[🧰 Tools](TOOLS.md)
 
 ## Context
 
@@ -32,3 +34,5 @@ from understanding the state of the art to turning ideas into experiments and pr
 improvements. In this folder you can find:
 
 [💡 Ideas](IDEAS.md): active questions and possible research directions
+[📚 Bibliography](BIBLIOGRAPHY.md): key papers and surveys around labeling and annotation
+[🧰 Tools](TOOLS.md): tooling and platforms for labeling, auto-labeling, and annotation workflows

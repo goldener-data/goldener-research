@@ -49,7 +49,7 @@ lead them to better decisions while running their tasks to contribute to Goldene
 This repository is meant to gather research material and results that can be useful to the community. 
 It is organized around topics/themes, each with a dedicated folder that might include:
 
-- Resources: The most important papers and researchers contributing to the theme. 
+- Resources: The most important papers, researchers, and tools contributing to the theme. 
 Researchers can quickly identify relevant prior work, compare methods, and build on established foundations. 
 In addition, practitioners can find relevant demonstrations of [Goldener](https://github.com/goldener-data/goldener)'s added value.
 Finally, it can become as well a useful inspiration for new Goldener features.
