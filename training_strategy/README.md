@@ -5,7 +5,8 @@
 ## At a glance
 [📚 Bibliography](BIBLIOGRAPHY.md)<br>
 [💡 Ideas](IDEAS.md)<br>
-[👥 Researchers](RESEARCHERS.md)
+[👥 Researchers](RESEARCHERS.md)<br>
+[🧰 Tools](TOOLS.md)
 
 ## Context
 
@@ -36,4 +37,5 @@ improvements. In this folder you can find:
 
 [📚 Bibliography](BIBLIOGRAPHY.md): training-strategy references and surveys<br>
 [💡 Ideas](IDEAS.md): research questions and open directions<br>
-[👥 Researchers](RESEARCHERS.md): authors and contributors in this area
+[👥 Researchers](RESEARCHERS.md): authors and contributors in this area<br>
+[🧰 Tools](TOOLS.md): practical tools and libraries

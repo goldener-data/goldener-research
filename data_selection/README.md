@@ -5,7 +5,8 @@
 ## At a glance
 [📚 Bibliography](BIBLIOGRAPHY.md)<br>
 [💡 Ideas](IDEAS.md)<br>
-[👥 Researchers](RESEARCHERS.md)
+[👥 Researchers](RESEARCHERS.md)<br>
+[🧰 Tools](TOOLS.md)
 
 ## Context
 
@@ -31,4 +32,5 @@ improvements. In this folder you can find:
 
 [📚 Bibliography](BIBLIOGRAPHY.md): relevant papers and surveys on data selection<br>
 [💡 Ideas](IDEAS.md): research questions and open directions<br>
-[👥 Researchers](RESEARCHERS.md): active researchers in this topic
+[👥 Researchers](RESEARCHERS.md): active researchers in this topic<br>
+[🧰 Tools](TOOLS.md): tooling and libraries

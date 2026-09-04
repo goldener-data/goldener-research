@@ -35,4 +35,4 @@ improvements. In this folder you can find:
 
 [💡 Ideas](IDEAS.md): active questions and possible research directions
 [📚 Bibliography](BIBLIOGRAPHY.md): key papers and surveys around labeling and annotation
-[🧰 Tools](TOOLS.md): tooling and platforms for labeling, auto-labeling, and annotation workflows
+[🧰 Tools](TOOLS.md): tooling and platforms
