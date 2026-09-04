@@ -46,3 +46,8 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
+❓ **Question:** find the best seed for all random actions for a given architecture (augmentation, shuffling, initialization)<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---

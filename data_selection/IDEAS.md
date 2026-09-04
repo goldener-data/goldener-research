@@ -36,3 +36,18 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** Model training<br>
 ---
+❓ **Question:** Compare model trained with or without a class to validate the distribution of the training<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
+❓ **Question:** make failure analysis from clustering result point of view<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** see stuffs like Domino and facts methods (from tensorleap webinar)<br>
+---
+❓ **Question:** Inspire from Population Based Training to select the right tool to sample/split<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
