@@ -5,7 +5,8 @@
 ## At a glance
 [📚 Bibliography](BIBLIOGRAPHY.md)<br>
 [💡 Ideas](IDEAS.md)<br>
-[👥 Researchers](RESEARCHERS.md)
+[👥 Researchers](RESEARCHERS.md)<br>
+[🧰 Tools](TOOLS.md)
 
 ## Context
 
@@ -33,4 +34,5 @@ improvements. In this folder you can find:
 
 [📚 Bibliography](BIBLIOGRAPHY.md): core papers and surveys on drift<br>
 [💡 Ideas](IDEAS.md): open research questions and directions<br>
-[👥 Researchers](RESEARCHERS.md): contributors and authors in the drift literature
+[👥 Researchers](RESEARCHERS.md): contributors and authors in the drift literature<br>
+[🧰 Tools](TOOLS.md): libraries and frameworks
