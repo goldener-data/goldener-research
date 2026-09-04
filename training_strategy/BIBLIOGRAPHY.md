@@ -73,6 +73,81 @@
   <small><em>📍 Origin: International Conference on Machine Learning (ICML) (2022)</em></small><br>
   📝 Note: No note provided.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/1708.00489">
+    <strong>Active learning for convolutional neural networks: A core-set approach</strong>
+  </a><br>
+  <small><em>👤 First author: Ozan Sener</em></small><br>
+  <small><em>📍 Origin: arXiv (2017)</em></small><br>
+  📝 Note: core-set formulation for pool-based active learning in CNNs.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/1906.03671">
+    <strong>Deep batch active learning by diverse, uncertain gradient lower bounds</strong>
+  </a><br>
+  <small><em>👤 First author: Jordan T. Ash</em></small><br>
+  <small><em>📍 Origin: arXiv (2019)</em></small><br>
+  📝 Note: prioritize batches that are both diverse and uncertain using gradient lower bounds.
+</div>
+<br>
+<div>
+  <a href="https://openaccess.thecvf.com/content_ICCV_2019/papers/Sinha_Variational_Adversarial_Active_Learning_ICCV_2019_paper.pdf">
+    <strong>Variational adversarial active learning</strong>
+  </a><br>
+  <small><em>👤 First author: Sayna Sinha</em></small><br>
+  <small><em>📍 Origin: ICCV (2019)</em></small><br>
+  📝 Note: active learning with a variational adversarial model to identify informative unlabeled samples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/2502.01012?">
+    <strong>Deep Active Learning based Experimental Design to Uncover Synergistic Genetic Interactions for Host Targeted Therapeutics</strong>
+  </a><br>
+  <small><em>👤 First author: H. Zhu</em></small><br>
+  <small><em>📍 Origin: arXiv (2025)</em></small><br>
+  📝 Note: active learning-based experimental design for identifying synergistic genetic interactions.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/1907.06347">
+    <strong>Discriminative active learning</strong>
+  </a><br>
+  <small><em>👤 First author: Daniel Gissin</em></small><br>
+  <small><em>📍 Origin: arXiv (2019)</em></small><br>
+  📝 Note: discriminative framework for informative sample selection in active learning.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/2002.06583">
+    <strong>Reinforced active learning for image segmentation</strong>
+  </a><br>
+  <small><em>👤 First author: A. Casanova</em></small><br>
+  <small><em>📍 Origin: arXiv (2020)</em></small><br>
+  📝 Note: reinforcement-learning-based active selection for image segmentation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/2211.11612">
+    <strong>Plug and play active learning for object detection</strong>
+  </a><br>
+  <small><em>👤 First author: C. Yang</em></small><br>
+  <small><em>📍 Origin: CVPR (2024)</em></small><br>
+  📝 Note: plug-and-play active learning for object detection workloads.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/pdf/2311.15614">
+    <strong>Freeal: Towards human-free active learning in the era of large language models</strong>
+  </a><br>
+  <small><em>👤 First author: R. Xiao</em></small><br>
+  <small><em>📍 Origin: arXiv (2023)</em></small><br>
+  📝 Note: use large language models to drive human-free active learning loops.
+</div>
+
+
+
 
 ---
 
