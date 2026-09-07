@@ -46,7 +46,17 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
-❓ **Question:** select the best weight initialization based on a restricted set<br>
+❓ **Question:** Select the best weight initialization based on a restricted set<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
+❓ **Question:** Make model failure analysis from embedded clustering and model predictions <br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** Domino and facts methods <br>
+---
+❓ **Question:** Apply Population Based Training to select the best model<br>
 📅 **Date:** 09/2026<br>
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
