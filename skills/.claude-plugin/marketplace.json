@@ -1,0 +1,23 @@
+{
+  "name": "goldener-research",
+  "description": "Local skills and plugins for the goldener-research repo.",
+  "owner": {
+    "name": "goldener-data"
+  },
+  "plugins": [
+    {
+      "name": "sync-idea-issues",
+      "source": "./sync-idea-issues",
+      "description": "Sync GitHub issues labeled \"idea\" into the matching topic IDEAS.md file, then branch, commit, push, open a PR, and close the source issues.",
+      "strict": false,
+      "skills": ["./"]
+    },
+    {
+      "name": "sync-researcher-issues",
+      "source": "./sync-researcher-issues",
+      "description": "Research GitHub issues labeled \"researcher\", find relevant papers, then branch, commit, push, open a PR adding them to the matching topic RESEARCHERS.md file(s), and close the source issues.",
+      "strict": false,
+      "skills": ["./"]
+    }
+  ]
+}
