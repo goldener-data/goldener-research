@@ -15,7 +15,7 @@
     {
       "name": "sync-researcher-issues",
       "source": "./sync-researcher-issues",
-      "description": "Research GitHub issues labeled \"researcher\", find relevant papers, then branch, commit, push, open a PR adding them to the matching topic RESEARCHERS.md file(s), and close the source issues.",
+      "description": "Research GitHub issues labeled \"researcher\" (or researchers named directly, e.g. \"add NAME to goldener research\"), find relevant papers, then branch, commit, push, open a PR adding them to the matching topic RESEARCHERS.md file(s), and close any source issues.",
       "strict": false,
       "skills": ["./"]
     }
