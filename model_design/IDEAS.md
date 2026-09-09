@@ -61,3 +61,8 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
+❓ **Question:** analyse model failure from closest in training set<br>
+📅 **Date:** 09/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
