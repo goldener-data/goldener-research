@@ -63,11 +63,3 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
 <br>
-
-## 👤 Yuki M. Asano
-📍 Affiliation: University of Technology Nuremberg
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Foundation Model or Finetune? Evaluation of few-shot semantic segmentation for river pollution](https://arxiv.org/abs/2409.03754)
-<br>
