@@ -9,13 +9,23 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-0530AD.svg)](https://opensource.org/licenses/Apache-2.0)
 [![PyPI Package](https://img.shields.io/pypi/v/goldener?color=6D165C)](https://pypi.org/project/goldener/)
 
+[**What is Goldener?**](#what-is-goldener) |
+[**Why open research?**](#why-open-research) |
+[**What organisation?**](#what-organisation) |
+[**Themes**](#our-open-research-themes)
+
 # Goldener's Open Research
 
 ## What is Goldener?
 
-[Goldener](https://github.com/goldener-data/goldener) is an open-source Python library for orchestrating data across the full lifecycle of 
-Artificial Intelligence (AI) pipelines. Goldener is designed to make the right data available at the right time, 
-helping teams optimize AI performance while reducing costs in annotation, training, evaluation, and monitoring.
+[Goldener](https://github.com/goldener-data/goldener) is an open-source Python library (Apache 2 licence) for orchestrating data across
+the full lifecycle of Artificial Intelligence (AI) pipelines, from the training phase to the monitoring phase. Goldener is designed
+to make the right data available at the right time, helping teams optimize AI performance while reducing costs in annotation,
+training, evaluation, and monitoring.
+
+All of Goldener's data centric AI features are built from the same core principle: the semantics of data can be described by embeddings extracted
+from pre-trained/foundational models. This semantic representation is general enough to emphasize the differences or similarities
+between data samples, and it is what every topic in this repository ultimately builds on.
 
 ## Why open research?
 
