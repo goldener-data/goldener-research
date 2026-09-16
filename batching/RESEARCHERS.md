@@ -1,4 +1,4 @@
-# 🧭 Batching - Researchers
+# Batching - Researchers
 
 ## 👤 Matthias Bethge
 📍 Affiliation: Tübingen University

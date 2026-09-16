@@ -1,4 +1,4 @@
-# 🧭 Data selection - Researchers
+# Data selection - Researchers
 
 ## 👤 Dan Feldman
 📍 Affiliation: Haifa University

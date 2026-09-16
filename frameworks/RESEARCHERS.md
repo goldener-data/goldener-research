@@ -1,4 +1,4 @@
-# 🧭 Frameworks - Researchers
+# Frameworks - Researchers
 
 ## 👤 Zhifan Zhou
 📍 Affiliation: Carnegie Mellon University

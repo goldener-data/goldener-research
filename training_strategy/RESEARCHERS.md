@@ -1,4 +1,4 @@
-# 🧭 Training strategy - Researchers
+# Training strategy - Researchers
 
 ## 👤 Elisa Ricci
 📍 Affiliation: University of Trento

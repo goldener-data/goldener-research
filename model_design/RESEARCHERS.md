@@ -1,4 +1,4 @@
-# 🧭 Model design - Researchers
+# Model design - Researchers
 
 ## 👤 Nezihe Merve Gürel
 📍 Affiliation: Delft University
