@@ -17,3 +17,13 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
 <br>
+
+## 👤 Yuki M. Asano
+📍 Affiliation: University of Technology Nuremberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GeneralAD: Anomaly Detection Across Domains by Attending to Distorted Features](https://arxiv.org/abs/2407.12427)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Redefining Normal: A Novel Object-Level Approach for Multi-Object Novelty Detection](https://arxiv.org/abs/2412.11148)
+<br>

@@ -70,9 +70,7 @@
   <small><em>📍 Origin: Advances in Neural Information Processing Systems 36 (2023)</em></small><br>
   📝 Note: general-purpose segmentation model that can support large-scale auto-labeling workflows.
 </div>
-
-### Multimodal
-
+<br>
 <div>
   <a href="https://ieeexplore.ieee.org/abstract/document/10610779">
     <strong>Openannotate3d: Open-vocabulary auto-labeling system for multi-modal 3d data.</strong>
@@ -99,9 +97,7 @@
   <small><em>📍 Origin: Master thesis (2024)</em></small><br>
   📝 Note: auto-labeling and semantic segmentation work for 4D radar tensors.
 </div>
-
-### Medical
-
+<br>
 <div>
   <a href="https://link.springer.com/article/10.1007/s10278-024-01248-x">
     <strong>Improving the annotation process in computational pathology: A pilot study with manual and semi-automated approaches on consumer and medical grade devices.</strong>
@@ -146,9 +142,7 @@
   <small><em>📍 Origin: Nature Communications 13.1 (2022)</em></small><br>
   📝 Note: chest X-ray auto-labeling method based on similarity to an explainable AI model.
 </div>
-
-### Autonomous driving
-
+<br>
 <div>
   <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Liang_AIDE_An_Automatic_Data_Engine_for_Object_Detection_in_Autonomous_CVPR_2024_paper.html">
     <strong>Aide: An automatic data engine for object detection in autonomous driving.</strong>
@@ -166,9 +160,7 @@
   <small><em>📍 Origin: IEEE Transactions on Intelligent Vehicles (2024)</em></small><br>
   📝 Note: self-supervised auto-labeling method for drivable area detection in winter driving conditions.
 </div>
-
-### Biological
-
+<br>
 <div>
   <a href="https://arxiv.org/abs/2501.10809">
     <strong>Efficient auto-labeling of large-scale poultry datasets (ALPD) using an ensemble model with self-and active-learning approaches.</strong>
@@ -195,9 +187,7 @@
   <small><em>📍 Origin: PloS One 13.11 (2018)</em></small><br>
   📝 Note: machine learning assisted image annotation method for environmental monitoring and exploration.
 </div>
-
-### Infrastructure monitoring
-
+<br>
 <div>
   <a href="https://ieeexplore.ieee.org/abstract/document/10949707">
     <strong>Alps: An auto-labeling and pre-training scheme for remote sensing segmentation with segment anything model.</strong>
@@ -215,9 +205,7 @@
   <small><em>📍 Origin: Journal of Physics: Conference Series 2867.1 (2024)</em></small><br>
   📝 Note: auto-labeling approach for bridge detection using YOLOv8 and GroundedSAM.
 </div>
-
-### Consumer goods
-
+<br>
 <div>
   <a href="https://www.mdpi.com/2079-9292/13/23/4763">
     <strong>A Retrospective Analysis of Automated Image Labeling for Eyewear Detection Using Zero-Shot Object Detectors.</strong>
@@ -226,9 +214,7 @@
   <small><em>📍 Origin: Electronics 13.23 (2024)</em></small><br>
   📝 Note: retrospective analysis of automated image labeling for eyewear detection with zero-shot object detectors.
 </div>
-
-### Industrial
-
+<br>
 <div>
   <a href="https://asmedigitalcollection.asme.org/manufacturingscience/article-abstract/146/7/070904/1198725/Auto-Labeling-for-Pattern-Recognition-of-Wafer?redirectedFrom=fulltext">
     <strong>Auto-Labeling for Pattern Recognition of Wafer Defect Maps in Semiconductor Manufacturing.</strong>
@@ -236,4 +222,15 @@
   <small><em>👤 First author: Shu-Kai S. Fan</em></small><br>
   <small><em>📍 Origin: Journal of Manufacturing Science and Engineering 146.7 (2024)</em></small><br>
   📝 Note: auto-labeling approach for wafer defect map recognition in semiconductor manufacturing.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/1911.05371">
+    <strong>Self-labelling via simultaneous clustering and representation learning.</strong>
+  </a><br>
+  <small><em>👤 Authors: Asano, Yuki M., et al.</em></small><br>
+  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2020)</em></small><br>
+  📝 Note: General application. Jointly learns representations and pseudo-labels 
+  via optimal-transport clustering (Sinkhorn-Knopp), yielding the first self-supervised AlexNet 
+  to beat the supervised Pascal VOC detection baseline.
 </div>

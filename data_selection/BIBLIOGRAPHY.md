@@ -107,6 +107,15 @@
   <small><em>📍 Origin: Medical Image Segmentation Foundation Models (MedSAM on Laptop @ CVPR 2024), LNCS (2025)</em></small><br>
   📝 Note: train different models depending on the data source.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2409.00768">
+    <strong>Rethinking Image Super-Resolution from Training Data Perspectives</strong>
+  </a><br>
+  <small><em>👤 First author: Go Ohtani</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2024)</em></small><br>
+  📝 Note: curates super-resolution training data with an automated evaluation pipeline, showing performance gains from low compression artifacts, high within-image object diversity, and large-scale sources like ImageNet/PASS (no embedding model)
+</div>
 
 ---
 

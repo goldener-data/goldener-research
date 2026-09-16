@@ -24,3 +24,25 @@
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: No note provided.
 </div>
+
+---
+
+## Leverage embeddings
+
+<div>
+  <a href="https://arxiv.org/abs/2407.12427">
+    <strong>GeneralAD: Anomaly Detection Across Domains by Attending to Distorted Features</strong>
+  </a><br>
+  <small><em>👤 First author: Luc P.J. Sträter</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2024)</em></small><br>
+  📝 Note: self-supervised anomaly generation on ViT patch features (noise, shuffling) with an attention-based discriminator, reaching state-of-the-art results across both semantic and industrial anomaly detection benchmarks
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2412.11148">
+    <strong>Redefining Normal: A Novel Object-Level Approach for Multi-Object Novelty Detection</strong>
+  </a><br>
+  <small><em>👤 First author: Mohammadreza Salehi</em></small><br>
+  <small><em>📍 Origin: Asian Conference on Computer Vision (ACCV) (2024)</em></small><br>
+  📝 Note: redefines normality at the object level via dense feature fine-tuning on normal data and masked knowledge distillation, improving multi-object novelty detection
+</div>
