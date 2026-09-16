@@ -5,6 +5,7 @@
 ## At a glance
 [💡 Ideas](IDEAS.md)
 [📚 Bibliography](BIBLIOGRAPHY.md)
+[👥 Researchers](RESEARCHERS.md)
 [🧰 Tools](TOOLS.md)
 
 ## Context
@@ -35,4 +36,5 @@ improvements. In this folder you can find:
 
 [💡 Ideas](IDEAS.md): active questions and possible research directions
 [📚 Bibliography](BIBLIOGRAPHY.md): key papers and surveys around labeling and annotation
+[👥 Researchers](RESEARCHERS.md): authors and contributors relevant to labeling
 [🧰 Tools](TOOLS.md): tooling and platforms

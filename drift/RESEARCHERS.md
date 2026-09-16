@@ -1,4 +1,4 @@
-# 🧭 Drift - Researchers
+# Drift - Researchers
 
 ## 👤 Barbara Hammer
 📍 Affiliation: Bielefeld University

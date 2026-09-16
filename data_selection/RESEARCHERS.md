@@ -1,4 +1,4 @@
-# 🧭 Data selection - Researchers
+# Data selection - Researchers
 
 ## 👤 Dan Feldman
 📍 Affiliation: Haifa University
@@ -106,4 +106,12 @@
 📚 Interesting papers:
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [DAFT: Data-Aware Fine-Tuning of Foundation Models for Efficient and Effective Medical Image Segmentation](https://openreview.net/pdf?id=PObXviy706)
+<br>
+
+## 👤 Yuki M. Asano
+📍 Affiliation: University of Technology Nuremberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Rethinking Image Super-Resolution from Training Data Perspectives](https://arxiv.org/abs/2409.00768)
 <br>

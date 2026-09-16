@@ -196,3 +196,16 @@
   <small><em>📍 Origin: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (2023)</em></small><br>
   📝 Note: No note provided.
 </div>
+
+---
+
+## Data balancing
+
+<div>
+  <a href="https://arxiv.org/abs/2602.11149">
+    <strong>Data Repetition Beats Data Scaling in Long-CoT Supervised Fine-Tuning</strong>
+  </a><br>
+  <small><em>👤 First author: Dawid J. Kopiczko</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: shows that repeating epochs on a small SFT dataset beats single-epoch training on a much larger one, and proposes training-token accuracy as a saturation-based stopping criterion
+</div>

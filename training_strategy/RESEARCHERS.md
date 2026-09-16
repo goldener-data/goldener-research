@@ -73,3 +73,11 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Coresets are more than replay: a data-centric view of continual learning](https://link.springer.com/article/10.1007/s00521-026-12273-y)
 <br>
+
+## 👤 Yuki M. Asano
+📍 Affiliation: University of Technology Nuremberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Data Repetition Beats Data Scaling in Long-CoT Supervised Fine-Tuning](https://arxiv.org/abs/2602.11149)
+<br>
