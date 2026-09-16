@@ -42,7 +42,7 @@
     <strong>Revisiting classifier two-sample tests</strong>
   </a><br>
   <small><em>👤 First author: David Lopez-Paz</em></small><br>
-  <small><em>📍 Origin: arXiv / 2017</em></small><br>
+  <small><em>📍 Origin: arXiv (2017)</em></small><br>
   📝 Note: use binary domain classifiers as a statistical test for distribution shift.
 </div>
 
@@ -67,8 +67,8 @@
     <strong>Detecting covariate drift in text data using document embeddings and dimensionality reduction</strong>
   </a><br>
   <small><em>👤 First author: Vinayak Sodar</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2023)</em></small><br>
-  📝 Note: propose a new method based on embeddings
+  <small><em>📍 Origin: arXiv (2023)</em></small><br>
+  📝 Note: propose a new method based on embeddings.
 </div>
 <br>
 <div>
@@ -77,7 +77,7 @@
   </a><br>
   <small><em>👤 First author: Robert Feldhans</em></small><br>
   <small><em>📍 Origin: Lecture Notes in Computer Science (2021)</em></small><br>
-  📝 Note: compare standard drift detectors
+  📝 Note: compare standard drift detectors.
 </div>
 <br>
 <div>
@@ -103,7 +103,7 @@
     <strong>Learning deep kernels for non-parametric two-sample tests</strong>
   </a><br>
   <small><em>👤 First author: Feng Liu</em></small><br>
-  <small><em>📍 Origin: arXiv / machine learning theory, 2020</em></small><br>
+  <small><em>📍 Origin: arXiv (2020)</em></small><br>
   📝 Note: train deep kernels to improve power for high-dimensional drift testing.
 </div>
 <br>
@@ -186,6 +186,6 @@
     <strong>Measuring distributional shifts in text: the advantage of language model-based embeddings</strong>
   </a><br>
   <small><em>👤 First author: Gyandev Gupta</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2023)</em></small><br>
-  📝 Note: cluster to detect drift from cluster shape
+  <small><em>📍 Origin: arXiv (2023)</em></small><br>
+  📝 Note: cluster to detect drift from cluster shape.
 </div>

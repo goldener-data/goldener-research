@@ -1,4 +1,4 @@
-# 🧭 Out-of-distribution - Researchers
+# Out-of-distribution - Researchers
 
 ## 👤 Olga Russakovsky
 📍 Affiliation: Princeton University

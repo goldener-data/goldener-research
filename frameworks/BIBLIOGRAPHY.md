@@ -17,7 +17,7 @@
   </a><br>
   <small><em>👤 First author: Maximilian Böther</em></small><br>
   <small><em>📍 Origin: ACM Digital Library (2025)</em></small><br>
-  📝 Note: from data selection to training and evaluation with a specialization on continuous training
+  📝 Note: from data selection to training and evaluation with a specialization on continuous training.
 </div>
 
 ---
@@ -38,6 +38,6 @@
     <strong>Dataflex: A unified framework for data-centric dynamic training of large language models</strong>
   </a><br>
   <small><em>👤 First author: Hao Liang</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
-  📝 Note: Wrapper around LLaMA Factory to do data selection and mixture for LLM training
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: wrapper around LLaMA Factory to do data selection and mixture for LLM training.
 </div>

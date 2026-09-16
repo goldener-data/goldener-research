@@ -40,7 +40,7 @@
   </a><br>
   <small><em>👤 First author: Konstantinos Sechidis</em></small><br>
   <small><em>📍 Origin: Lecture Notes in Computer Science (2011)</em></small><br>
-  📝 Note: make sampling by stratifying the differences in class association
+  📝 Note: make sampling by stratifying the differences in class association.
 </div>
 <br>
 <div>
@@ -49,7 +49,7 @@
   </a><br>
   <small><em>👤 First author: Patrik Okanovic</em></small><br>
   <small><em>📍 Origin: International Conference on Learning Representations (2024)</em></small><br>
-  📝 Note: show that changing the training set each epoch brings higher performance faster
+  📝 Note: show that changing the training set each epoch brings higher performance faster.
 </div>
 
 ### Active learning:
@@ -59,7 +59,7 @@
   </a><br>
   <small><em>👤 First author: Rita Chattopadhyay</em></small><br>
   <small><em>📍 Origin: ACM Digital Library (2013)</em></small><br>
-  📝 Note: select the next samples so that they match the distribution of already available labeled data (no embedding model)
+  📝 Note: select the next samples so that they match the distribution of already available labeled data (no embedding model).
 </div>
 
 ### Smarter selection
@@ -69,7 +69,7 @@
   </a><br>
   <small><em>👤 First author: Ben Sorscher</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (2022)</em></small><br>
-  📝 Note: data selection based on an SSL-computed metric
+  📝 Note: data selection based on an SSL-computed metric.
 </div>
 <br>
 <div>
@@ -78,7 +78,7 @@
   </a><br>
   <small><em>👤 First author: Abdul Hameed Azeemi</em></small><br>
   <small><em>📍 Origin: ACL Anthology (2026)</em></small><br>
-  📝 Note: data selection from LLM perplexity and LLM-based data quality assessment
+  📝 Note: data selection from LLM perplexity and LLM-based data quality assessment.
 </div>
 <br>
 <div>
@@ -87,7 +87,7 @@
   </a><br>
   <small><em>👤 First author: Kashun Shum</em></small><br>
   <small><em>📍 Origin: International Conference on Machine Learning (ICML) (2025)</em></small><br>
-  📝 Note: Train a selector by linking loss and performance of pretrained models (if loss is aligned with performance, the sample is good to use)
+  📝 Note: train a selector by linking loss and performance of pretrained models (if loss is aligned with performance, the sample is good to use).
 </div>
 <br>
 <div>
@@ -96,7 +96,7 @@
   </a><br>
   <small><em>👤 First author: Zichun Yu</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (2024)</em></small><br>
-  📝 Note: Train a model that allows specifying, for each epoch, which data will have the biggest influence. The training data evolve for each epoch.
+  📝 Note: train a model that allows specifying, for each epoch, which data will have the biggest influence. The training data evolve for each epoch.
 </div>
 <br>
 <div>
@@ -105,7 +105,7 @@
   </a><br>
   <small><em>👤 First author: Alexander Pfefferle</em></small><br>
   <small><em>📍 Origin: Medical Image Segmentation Foundation Models (MedSAM on Laptop @ CVPR 2024), LNCS (2025)</em></small><br>
-  📝 Note: Train different models depending on the data source.
+  📝 Note: train different models depending on the data source.
 </div>
 <br>
 <div>
@@ -127,8 +127,8 @@
     <strong>An Adaptive Data cleaning Framework for Noisy Label Detection</strong>
   </a><br>
   <small><em>👤 First author: Chen-Hsuan Fang</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
-  📝 Note: Method for selecting among noisy datasets
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: method for selecting among noisy datasets.
 </div>
 <br>
 <div>
@@ -137,7 +137,7 @@
   </a><br>
   <small><em>👤 First author: Haoru Tan</em></small><br>
   <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2025)</em></small><br>
-  📝 Note: coreset selection for data pruning
+  📝 Note: coreset selection for data pruning.
 </div>
 <br>
 <div>
@@ -145,7 +145,7 @@
     <strong>A bitter lesson for data filtering</strong>
   </a><br>
   <small><em>👤 First author: Christopher Mohri</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: demonstrate that data filtering during LLM pretraining is useless if you have unlimited compute.
 </div>
 <br>
@@ -155,7 +155,7 @@
   </a><br>
   <small><em>👤 First author: Dylan Sam</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (2026)</em></small><br>
-  📝 Note: Big LLM embeddings are not well suited for similarity measures
+  📝 Note: big LLM embeddings are not well suited for similarity measures.
 </div>
 <br>
 <div>
@@ -164,7 +164,7 @@
   </a><br>
   <small><em>👤 First author: Brent A. Griffin</em></small><br>
   <small><em>📍 Origin: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (2026)</em></small><br>
-  📝 Note: Select most interesting samples for computer vision training
+  📝 Note: select most interesting samples for computer vision training.
 </div>
 <br>
 <div>
@@ -606,7 +606,7 @@
   </a><br>
   <small><em>👤 First author: Shizhe Diao</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (2026)</em></small><br>
-  📝 Note: Data selection during LLM pretraining
+  📝 Note: data selection during LLM pretraining.
 </div>
 <br>
 <div>
@@ -615,7 +615,7 @@
   </a><br>
   <small><em>👤 First author: Dong Jin</em></small><br>
   <small><em>📍 Origin: Plant Phenomics (2026)</em></small><br>
-  📝 Note: data selection during SSL on images
+  📝 Note: data selection during SSL on images.
 </div>
 <br>
 <div>
@@ -624,7 +624,7 @@
   </a><br>
   <small><em>👤 First author: Amro Kamal</em></small><br>
   <small><em>📍 Origin: International Conference on Learning Representations (2024)</em></small><br>
-  📝 Note: Remove data in clusters at different rates depending on population
+  📝 Note: remove data in clusters at different rates depending on population.
 </div>
 
 ### Active learning:
@@ -634,5 +634,5 @@
   </a><br>
   <small><em>👤 First author: Jiancheng Zhang</em></small><br>
   <small><em>📍 Origin: International Conference on Machine Learning (ICML) (2026)</em></small><br>
-  📝 Note: Make data selection using a foundation model and a small classifier model for image and text with imbalance and label noise
+  📝 Note: make data selection using a foundation model and a small classifier model for image and text with imbalance and label noise.
 </div>
