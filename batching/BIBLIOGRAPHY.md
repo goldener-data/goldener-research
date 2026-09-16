@@ -8,7 +8,7 @@
   </a><br>
   <small><em>👤 First author: Aritra Ghosh</em></small><br>
   <small><em>📍 Origin: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (2026)</em></small><br>
-  📝 Note: Select data inside a batch to meet the concept distribution target when training VLMs.
+  📝 Note: select data inside a batch to meet the concept distribution target when training VLMs.
 </div>
 <br>
 <div>
@@ -17,7 +17,7 @@
   </a><br>
   <small><em>👤 First author: Evgeny Smirnov</em></small><br>
   <small><em>📍 Origin: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops (2018)</em></small><br>
-  📝 Note: Extract auxiliary embeddings from another model and use them to construct harder mini-batches.
+  📝 Note: extract auxiliary embeddings from another model and use them to construct harder mini-batches.
 </div>
 <br>
 <div>
@@ -26,7 +26,7 @@
   </a><br>
   <small><em>👤 First author: Evgeny Smirnov</em></small><br>
   <small><em>📍 Origin: Proceedings of the IEEE/CVF International Conference on Computer Vision Workshops (2019)</em></small><br>
-  📝 Note: Mix multiple sampling strategies within each mini-batch to combine complementary strengths.
+  📝 Note: mix multiple sampling strategies within each mini-batch to combine complementary strengths.
 </div>
 
 ---
@@ -41,7 +41,7 @@
   </a><br>
   <small><em>👤 First author: Yunfan Shao</em></small><br>
   <small><em>📍 Origin: Findings of the Association for Computational Linguistics: ACL 2024</em></small><br>
-  📝 Note: Create batches using embedding clusters to improve data balancing during LLM training.
+  📝 Note: create batches using embedding clusters to improve data balancing during LLM training.
 </div>
 <br>
 <div>
@@ -50,5 +50,5 @@
   </a><br>
   <small><em>👤 First author: Raghuveer Thirukovalluru</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (NeurIPS) (2025)</em></small><br>
-  📝 Note: Build batches by mining dataset-wide similarity structure to maximize useful in-batch negatives.
+  📝 Note: build batches by mining dataset-wide similarity structure to maximize useful in-batch negatives.
 </div>

@@ -7,7 +7,7 @@
     <strong>The Chicken and Egg Dilemma: Co-optimizing Data and Model Configurations for LLMs</strong>
   </a><br>
   <small><em>👤 First author: Zhiliang Chen</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: use scaling laws applied after a few training steps to select the best configuration.
 </div>
 <br>
@@ -49,7 +49,7 @@
     <strong>How Much Is a Dataset Worth? Scaling Laws, the Vendi Score, and Matrix Spectral Functions</strong>
   </a><br>
   <small><em>👤 First author: Jeff A. Bilmes</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: No note provided.
 </div>
 <br>

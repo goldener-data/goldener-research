@@ -5,7 +5,8 @@ description: Pull GitHub issues labeled "researcher" from goldener-data/goldener
   named person(s) (current affiliation, publication list, mainly via Google Scholar),
   find papers of theirs relevant to this repo's topics or to Goldener's features by
   title then confirm via abstract, then branch, commit, push, open a PR adding them
-  to the matching topic `RESEARCHERS.md` file(s), and close any source issues —
+  to the matching topic `RESEARCHERS.md` file(s) (with matching `BIBLIOGRAPHY.md`
+  entries), and close any source issues —
   fully autonomously, no confirmation prompts. Use when the user asks to
   sync/import/migrate researcher issues into the docs, "add the researcher issues to
   RESEARCHERS.md", or directly names someone to add (e.g. "add <Name> to goldener
@@ -21,6 +22,9 @@ files: `RESEARCHERS.md` (root, general/cross-cutting), `training_strategy/RESEAR
 `augmentation/RESEARCHERS.md`, `losses/RESEARCHERS.md`, `batching/RESEARCHERS.md`,
 and any other `RESEARCHERS.md` files in topic folders. Not every topic folder has
 one yet (`labeling/` currently doesn't) — see step 8 for creating one when needed.
+Each of these is paired with a `BIBLIOGRAPHY.md` in the same folder, listing the
+same kind of papers grouped by sub-theme rather than by researcher — a researcher
+addition is only complete once both files reflect it (see step 11).
 
 New researcher suggestions have two entry points:
 
@@ -40,26 +44,27 @@ whichever entry point applies.
 
 **This skill runs end-to-end without stopping for confirmation** — prepare the
 working tree, build the worklist, check for in-progress PRs, research each
-researcher, dedupe, pick destination file(s), write, branch, commit, push, open
-the PR, close any source issues, and restore the working tree in one pass. Don't ask the user to
+researcher, dedupe, pick destination file(s), write both `RESEARCHERS.md` and
+`BIBLIOGRAPHY.md`, branch, commit, push, open the PR, close any source issues,
+and restore the working tree in one pass. Don't ask the user to
 approve the plan, the research findings, the file placement, or the push/PR/close
 steps; just do it and report what happened at the end. Only interrupt the run for
 a genuine blocker you cannot resolve yourself (see "Blockers" below) — never to
-check in on a step that succeeded. **Step 2 (prepare) and step 14 (restore) always
+check in on a step that succeeded. **Step 2 (prepare) and step 15 (restore) always
 run, including on every blocker path** — this skill must never leave the repo on
 an unexpected branch or with a dangling stash, whatever else happens in between.
 
 ## Prerequisite: GitHub write access
 
-Check this **before step 2** — before touching git at all. Step 12 (open PR) and
-step 13 (close/comment on issues) need authenticated write access to GitHub;
+Check this **before step 2** — before touching git at all. Step 13 (open PR) and
+step 14 (close/comment on issues) need authenticated write access to GitHub;
 finding that out after already stashing, branching, researching, writing files,
 and pushing wastes the run and leaves more to unwind.
 
 - If the `gh` CLI is installed, run `gh auth status`. A report of being logged in
-  means write access is available; use `gh` for steps 12 and 13.
+  means write access is available; use `gh` for steps 13 and 14.
 - Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the environment.
-  If so, use the REST API with that token for steps 12 and 13.
+  If so, use the REST API with that token for steps 13 and 14.
 - If neither is available: this is a hard blocker (see "Blockers"). Stop
   immediately — do not stash, do not check out `main`, do not run step 2 at all —
   and report that GitHub write access (an authenticated `gh` CLI, or a
@@ -72,7 +77,7 @@ and pushing wastes the run and leaves more to unwind.
 1. **Read the topic map before researching anything.** Read the root `README.md`'s
    "Our open research themes" section (one line per theme) and, for every folder
    candidate (`augmentation`, `batching`, `data_selection`, `drift`, `frameworks`,
-   `labeling`, `losses`, `model_design`, `out_of_distribution`, `training_strategy`),
+   `labeling`, `losses`, `model_design`, `out_of_distribution`, `training_strategy` and others),
    its `README.md` "Context" section. Also skim [Goldener's own README](https://github.com/goldener-data/goldener) "Example of features" section
    (sampling for annotation, train/val splitting from embeddings, clustering for
    annotation guidelines, data balancing during training, drift/OOD monitoring, ...)
@@ -90,13 +95,13 @@ and pushing wastes the run and leaves more to unwind.
 
 2. **Prepare the working tree.** Do this before anything else touches git.
    - Record the current branch: `git rev-parse --abbrev-ref HEAD`. This is the
-     *initial branch* you must return to in step 14 — remember it verbatim.
+     *initial branch* you must return to in step 15 — remember it verbatim.
    - Run `git status --porcelain`. If it reports anything (staged, unstaged, or
      untracked), stash it: `git stash push -u -m "sync-researcher-issues: pre-run stash"`.
-     Note that a stash was created — step 14 needs to know whether to pop one. If
+     Note that a stash was created — step 15 needs to know whether to pop one. If
      the tree is already clean, note that no stash was needed.
    - `git checkout main && git pull` so every later read of `RESEARCHERS.md`
-     content (step 6's duplicate check) reflects current `main`.
+     content (step 9's duplicate check) reflects current `main`.
 
 3. **Build the worklist** — each item is `{name, hint, source_issue}` where
    `source_issue` is an issue number or `null`. Which case applies depends on how
@@ -133,7 +138,7 @@ and pushing wastes the run and leaves more to unwind.
    before researching anything, for every item regardless of which entry point
    produced it. This matters because a rerun (or a direct request for someone
    already mid-flight) can land on a researcher a *still-open* PR already handles
-   — e.g. an earlier run opened the PR but its step 13 close failed (see
+   — e.g. an earlier run opened the PR but its step 14 close failed (see
    "Blockers"), or a human opened a PR for the same researcher by hand. Without
    this check, you'd redo the research and write a second, duplicate entry into a
    new PR.
@@ -154,7 +159,7 @@ and pushing wastes the run and leaves more to unwind.
 
    - **Match found → in-progress.** Record the researcher's name (and the issue
      number, if this item came from one), and the matching PR URL/number. Do not
-     research it further (skip steps 6–10 for it), and do not touch it in step 13.
+     research it further (skip steps 6–11 for it), and do not touch it in step 14.
      **Never close an in-progress issue** with any `state_reason` — it is already
      being handled.
    - **No match → proceed to step 6.**
@@ -223,9 +228,17 @@ and pushing wastes the run and leaves more to unwind.
    if the paper applies the pattern generically across steps rather than to one.
 
    If the best-matching topic folder has no `RESEARCHERS.md` yet (currently only
-   `labeling/`), create one first with the header `# 🧭 <Topic title case> -
-   Researchers` (e.g. `# 🧭 Labeling - Researchers`), matching the sibling files'
-   pattern exactly, before appending an entry to it.
+   `labeling/`), create one first with the header `# <Topic title case> -
+   Researchers` (e.g. `# Labeling - Researchers`), matching the sibling files'
+   pattern exactly, before appending an entry to it. When creating that file, also
+   wire it into that topic's own `README.md`: add a `[👥 Researchers](RESEARCHERS.md)`
+   line to both the "At a glance" list and the "Resources" list (with a one-clause
+   description on the Resources line, matching the style of that file's other
+   entries), positioned right after the Bibliography line and before the Tools
+   line where one exists — every sibling topic's `README.md` already does this
+   (e.g. `augmentation/README.md`, `training_strategy/README.md`); match that
+   file's own line-ending convention. This `README.md` edit is staged and committed 
+   alongside the new `RESEARCHERS.md` file in step 12.
 
 9. **Deduplicate against existing entries, per destination file.** Extract every
    `## 👤 <Name>` header from *all* `RESEARCHERS.md` files (as checked out on
@@ -282,7 +295,42 @@ and pushing wastes the run and leaves more to unwind.
     existing paper line (before the blank line separating it from the next
     entry) — don't touch its affiliation or existing paper lines.
 
-11. **Branch, commit, push — no confirmation.** By this point `main` is checked
+11. **Add a matching entry to each destination file's `BIBLIOGRAPHY.md`.** Every
+    topic folder pairs `RESEARCHERS.md` with a `BIBLIOGRAPHY.md` of the same
+    papers grouped by sub-theme, and the root `BIBLIOGRAPHY.md` mirrors the root
+    `RESEARCHERS.md` the same way — a researcher added without this is only half
+    added. For every confirmed paper written in step 10, check whether its exact
+    URL already appears anywhere in that destination file's `BIBLIOGRAPHY.md`
+    (papers can pre-date the researcher's own entry); if so, skip it there — it's
+    already covered. Otherwise add an entry:
+    - **Match the file's own citation style — don't impose one.** Every
+      `BIBLIOGRAPHY.md` uses `👤 First author: <First Last>` (never a full author
+      list or `et al.`), a terse, lowercase, period-ending `📝 Note:` (or `No
+      note provided.` verbatim when nothing was found) — an acronym or proper
+      adjective (`LLM`, `SAM`, `AI`, `Bayesian`, ...) may still open the sentence
+      capitalized since that's its normal spelling, not a style exception — and
+      `📍 Origin: arXiv (YYYY)` for an arXiv-only paper (never `arXiv.org`, the
+      `arXiv:NNNN.NNNNN` id, or a `/`-separated subject tag — the id is already in
+      the link). Skim a few existing entries in that specific `BIBLIOGRAPHY.md`
+      first for everything else, such as its `<div>...</div>` wrapper with a
+      `<br>` between consecutive entries.
+    - **Pick or create the sub-theme heading** (the `##`/`###` sections each
+      `BIBLIOGRAPHY.md` is organized into, e.g. "Active learning", "Survey",
+      "No embedding"). Use the closest existing one by content, not by
+      guessing from the paper's title alone — reread a couple of its existing
+      entries to confirm the fit, the same way step 7 confirmed topical
+      relevance from an abstract rather than a title. If nothing existing fits,
+      add a new `##` section at the end of the file (preceded by the file's own
+      `---` separator convention between sections) rather than forcing a poor
+      fit — this is expected to happen sometimes (e.g. a paper about repeated-
+      epoch training didn't fit any of `training_strategy/BIBLIOGRAPHY.md`'s
+      four existing sections and became its own "Data repetition" section).
+    - Get the venue for the `📍 Origin:` line from the paper's own page (the
+      publisher/proceedings name and year, or `arXiv (YYYY)` if it's
+      arXiv-only) — never leave it blank or guess a venue that page doesn't
+      state.
+
+12. **Branch, commit, push — no confirmation.** By this point `main` is checked
     out and up to date (step 2). **Always create a brand-new branch for this run**
     — `git checkout -b YYYY-MM-DD-add-new-researcher` off `main` (today's date).
     Never check out or reuse an existing branch, even one left over unfinished
@@ -291,25 +339,30 @@ and pushing wastes the run and leaves more to unwind.
     is evidence of a past incomplete run, not a base to build on. If a branch with
     today's date already exists locally or on origin, append `-2`, `-3`, etc. to
     the new branch's name instead of touching the existing one. Stage only the
-    modified `RESEARCHERS.md`
-    files — never `git add -A`. Commit message: `Add researchers - YYYY-MM-DD`
+    modified `RESEARCHERS.md`, `BIBLIOGRAPHY.md`, and (for a newly created
+    `RESEARCHERS.md`) `README.md` files — never `git add -A`. Commit message:
+    `Add researchers - YYYY-MM-DD`
     (today's date; if every migrated item in this run came from GitHub issues,
     `Add researchers from GitHub issues labeled researcher - YYYY-MM-DD` is the
     more precise, preferred wording — word it differently if that reads better,
     but always include today's date — reused verbatim as the PR title). Push
     immediately with `-u origin <branch>`.
 
-12. **Open the PR immediately — no confirmation.** Title: reuse the exact commit
-    message verbatim. Build a description that lists, per modified file, which
-    researcher(s) landed there and which of their papers, plus why each paper is
-    relevant (one sentence per paper, drawn from the abstract check in step 7) —
-    reviewers should be able to see the reasoning without re-doing the research.
-    For a migrated researcher with no source issue (a direct request), say so
-    explicitly instead of implying one exists. Add a short section listing
+13. **Open the PR immediately — no confirmation.** Title: reuse the exact commit
+    message verbatim. Build a description that lists, per modified `RESEARCHERS.md`
+    file, which researcher(s) landed there and which of their papers, plus why each
+    paper is relevant (one sentence per paper, drawn from the abstract check in
+    step 7) — reviewers should be able to see the reasoning without re-doing the
+    research. Mention the matching `BIBLIOGRAPHY.md` entries from step 11 alongside
+    each paper (same file, same bullet, not a separate list) rather than as an
+    afterthought, and call out any newly created `RESEARCHERS.md`/`README.md` pair
+    from step 8 explicitly. For a migrated researcher with no source issue (a
+    direct request), say so explicitly instead of implying one exists. Add a short
+    section listing
     duplicates (step 9: researcher, files where already present), not-relevant
     items (step 7: researcher, what was checked), and in-progress items (step 5:
     researcher, issue number if any, covering PR). Do not rely on `Closes #<n>`
-    for auto-close — step 13 closes issues explicitly, and only covers items that
+    for auto-close — step 14 closes issues explicitly, and only covers items that
     actually have one.
 
     Try `gh pr create` first if available. Otherwise use the GitHub REST API:
@@ -320,11 +373,11 @@ and pushing wastes the run and leaves more to unwind.
       -d '{"title": "...", "head": "<branch>", "base": "main", "body": "..."}'
     ```
 
-13. **Close every issue-sourced item that was handled, each with an explanatory
+14. **Close every issue-sourced item that was handled, each with an explanatory
     comment.** Runs right after the PR is opened. **In-progress items (step 5)
     are not touched here**, and neither are direct-request items that have no
     `source_issue` — there's nothing to close for those; their outcome (migrated,
-    duplicate, or not-relevant) is already visible in the PR description (step 12)
+    duplicate, or not-relevant) is already visible in the PR description (step 13)
     and the final report, which is all that's needed for them.
 
     For each remaining item that has a `source_issue`:
@@ -357,7 +410,7 @@ and pushing wastes the run and leaves more to unwind.
     each issue independently, then report which ones succeeded and which didn't
     in the final summary (see "Notes").
 
-14. **Return to the initial branch and restore the working tree.** Last thing the
+15. **Return to the initial branch and restore the working tree.** Last thing the
     skill does on every run, success or blocker alike.
     - `git checkout <initial branch>` (from step 2).
     - If step 2 created a stash, restore it now: `git stash pop`. If it applies
@@ -370,12 +423,12 @@ and pushing wastes the run and leaves more to unwind.
 
 - **No GitHub write access** (checked before step 2 — see "Prerequisite" above):
   stop before step 2 runs — nothing has been stashed, branched, or changed, so
-  there is nothing to restore and step 14 does not run either.
+  there is nothing to restore and step 15 does not run either.
 - **The worklist ends up empty** (no open `researcher` issues found and no name
   was given directly; step 3), or every item is either in-progress (step 5), a
   duplicate (step 9), or not-relevant (step 7): report those groups, don't create
-  an empty branch/PR, jump to step 14. Still close the duplicate/not-relevant
-  issue-sourced items (step 13) even with no PR — unlike a plain title-duplicate,
+  an empty branch/PR, jump to step 15. Still close the duplicate/not-relevant
+  issue-sourced items (step 14) even with no PR — unlike a plain title-duplicate,
   reaching either conclusion here already required real research per item, so
   there's nothing left to ask the user about; closing them is consistent with
   running this skill fully autonomously. Never close the in-progress ones.
@@ -393,12 +446,12 @@ and pushing wastes the run and leaves more to unwind.
   already succeeded, so don't roll anything back — the pushed branch stays on
   origin. Report the failure, hand over the compare URL
   (`https://github.com/goldener-data/goldener-research/pull/new/<branch>`) and the
-  drafted description, skip step 13, then still run step 14.
+  drafted description, skip step 14, then still run step 15.
 - **`git push` fails**: report the exact error and the local branch name; don't
-  retry destructive workarounds, skip step 13, then still run step 14.
-- **Closing/commenting on an issue fails** (step 13): not a full-run blocker —
+  retry destructive workarounds, skip step 14, then still run step 15.
+- **Closing/commenting on an issue fails** (step 14): not a full-run blocker —
   keep going with the remaining issues, note the failures in the final report,
-  still run step 14.
+  still run step 15.
 
 ## Notes
 
@@ -419,16 +472,25 @@ and pushing wastes the run and leaves more to unwind.
   the same run if their confirmed papers span multiple topics — this is expected,
   not a bug to avoid.
 - Never reuse a pre-existing branch for this run's commits, even one that looks
-  unfinished (pushed, no PR, matches the naming pattern). Step 11 always creates
+  unfinished (pushed, no PR, matches the naming pattern). Step 12 always creates
   a fresh branch off current `main`. A leftover branch from a previous incomplete
   run should be surfaced to the user in the final report, not built upon — the
   user can decide whether to open a PR for it, delete it, or leave it.
+- A researcher addition that only touches `RESEARCHERS.md` and skips step 11 is
+  incomplete — the matching `BIBLIOGRAPHY.md` entries are part of "adding a
+  researcher" in this repo, not an optional extra, since every existing
+  `RESEARCHERS.md` file has a `BIBLIOGRAPHY.md` sibling covering the same papers.
+- Never fabricate a `BIBLIOGRAPHY.md` venue, note, or sub-theme fit either — the
+  same "trace back to something actually fetched" rule from the first Note
+  applies there too, and a paper that doesn't cleanly fit an existing sub-theme
+  gets its own new section (step 11) rather than a forced, inaccurate placement.
 - Being autonomous means not pausing between successful steps — it does not mean
   hiding what happened. Always end with a summary covering: researchers migrated
-  (with issue number if any, destination files, and which papers), duplicates
-  (issue number if any, researcher, files already present), not-relevant items
-  (issue number if any, researcher, what was checked), in-progress items (issue
-  number if any, researcher, covering PR), unresolved items (issue number if any,
-  why identification failed), files changed, branch name, the PR URL (or the
-  blocker reached instead), the outcome of closing each issue-sourced item in
-  step 13, and the step 14 outcome.
+  (with issue number if any, destination `RESEARCHERS.md`/`BIBLIOGRAPHY.md` files,
+  and which papers in each), any new `RESEARCHERS.md`/`README.md` pair created,
+  duplicates (issue number if any, researcher, files already present),
+  not-relevant items (issue number if any, researcher, what was checked),
+  in-progress items (issue number if any, researcher, covering PR), unresolved
+  items (issue number if any, why identification failed), files changed, branch
+  name, the PR URL (or the blocker reached instead), the outcome of closing each
+  issue-sourced item in step 14, and the step 15 outcome.

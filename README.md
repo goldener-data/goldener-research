@@ -66,22 +66,13 @@ This section allows the community to review findings, validate approaches, and b
 
 ## Our open research themes
 
-- **[Augmentation](augmentation/README.md)**: Selection of relevant augmentation for the training in AI pipelines.
-
-- **[Batching](batching/README.md)**: Optimizing batch creation during the training in AI pipelines.
-
-- **[Data selection](data_selection/README.md)**: Selection of relevant data for training and monitoring in AI pipelines.
-
-- **[Drift](drift/README.md)**: Detection of drift in data (covariate drift, concept drift, and label drift).
-
-- **[Frameworks](frameworks/README.md)**: Various frameworks available for AI lifecycle optimization.
-
-- **[Labeling](labeling/README.md)**: Efficient labeling optimizing the training and monitoring in AI pipelines.
-
-- **[Losses](losses/README.md)**: Implementation of loss functions optimizing the training in AI pipelines.
-
-- **[Model design](model_design/README.md)**: Selection of the best models and hyperparameters in AI pipelines.
-
-- **[Out of distribution](out_of_distribution/README.md)**: Detection of out-of-distribution data in AI pipelines.
-
+- **[Augmentation](augmentation/README.md)**: Selection of relevant augmentation for the training in AI pipelines.<br>
+- **[Batching](batching/README.md)**: Optimizing batch creation during the training in AI pipelines.<br>
+- **[Data selection](data_selection/README.md)**: Selection of relevant data for training and monitoring in AI pipelines.<br>
+- **[Drift](drift/README.md)**: Detection of drift in data (covariate drift, concept drift, and label drift).<br>
+- **[Frameworks](frameworks/README.md)**: Various frameworks available for AI lifecycle optimization.<br>
+- **[Labeling](labeling/README.md)**: Efficient labeling optimizing the training and monitoring in AI pipelines.<br>
+- **[Losses](losses/README.md)**: Implementation of loss functions optimizing the training in AI pipelines.<br>
+- **[Model design](model_design/README.md)**: Selection of the best models and hyperparameters in AI pipelines.<br>
+- **[Out of distribution](out_of_distribution/README.md)**: Detection of out-of-distribution data in AI pipelines.<br>
 - **[Training strategy](training_strategy/README.md)**: Selection of the best training strategy in AI pipelines.

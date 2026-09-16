@@ -21,6 +21,6 @@
     <strong>Vendi Novelty Scores for Out-of-Distribution Detection</strong>
   </a><br>
   <small><em>👤 First author: Amey P. Pasarkar</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2026)</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: No note provided.
 </div>

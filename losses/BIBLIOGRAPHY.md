@@ -24,7 +24,7 @@
     <strong>Embedding and clustering your data can improve contrastive pretraining</strong>
   </a><br>
   <small><em>👤 First author: Luke Merrick</em></small><br>
-  <small><em>📍 Origin: arXiv.org (2024)</em></small><br>
+  <small><em>📍 Origin: arXiv (2024)</em></small><br>
   📝 Note: identify negative pairs from clusters inside the mini-batch.
 </div>
 <br>

@@ -3,8 +3,8 @@
 > This folder surfaces the key ideas and references around efficient labeling and annotation strategies.
 
 ## At a glance
-[💡 Ideas](IDEAS.md)
-[📚 Bibliography](BIBLIOGRAPHY.md)
+[💡 Ideas](IDEAS.md)<br>
+[📚 Bibliography](BIBLIOGRAPHY.md)<br>
 [🧰 Tools](TOOLS.md)
 
 ## Context
@@ -33,6 +33,6 @@ The resources in this folder are intended to support both research and practical
 from understanding the state of the art to turning ideas into experiments and product
 improvements. In this folder you can find:
 
-[💡 Ideas](IDEAS.md): active questions and possible research directions
-[📚 Bibliography](BIBLIOGRAPHY.md): key papers and surveys around labeling and annotation
+[💡 Ideas](IDEAS.md): active questions and possible research directions<br>
+[📚 Bibliography](BIBLIOGRAPHY.md): key papers and surveys around labeling and annotation<br>
 [🧰 Tools](TOOLS.md): tooling and platforms
