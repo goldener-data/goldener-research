@@ -1,4 +1,4 @@
-# 🧭 Augmentation - Researchers
+# Augmentation - Researchers
 
 ## 👤 Baharan Mirzasoleiman
 📍 Affiliation: UCLA

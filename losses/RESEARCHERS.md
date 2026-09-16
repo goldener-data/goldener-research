@@ -1,4 +1,4 @@
-# 🧭 Losses - Researchers
+# Losses - Researchers
 
 ## 👤 Frank Hutter
 📍 Affiliation: Freiburg University

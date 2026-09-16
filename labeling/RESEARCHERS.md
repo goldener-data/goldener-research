@@ -1,4 +1,4 @@
-# 🧭 Labeling - Researchers
+# Labeling - Researchers
 
 ## 👤 Yuki M. Asano
 📍 Affiliation: University of Technology Nuremberg
