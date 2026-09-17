@@ -220,7 +220,7 @@
 
 ---
 
-## Cross-model guidance
+## Distillation
 
 <div>
   <a href="https://arxiv.org/abs/2602.05393">
