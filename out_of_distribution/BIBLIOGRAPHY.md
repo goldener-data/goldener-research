@@ -46,3 +46,12 @@
   <small><em>📍 Origin: Asian Conference on Computer Vision (ACCV) (2024)</em></small><br>
   📝 Note: redefines normality at the object level via dense feature fine-tuning on normal data and masked knowledge distillation, improving multi-object novelty detection.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2608.09427">
+    <strong>Foundation Models are Implicit Deepfake Detectors</strong>
+  </a><br>
+  <small><em>👤 First author: Stefan Smeu</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: finds that fake samples systematically produce lower-magnitude pretrained representations than real ones, so treating detection as an anomaly-detection problem on feature magnitude rivals far more sophisticated deepfake detectors.
+</div>

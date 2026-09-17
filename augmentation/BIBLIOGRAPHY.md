@@ -2,7 +2,14 @@
 
 ## No embeddings
 
-
+<div>
+  <a href="https://arxiv.org/abs/2606.25784">
+    <strong>S²-FracMix: Label-Preserving Self-Saliency Mixup Augmentation</strong>
+  </a><br>
+  <small><em>👤 First author: Khawar Islam</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: extracts multi-scale salient patches and reinserts them into non-salient regions of the same image while injecting fractal self-similarity patterns, achieving state-of-the-art augmentation results across seven benchmarks without cross-sample mixing.
+</div>
 
 ---
 

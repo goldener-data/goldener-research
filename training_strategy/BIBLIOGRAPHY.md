@@ -145,7 +145,15 @@
   <small><em>📍 Origin: arXiv (2023)</em></small><br>
   📝 Note: use large language models to drive human-free active learning loops.
 </div>
-
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2607.15974">
+    <strong>Embodied Active Learning under Limited Annotation and Navigation Budget for Object Detection</strong>
+  </a><br>
+  <small><em>👤 First author: Hadrien Crassous</em></small><br>
+  <small><em>📍 Origin: IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) (2026)</em></small><br>
+  📝 Note: an embodied variant of batch active learning where a robot's limited navigation and annotation budgets are spent on trajectories and images picked via spatial-consistency conflicts, improving detector accuracy over baselines.
+</div>
 
 
 
@@ -208,4 +216,17 @@
   <small><em>👤 First author: Dawid J. Kopiczko</em></small><br>
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: shows that repeating epochs on a small SFT dataset beats single-epoch training on a much larger one, and proposes training-token accuracy as a saturation-based stopping criterion.
+</div>
+
+---
+
+## Distillation
+
+<div>
+  <a href="https://arxiv.org/abs/2602.05393">
+    <strong>Late-to-Early Training: LET LLMs Learn Earlier, So Faster and Better</strong>
+  </a><br>
+  <small><em>👤 First author: Ji Zhao</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: guides the early layers of an LLM during early training steps using representations from the late layers of an existing pretrained model, speeding up convergence and improving downstream accuracy.
 </div>
