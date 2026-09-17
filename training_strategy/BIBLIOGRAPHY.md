@@ -207,5 +207,5 @@
   </a><br>
   <small><em>👤 First author: Dawid J. Kopiczko</em></small><br>
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
-  📝 Note: shows that repeating epochs on a small SFT dataset beats single-epoch training on a much larger one, and proposes training-token accuracy as a saturation-based stopping criterion
+  📝 Note: shows that repeating epochs on a small SFT dataset beats single-epoch training on a much larger one, and proposes training-token accuracy as a saturation-based stopping criterion.
 </div>
