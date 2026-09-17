@@ -141,7 +141,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
      also what to fall back to if a direct request's paper turns out to already
      have an open issue, see step 4): list open `paper` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=all&per_page=100"
+     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=open&per_page=100"
      ```
      Public reads don't need auth. The list endpoint already includes `body`;
      use it directly rather than re-fetching each issue, unless a body is
