@@ -15,3 +15,29 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Text-guided Synthetic Geometric Augmentation for Zero-shot 3D Understanding](https://arxiv.org/abs/2501.09278)
 <br>
+
+## 👤 Vadim Borisov
+📍 Affiliation: tabularis.ai
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Language Models are Realistic Tabular Data Generators](https://arxiv.org/abs/2210.06280)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Research on data augmentation for lithography hotspot detection using deep learning](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10775/2326563/Research-on-data-augmentation-for-lithography-hotspot-detection-using-deep/10.1117/12.2326563.short)
+<br>
+
+## 👤 Gjergji Kasneci
+📍 Affiliation: Technical University of Munich
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Language Models are Realistic Tabular Data Generators](https://arxiv.org/abs/2210.06280)
+<br>
+
+## 👤 Tobias Leemann
+📍 Affiliation: Amazon Web Services (AWS)
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Language Models are Realistic Tabular Data Generators](https://arxiv.org/abs/2210.06280)
+<br>
