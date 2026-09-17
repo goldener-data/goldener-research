@@ -19,6 +19,15 @@
   <small><em>📍 Origin: ACM Digital Library (2025)</em></small><br>
   📝 Note: from data selection to training and evaluation with a specialization on continuous training.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2602.09621">
+    <strong>AlignTune: Modular Toolkit for Post-Training Alignment of Large Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: R E Zera Marveen Lyngkhoi</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: unifies SFT and RLHF-style training across TRL and Unsloth backends with identical configurations, plus a composable reward framework and integrated evaluation.
+</div>
 
 ---
 

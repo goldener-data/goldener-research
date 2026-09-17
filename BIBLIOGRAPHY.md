@@ -19,6 +19,15 @@
   <small><em>📍 Origin: Findings of the Association for Computational Linguistics: EMNLP 2024</em></small><br>
   📝 Note: No note provided.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2603.14712">
+    <strong>Towards Next-Generation LLM Training: From the Data-Centric Perspective</strong>
+  </a><br>
+  <small><em>👤 First author: Hao Liang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: argues for treating data as an active component of LLM training, via an agent-based automatic data preparation system and a unified data-model interaction system for dynamic selection, mixture, and reweighting.
+</div>
 
 ---
 

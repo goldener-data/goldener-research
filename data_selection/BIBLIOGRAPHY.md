@@ -116,6 +116,24 @@
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2024)</em></small><br>
   📝 Note: curates super-resolution training data with an automated evaluation pipeline, showing performance gains from low compression artifacts, high within-image object diversity, and large-scale sources like ImageNet/PASS (no embedding model)
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2604.00001">
+    <strong>Filter-then-Weight: Online Data Selection and Reweighting for LLM Fine-Tuning</strong>
+  </a><br>
+  <small><em>👤 First author: Fangxin Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: an optimizer-aware, two-stage filter-then-weight algorithm scores streaming data by how it shapes the next optimizer update, improving convergence over prior online selection baselines (no embedding model).
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2602.05400">
+    <strong>OPUS: Towards Efficient and Principled Data Selection in Large Language Model Pre-training in Every Iteration</strong>
+  </a><br>
+  <small><em>👤 First author: Shaobo Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: scores pretraining candidates by projecting their optimizer-induced updates onto a target direction from a proxy dataset, matching full 200B-token training with 30B tokens at only 4.7% overhead (no embedding model).
+</div>
 
 ---
 
@@ -597,6 +615,15 @@
   <small><em>👤 First author: K. Shi</em></small><br>
   <small><em>📍 Origin: arXiv (2025)</em></small><br>
   📝 Note: prototype-based selection and alignment for few-shot and open-set image classification.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2602.13773">
+    <strong>On Representation Redundancy in Large-Scale Instruction Tuning Data Selection</strong>
+  </a><br>
+  <small><em>👤 First author: Youwei Shu</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: shows LLM-encoder embeddings used for instruction-tuning data selection are highly redundant, and proposes compressing them (random projection or whitening) to pick a smaller, higher-quality subset that beats full-data training.
 </div>
 
 ### Smarter selection based on clustering
