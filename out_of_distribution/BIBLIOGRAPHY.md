@@ -35,7 +35,7 @@
   </a><br>
   <small><em>👤 First author: Luc P.J. Sträter</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2024)</em></small><br>
-  📝 Note: self-supervised anomaly generation on ViT patch features (noise, shuffling) with an attention-based discriminator, reaching state-of-the-art results across both semantic and industrial anomaly detection benchmarks
+  📝 Note: self-supervised anomaly generation on ViT patch features (noise, shuffling) with an attention-based discriminator, reaching state-of-the-art results across both semantic and industrial anomaly detection benchmarks.
 </div>
 <br>
 <div>
@@ -44,5 +44,5 @@
   </a><br>
   <small><em>👤 First author: Mohammadreza Salehi</em></small><br>
   <small><em>📍 Origin: Asian Conference on Computer Vision (ACCV) (2024)</em></small><br>
-  📝 Note: redefines normality at the object level via dense feature fine-tuning on normal data and masked knowledge distillation, improving multi-object novelty detection
+  📝 Note: redefines normality at the object level via dense feature fine-tuning on normal data and masked knowledge distillation, improving multi-object novelty detection.
 </div>

@@ -96,7 +96,7 @@
   </a><br>
   <small><em>👤 First author: Zichun Yu</em></small><br>
   <small><em>📍 Origin: Advances in Neural Information Processing Systems (2024)</em></small><br>
-  📝 Note: train a model that allows specifying, for each epoch, which data will have the biggest influence. The training data evolve for each epoch.
+  📝 Note: train a model that allows specifying, for each epoch, which data will have the biggest influence, with the training data evolving each epoch.
 </div>
 <br>
 <div>
@@ -114,7 +114,7 @@
   </a><br>
   <small><em>👤 First author: Go Ohtani</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2024)</em></small><br>
-  📝 Note: curates super-resolution training data with an automated evaluation pipeline, showing performance gains from low compression artifacts, high within-image object diversity, and large-scale sources like ImageNet/PASS (no embedding model)
+  📝 Note: curates super-resolution training data with an automated evaluation pipeline, showing performance gains from low compression artifacts, high within-image object diversity, and large-scale sources like ImageNet/PASS (no embedding model).
 </div>
 
 ---
