@@ -6,14 +6,17 @@ description: Pull GitHub issues labeled "lab" from goldener-data/goldener-resear
   directly in the request the same way, resolve the lab's website, fetch its list
   of published papers, confirm which ones are relevant to data-centric AI/Goldener,
   and tally authors across those papers — anyone reaching 3 or more confirmed-
-  relevant papers (even spread across different themes) becomes a relevant
-  researcher. Then branch, commit, push, open a PR adding every confirmed-relevant
-  new paper to the matching topic `BIBLIOGRAPHY.md` file(s) and every qualifying
-  researcher to the matching topic `RESEARCHERS.md` file(s), and close any source
-  issues — fully autonomously, no confirmation prompts. Use when the user asks to
-  sync/import/migrate lab issues into the docs, "add the lab issues to the
-  bibliography/researchers", or directly names/links a lab to look into (e.g. "add
-  <lab name> to goldener research", "look at <lab website>").
+  relevant papers (even spread across different themes, and even after checking
+  an author's own broader publication record beyond the lab's own output) becomes
+  a relevant researcher, and every paper their co-authors publish is itself
+  recursively checked the same way, up to 2 levels deep. Then branch, commit,
+  push, open a PR adding every confirmed-relevant paper found (from the lab and
+  from recursion) to the matching topic `BIBLIOGRAPHY.md` file(s) and every
+  qualifying researcher to the matching topic `RESEARCHERS.md` file(s), and close
+  any source issues — fully autonomously, no confirmation prompts. Use when the
+  user asks to sync/import/migrate lab issues into the docs, "add the lab issues
+  to the bibliography/researchers", or directly names/links a lab to look into
+  (e.g. "add <lab name> to goldener research", "look at <lab website>").
 ---
 
 # Sync lab issues into `BIBLIOGRAPHY.md` and `RESEARCHERS.md`
@@ -65,29 +68,31 @@ on it.
 
 **This skill runs end-to-end without stopping for confirmation** — prepare the
 working tree, build the worklist, check for in-progress PRs, resolve each lab,
-fetch and screen its publication list, confirm relevance, tally authors, write
-`BIBLIOGRAPHY.md`/`RESEARCHERS.md` entries, branch, commit, push, open the PR,
-close any source issues, and restore the working tree in one pass. Don't ask
-the user to approve the plan, the research findings, the file placement, or the
-push/PR/close steps; just do it and report what happened at the end. Only
-interrupt the run for a genuine blocker you cannot resolve yourself (see
-"Blockers" below), or for a link whose trustworthiness is genuinely ambiguous
-(steps 5, 6, and 8) — never to check in on a step that succeeded. **Step 2
-(prepare) and step 16 (restore) always run, including on every blocker path**
-— this skill must never leave the repo on an unexpected branch or with a
-dangling stash, whatever else happens in between.
+fetch and screen its publication list, confirm relevance, tally authors
+(extending the check to an author's own broader record when the lab's output
+alone falls short), write `BIBLIOGRAPHY.md`/`RESEARCHERS.md` entries,
+recursively expand co-authors into new papers/researchers, branch, commit,
+push, open the PR, close any source issues, and restore the working tree in
+one pass. Don't ask the user to approve the plan, the research findings, the
+file placement, or the push/PR/close steps; just do it and report what
+happened at the end. Only interrupt the run for a genuine blocker you cannot
+resolve yourself (see "Blockers" below), or for a link whose trustworthiness
+is genuinely ambiguous (steps 5, 6, 8, 11, and 13) — never to check in on a
+step that succeeded. **Step 2 (prepare) and step 17 (restore) always run,
+including on every blocker path** — this skill must never leave the repo on an
+unexpected branch or with a dangling stash, whatever else happens in between.
 
 ## Prerequisite: GitHub write access
 
-Check this **before step 2** — before touching git at all. Step 14 (open PR)
-and step 15 (close/comment on issues) need authenticated write access to
+Check this **before step 2** — before touching git at all. Step 15 (open PR)
+and step 16 (close/comment on issues) need authenticated write access to
 GitHub; finding that out after already stashing, branching, researching,
 writing files, and pushing wastes the run and leaves more to unwind.
 
 - If the `gh` CLI is installed, run `gh auth status`. A report of being logged in
-  means write access is available; use `gh` for steps 14 and 15.
+  means write access is available; use `gh` for steps 15 and 16.
 - Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the environment.
-  If so, use the REST API with that token for steps 14 and 15.
+  If so, use the REST API with that token for steps 15 and 16.
 - If neither is available: this is a hard blocker (see "Blockers"). Stop
   immediately — do not stash, do not check out `main`, do not run step 2 at all —
   and report that GitHub write access (an authenticated `gh` CLI, or a
@@ -108,7 +113,8 @@ writing files, and pushing wastes the run and leaves more to unwind.
    drift/OOD monitoring, ...) — a paper can be relevant either because it matches
    a research theme here or because it relates to a concrete Goldener feature,
    even if no open question in that topic's `IDEAS.md` mentions it yet. Keep this
-   map in mind for steps 7–8 (relevance) and 10/12 (destination file).
+   map in mind for steps 7–8 (relevance), 11 and 13 (recursive relevance), and
+   10/12 (destination file).
 
    There's also a standing, always-relevant criterion independent of this map:
    **any paper that leverages a pretrained/foundation-model embedding to improve
@@ -120,10 +126,10 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
 2. **Prepare the working tree.** Do this before anything else touches git.
    - Record the current branch: `git rev-parse --abbrev-ref HEAD`. This is the
-     *initial branch* you must return to in step 16 — remember it verbatim.
+     *initial branch* you must return to in step 17 — remember it verbatim.
    - Run `git status --porcelain`. If it reports anything (staged, unstaged, or
      untracked), stash it: `git stash push -u -m "sync-lab-issues: pre-run stash"`.
-     Note that a stash was created — step 16 needs to know whether to pop one. If
+     Note that a stash was created — step 17 needs to know whether to pop one. If
      the tree is already clean, note that no stash was needed.
    - `git checkout main && git pull` so every later read of `BIBLIOGRAPHY.md`/
      `RESEARCHERS.md` content (steps 9 and 12's duplicate checks) reflects
@@ -160,14 +166,14 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
    A single run only uses one of these two — don't mix listing issues into a
    run that was given explicit labs, or vice versa. Keep a per-issue list of
-   its items for issue-sourced ones, since step 15 closes issues, not
+   its items for issue-sourced ones, since step 16 closes issues, not
    individual labs.
 
 4. **Check for worklist items already covered by an open pull request.** Do
    this before researching anything, for every item regardless of which entry
    point produced it. This matters because a rerun (or a direct request for a
    lab already mid-flight) can land on a lab a *still-open* PR already handles
-   — e.g. an earlier run opened the PR but its step 15 close failed (see
+   — e.g. an earlier run opened the PR but its step 16 close failed (see
    "Blockers"), or a human opened a PR for the same lab by hand.
 
    ```
@@ -186,7 +192,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
    - **Match found → in-progress.** Record the lab (and the issue number, if
      this item came from one), and the matching PR URL/number. Do not research
-     it further (skip steps 5–13 for it), and do not touch it in step 15.
+     it further (skip steps 5–14 for it), and do not touch it in step 16.
      **Never close an in-progress issue** with any `state_reason` — it is
      already being handled.
    - **No match → proceed to step 5.**
@@ -224,7 +230,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
        - **Skip it** — treat it as if it were clearly untrustworthy: don't
          fetch it, fall through to the search case below instead.
        - **Stop the current task** — halt this skill run entirely rather than
-         continuing past this item. Still run step 16 (restore the working
+         continuing past this item. Still run step 17 (restore the working
          tree) before ending; report which items were already handled before
          the stop, per "Notes".
      - **Trusted (or validated)** → fetch it. Confirm it is actually a
@@ -301,7 +307,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
      occasionally more when the abstract clearly spans topics.
    - **Zero confirmed-relevant papers for this lab → not relevant.** Record
      the lab (and issue number, if any), and a short note of what was checked
-     and why nothing held up. Skip steps 9–13 for it.
+     and why nothing held up. Skip steps 9–14 for it.
    - **At least one confirmed-relevant paper → proceed to step 9.**
 
 9. **Deduplicate confirmed-relevant papers against existing `BIBLIOGRAPHY.md`
@@ -309,12 +315,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
    files (as checked out on `main` per step 2). For each confirmed-relevant
    paper (step 8), normalize its link the same way for both sides of the
    comparison (strip a trailing slash; treat `arxiv.org/abs/<id>` and
-   `arxiv.org/pdf/<id>`
-   as the same paper) and compare against that list, falling back to a
-   normalized-title match if the link doesn't resolve one. A match means this
-   paper already has a `BIBLIOGRAPHY.md` entry — **it is still counted toward
-   its authors' tally in step 11**, it just isn't written again in step 10.
-   Papers with no match are **new** and proceed to step 10 as well as step 11.
+   `arxiv.org/pdf/<id>` as the same paper) and compare against that list,
+   falling back to a normalized-title match if the link doesn't resolve one.
+   A match means this paper already has a `BIBLIOGRAPHY.md` entry — **it is
+   still counted toward its authors' tally in step 11**, it just isn't
+   written again in step 10. Papers with no match are **new** and proceed to
+   step 10 as well as step 11.
 
 10. **For each new confirmed-relevant paper: pick the destination
     `BIBLIOGRAPHY.md` file, pick or create the sub-theme heading, and write
@@ -351,25 +357,51 @@ writing files, and pushing wastes the run and leaves more to unwind.
       blank line before and after. Before a new `###` (no `---` needed): one
       blank line before, none after.
 
-11. **Tally confirmed-relevant papers per author, across this lab's entire
-    screened output (new and duplicate alike, from steps 9–10).** Build one
-    count per author name (normalized: trim, collapse whitespace, ASCII-fold
-    to compare across accented/unaccented spellings of the same name, so a
-    name typed with or without diacritics across two different papers still
-    merges into one count). **Any author
-    appearing on 3 or more confirmed-relevant papers becomes a relevant
-    researcher** — this can happen even if those papers land in different
-    topic files (e.g. one in `data_selection`, one in `augmentation`, one in
-    `drift`); a spread across themes is expected, not a disqualifier. An
-    author under 3 papers is not written to `RESEARCHERS.md` at all, even if
-    one or more of their papers were added to `BIBLIOGRAPHY.md` in step 10 —
-    being in the bibliography and being a tracked researcher are independent
-    outcomes here.
+11. **Tally confirmed-relevant papers per author across this lab's entire
+    screened output (new and duplicate alike, from steps 9–10), then extend
+    the check for anyone who falls short.** Build one count per author name
+    (normalized: trim, collapse whitespace, ASCII-fold to compare across
+    accented/unaccented spellings of the same name, so a name typed with or
+    without diacritics across two different papers still merges into one
+    count).
+    - **3 or more confirmed-relevant papers from the lab's own output alone**
+      → this author already qualifies as a relevant researcher — proceed to
+      step 12 with their lab-sourced qualifying papers.
+    - **1 or 2 confirmed-relevant papers from the lab's own output** (0 means
+      there's nothing to extend): don't stop there — web search `"<name>"
+      google scholar` (falling back to a personal/lab homepage or a DBLP
+      page) for this author's own broader publication record, beyond what
+      this lab's list happened to include. Title-screen and abstract-confirm
+      that record for relevance per step 1's map/criteria, excluding papers
+      already counted from the lab's output, and applying the same
+      domain-trust check and validate/skip/stop choice as step 8 to each
+      candidate link.
+      - **If this brings the total (lab output + broader record) to 3 or
+        more**: this author qualifies. Add every newly confirmed-relevant
+        paper found in the broader record to `BIBLIOGRAPHY.md` too (step
+        9–10's dedup/format rules — the lab-sourced papers are already
+        there); each such paper is a "seed" for step 13's further recursion.
+        Proceed to step 12 with the full qualifying set (lab output +
+        broader record).
+      - **If the total still falls short of 3**: this author does not
+        qualify. Discard the broader-record findings entirely — do not add
+        any of those extra papers to `BIBLIOGRAPHY.md` — and note in the
+        final report how many confirmed-relevant papers were found in total
+        (lab output plus broader record) for this author.
+    - An author reaching 3 total (by either path) becomes a relevant
+      researcher **even if their qualifying papers land in different topic
+      files** (e.g. one in `data_selection`, one in `augmentation`, one in
+      `drift`); a spread across themes is expected, not a disqualifier. An
+      author who never reaches 3 is not written to `RESEARCHERS.md` at all,
+      even if one or more of their lab-sourced papers were added to
+      `BIBLIOGRAPHY.md` in step 10 — being in the bibliography and being a
+      tracked researcher are independent outcomes here.
 
 12. **For each relevant researcher (step 11): determine current affiliation,
     deduplicate, pick destination file(s), and write the `RESEARCHERS.md`
     entry**, scoped to only this researcher's *qualifying* papers (the
-    confirmed-relevant ones counted in step 11, not their whole publication
+    confirmed-relevant ones counted in step 11 — from the lab's own output
+    and/or its broader-record extension — not their whole publication
     history):
     - Web search `"<name>" google scholar` (falling back to a personal/lab
       homepage or a DBLP page) for their *current* affiliation — use the most
@@ -390,7 +422,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
       Researchers`) and wire it into that topic's own `README.md` (a
       `[👥 Researchers](RESEARCHERS.md)` line in both "At a glance" and
       "Resources", right after the Bibliography line) — this edit is staged
-      and committed alongside the new file in step 13.
+      and committed alongside the new file in step 14.
     - Format (identical to every existing entry, `<br>` after every line, one
       blank line before the next `## 👤`):
       ```
@@ -407,7 +439,55 @@ writing files, and pushing wastes the run and leaves more to unwind.
       gaining new papers, insert the new lines after its last existing paper
       line.
 
-13. **Branch, commit, push — no confirmation.** By this point `main` is
+13. **Recursively expand the co-authors of every paper found via step 11's
+    broader-record extension.** (A paper found directly in the lab's own
+    output, steps 6–10, already had its authors covered by step 11's tally
+    against that same output — this step is specifically about papers that
+    came from looking *beyond* the lab, which step 11 doesn't otherwise
+    revisit.) Each such paper is a "seed" for this step; a paper added later
+    *by this very step* becomes a seed too, one recursion level deeper.
+    **Recursion is capped at 2 levels** from these step-11 seeds (their
+    direct co-authors are level 1; co-authors of any *new* paper added as a
+    result of level 1 are level 2; do not go a level deeper than that).
+    Hitting this cap on a well-connected co-authorship network is expected,
+    not a failure — note in the final report which level-2 discoveries were
+    left unexplored as a result.
+
+    For each seed paper, take its full author list (recorded when it was
+    confirmed relevant in step 11), excluding whichever researcher this run
+    is already tracking because of that paper. For each remaining co-author:
+    - Skip anyone already processed earlier in this run (every author already
+      tallied in step 11, and anyone already visited by this step) — track
+      one normalized-name set for the whole run (same folding rules as step
+      11). This also bounds the recursion, since the set of distinct people
+      is finite and nobody is analyzed twice.
+    - Web search `"<name>" google scholar` (falling back to a personal/lab
+      homepage or a DBLP page) for their publication list, then title-screen
+      and abstract-confirm it for relevance per step 1's map/criteria,
+      excluding the seed paper itself — including the same domain-trust
+      check and validate/skip/stop choice used in step 8.
+    - **If this co-author already has a `RESEARCHERS.md` entry somewhere in
+      the repo:** any newly confirmed-relevant paper not already listed under
+      their existing entry is added to `BIBLIOGRAPHY.md` (steps 9–10's dedup
+      and format rules) and appended to their entry — no 3-paper threshold
+      applies here, since they already qualify. Each such paper is a seed one
+      recursion level deeper.
+    - **If this co-author has no `RESEARCHERS.md` entry yet:** count the
+      other confirmed-relevant papers found (excluding the seed). **If there
+      are at least 3** (so, together with the seed, at least 4 total): this
+      co-author becomes a relevant researcher — write a `RESEARCHERS.md`
+      entry for them (step 12's format) in each topic file matching one of
+      their qualifying papers (step 12's placement rule, creating the file
+      and wiring its `README.md` if the folder doesn't have one yet), and add
+      every one of the "other" newly confirmed papers to `BIBLIOGRAPHY.md`
+      too (the seed is already there). Each newly-added paper is a seed one
+      recursion level deeper. **If fewer than 3 other confirmed-relevant
+      papers are found**, do not add a `RESEARCHERS.md` entry and do not add
+      any of the probed papers — discard the probe's findings entirely, and
+      just note in the final report that this co-author was checked and how
+      many relevant papers were found (short of the threshold).
+
+14. **Branch, commit, push — no confirmation.** By this point `main` is
     checked out and up to date (step 2). **Always create a brand-new branch
     for this run** — `git checkout -b YYYY-MM-DD-add-new-lab` off `main`
     (today's date). Never check out or reuse an existing branch, even one
@@ -422,20 +502,23 @@ writing files, and pushing wastes the run and leaves more to unwind.
     include today's date — reused verbatim as the PR title). Push immediately
     with `-u origin <branch>`.
 
-14. **Open the PR immediately — no confirmation.** Title: reuse the exact
+15. **Open the PR immediately — no confirmation.** Title: reuse the exact
     commit message verbatim. Build a description that, per lab processed,
     states which website/PI was ultimately used (flagging any department →
     specific-PI narrowing from step 5), how many papers were screened and how
     many confirmed relevant, then lists: which `BIBLIOGRAPHY.md` file(s)
     received which new papers and why (one sentence per paper, from the
     abstract check), and which `RESEARCHERS.md` file(s) received which
-    researcher with their qualifying-paper count and topics. Add a short
-    section listing not-relevant labs (step 8: lab, what was checked),
-    in-progress items (step 4: lab, covering PR), and — worth calling out
-    explicitly since it's specific to this skill — any author who appeared on
-    1–2 confirmed-relevant papers (added to the bibliography) but didn't reach
-    the 3-paper researcher threshold. Do not rely on `Closes #<n>` for
-    auto-close — step 15 closes issues explicitly.
+    researcher with their qualifying-paper count and topics — distinguishing
+    a researcher who qualified from the lab's own output (step 11) from one
+    who needed their broader record checked, and from one discovered only via
+    step 13's co-author recursion (name the seed paper that led to them). Add
+    a short section listing not-relevant labs (step 8: lab, what was
+    checked), in-progress items (step 4: lab, covering PR), and any author or
+    co-author (from step 11 or step 13) who was checked but fell short of the
+    3-paper threshold (name, how many relevant papers were found in total).
+    Do not rely on `Closes #<n>` for auto-close — step 16 closes issues
+    explicitly.
 
     Try `gh pr create` first if available. Otherwise use the GitHub REST API:
     ```
@@ -445,10 +528,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
       -d '{"title": "...", "head": "<branch>", "base": "main", "body": "..."}'
     ```
 
-15. **Close every issue-sourced item that was handled, each with an
+16. **Close every issue-sourced item that was handled, each with an
     explanatory comment.** Runs right after the PR is opened. **In-progress
     items (step 4) are not touched here**, and neither are direct-request
-    items with no `source_issue`.
+    items with no `source_issue`. Step 13's recursively discovered
+    papers/researchers are reported in the PR and final summary, not tied
+    back to any single source issue.
 
     - **Migrated** (at least one paper and/or researcher written for this
       lab): comment summarizing what was added (paper count/files, researcher
@@ -476,7 +561,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
     try each issue independently, then report which ones succeeded and which
     didn't in the final summary (see "Notes").
 
-16. **Return to the initial branch and restore the working tree.** Last thing
+17. **Return to the initial branch and restore the working tree.** Last thing
     the skill does on every run, success or blocker alike.
     - `git checkout <initial branch>` (from step 2).
     - If step 2 created a stash, restore it now: `git stash pop`. If it
@@ -489,12 +574,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
 - **No GitHub write access** (checked before step 2 — see "Prerequisite"
   above): stop before step 2 runs — nothing has been stashed, branched, or
-  changed, so there is nothing to restore and step 16 does not run either.
+  changed, so there is nothing to restore and step 17 does not run either.
 - **The worklist ends up empty** (no open `lab` issues found and no lab was
   given directly; step 3), or every item is either in-progress (step 4) or
   not-relevant (step 8): report those groups, don't create an empty
-  branch/PR, jump to step 16. Still close the not-relevant issue-sourced items
-  (step 15) even with no PR — reaching that conclusion already required real
+  branch/PR, jump to step 17. Still close the not-relevant issue-sourced items
+  (step 16) even with no PR — reaching that conclusion already required real
   research per lab, so there's nothing left to ask the user about. Never close
   the in-progress ones.
 - **A lab's website/target can't be resolved at all** (step 5: no trusted
@@ -508,24 +593,25 @@ writing files, and pushing wastes the run and leaves more to unwind.
   was identified but its output isn't accessible. Same handling as above
   (leave issue open if any, suggest the user point to a specific
   publications/Scholar page).
-- **The user chooses "stop the current task"** for an ambiguous link (step 5
-  or 8): stop the run right there. If a branch was already created and pushed
-  with some entries committed, leave it as-is (don't roll it back) and report
-  the branch name and what it contains so far; if nothing was committed yet,
-  there's nothing to undo. Skip steps 13–15 for anything not yet reached, then
-  still run step 16. Report exactly which labs/papers/researchers were
-  resolved before the stop, and which were never reached.
+- **The user chooses "stop the current task"** for an ambiguous link (step 5,
+  6, 8, 11, or 13): stop the run right there. If a branch was already created
+  and pushed with some entries committed, leave it as-is (don't roll it back)
+  and report the branch name and what it contains so far; if nothing was
+  committed yet, there's nothing to undo. Skip steps 14–16 for anything not
+  yet reached, then still run step 17. Report exactly which
+  labs/papers/researchers (and which step 13 discoveries) were resolved
+  before the stop, and which were never reached.
 - **PR creation fails** (e.g. a fine-grained PAT scoped to this org can return
   `403 Resource not accessible by personal access token`): the branch/commit/push
   already succeeded, so don't roll anything back — the pushed branch stays on
   origin. Report the failure, hand over the compare URL
   (`https://github.com/goldener-data/goldener-research/pull/new/<branch>`) and
-  the drafted description, skip step 15, then still run step 16.
+  the drafted description, skip step 16, then still run step 17.
 - **`git push` fails**: report the exact error and the local branch name;
-  don't retry destructive workarounds, skip step 15, then still run step 16.
-- **Closing/commenting on an issue fails** (step 15): not a full-run blocker —
+  don't retry destructive workarounds, skip step 16, then still run step 17.
+- **Closing/commenting on an issue fails** (step 16): not a full-run blocker —
   keep going with the remaining issues, note the failures in the final
-  report, still run step 16.
+  report, still run step 17.
 
 ## Notes
 
@@ -534,26 +620,33 @@ writing files, and pushing wastes the run and leaves more to unwind.
   you actually fetched and read. If a source is thin or ambiguous, say so in
   the PR description rather than guessing.
 - A paper's *title* alone is never sufficient justification for relevance —
-  step 8 requires the abstract to actually be read. Title-screening (step 7)
-  only builds the shortlist, it never confirms anything by itself.
-- **The 3-paper researcher threshold is the defining rule of this skill**:
-  never add a `RESEARCHERS.md` entry for someone with fewer than 3
-  confirmed-relevant papers found via this lab scan, and never let papers
-  already sitting in `BIBLIOGRAPHY.md` from a *different, earlier* skill run
-  count toward this lab's tally unless they were independently reconfirmed as
-  relevant during *this* run's step 8 — the count is about what this scan
-  found, not the repo's whole history for that author. A duplicate paper
+  step 8 (and steps 11 and 13's recursive checks) requires the abstract to
+  actually be read. Title-screening (step 7) only builds the shortlist, it
+  never confirms anything by itself.
+- **The 3-paper researcher threshold is the defining rule of this skill, and
+  it is never satisfied by the lab's own output alone if that output falls
+  short** — step 11 requires checking an author's broader publication record
+  before concluding they don't qualify, and step 13 applies the same rule
+  (3 *other* papers, 4 total including the seed) to co-authors reached only
+  through that broader record or through further recursion. Never add a
+  `RESEARCHERS.md` entry for anyone under the applicable threshold, and never
+  let a paper already sitting in `BIBLIOGRAPHY.md` from a *different,
+  earlier* skill run count toward any of these tallies unless it was
+  independently reconfirmed relevant during *this* run. A duplicate paper
   found again during this scan (step 9) does still count, since it was
   reconfirmed relevant in step 8 before being recognized as a duplicate.
-- A paper can be added to `BIBLIOGRAPHY.md` (step 10) without its author(s)
-  ever becoming a tracked researcher (step 11–12) — these are independent
-  outcomes, and it's expected that most confirmed-relevant papers from a
-  lab scan won't push any single author over the 3-paper line.
+- A paper can be added to `BIBLIOGRAPHY.md` (step 10, or via steps 11/13)
+  without its author(s) ever becoming a tracked researcher (step 12) — these
+  are independent outcomes, and it's expected that most confirmed-relevant
+  papers won't push any single author over the 3-paper line even after the
+  broader-record and recursive checks.
 - One lab can legitimately produce papers across several `BIBLIOGRAPHY.md`
   files and researchers across several `RESEARCHERS.md` files in the same
-  run — this is expected, not a bug to avoid.
+  run — including researchers never affiliated with the lab at all, once
+  step 13's recursion reaches them through co-authorship. This is expected,
+  not a bug to avoid.
 - Never reuse a pre-existing branch for this run's commits, even one that
-  looks unfinished (pushed, no PR, matches the naming pattern). Step 13
+  looks unfinished (pushed, no PR, matches the naming pattern). Step 14
   always creates a fresh branch off current `main`. A leftover branch from a
   previous incomplete run should be surfaced to the user in the final report,
   not built upon.
@@ -562,10 +655,13 @@ writing files, and pushing wastes the run and leaves more to unwind.
   the resolved website/target (and any department → specific-PI narrowing),
   how many papers were screened/confirmed relevant, which `BIBLIOGRAPHY.md`
   file(s) gained which papers and why, which `RESEARCHERS.md` file(s) gained
-  which researcher with their qualifying-paper count/topics, and any author
-  who landed under the 3-paper threshold; plus not-relevant labs (issue number
-  if any, what was checked), in-progress items (issue number if any, covering
-  PR), unresolved items (issue number if any, why — website or publication
-  list), files changed, branch name, the PR URL (or the blocker reached
-  instead), the outcome of closing each issue-sourced item in step 15, and the
-  step 16 outcome.
+  which researcher with their qualifying-paper count/topics (and whether they
+  qualified from the lab's own output, its broader-record extension, or
+  step 13's recursion, naming the seed paper for the latter), and any author
+  or co-author checked but left under the 3-paper threshold; plus
+  not-relevant labs (issue number if any, what was checked), in-progress
+  items (issue number if any, covering PR), unresolved items (issue number
+  if any, why — website or publication list), how deep step 13's recursion
+  went and what was left unexplored at the cap, files changed, branch name,
+  the PR URL (or the blocker reached instead), the outcome of closing each
+  issue-sourced item in step 16, and the step 17 outcome.
