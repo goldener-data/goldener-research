@@ -25,6 +25,13 @@
       "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, then branch, commit, push, open a PR adding them to the matching topic BIBLIOGRAPHY.md file(s), and close any source issues.",
       "strict": false,
       "skills": ["./"]
+    },
+    {
+      "name": "sync-lab-issues",
+      "source": "./sync-lab-issues",
+      "description": "Research GitHub issues labeled \"lab\" (or labs named/linked directly), resolve the lab's website and publication list, confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers, then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "strict": false,
+      "skills": ["./"]
     }
   ]
 }
