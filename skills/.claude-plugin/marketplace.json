@@ -36,7 +36,7 @@
     {
       "name": "sync-conference-issues",
       "source": "./sync-conference-issues",
-      "description": "Research GitHub issues labeled \"conference\" (or conferences named/linked directly, with an optional year), resolve the requested edition (proposing the closest edition(s) or stopping when the given year has no published program, or using the latest one when no year is given), fetch its accepted-paper program (downloading and parsing it directly when available as a file), confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when this edition's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "description": "Research GitHub issues labeled \"conference\" (or conferences named/linked directly, with an optional year), resolve the requested edition (proposing the closest edition(s) or stopping when the given year has no published program, or using the latest one when no year is given), fetch its accepted-paper program across every format (orals, posters, keynotes, and co-located workshops, deduplicating a paper accepted under more than one), confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when this edition's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
       "strict": false,
       "skills": ["./"]
     }
