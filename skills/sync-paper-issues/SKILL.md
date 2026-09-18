@@ -542,14 +542,18 @@ writing files, and pushing wastes the run and leaves more to unwind.
   there is nothing to restore and step 14 does not run either.
 - **The worklist ends up empty** (no open `paper` issues found and no paper was
   given directly; step 3), or every item is either in-progress (step 4), a
-  duplicate (step 6), or not-relevant (step 5): report those groups, don't
-  create an empty branch/PR, jump to step 14. Still close the fully-resolved
-  issue-sourced items (step 13) even with no PR — reaching either conclusion
-  already required real research per item, so there's nothing left to ask the
-  user about. Never close the in-progress ones, and never close an issue with
-  any unresolved item still on it. Note step 10 still runs against any
-  duplicate items even when the worklist is otherwise empty of new papers,
-  since a duplicate's co-authors are still worth checking.
+  duplicate (step 6), or not-relevant (step 5) **and step 10's recursion off
+  any duplicate's co-authors adds nothing new either**: report those groups,
+  don't create an empty branch/PR, jump to step 14. Still close the
+  fully-resolved issue-sourced items (step 13) even with no PR — reaching
+  either conclusion already required real research per item, so there's
+  nothing left to ask the user about. Never close the in-progress ones, and
+  never close an issue with any unresolved item still on it. Note step 10
+  still runs against any duplicate items even when the worklist is otherwise
+  empty of new papers, since a duplicate's co-authors are still worth
+  checking — and if that recursion does add new `BIBLIOGRAPHY.md`/
+  `RESEARCHERS.md` content, run steps 11–13 normally instead of jumping
+  straight to step 14, since there is no longer an empty branch/PR to avoid.
 - **The user chooses "stop the current task"** for an ambiguous link (step 5
   or step 10): stop the run right there. If a branch was already created and
   pushed with some entries committed, leave it as-is (don't roll it back) and

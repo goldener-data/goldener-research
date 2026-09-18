@@ -348,8 +348,9 @@ and pushing wastes the run and leaves more to unwind.
    If **every** destination file ends up a no-op (the researcher and all their
    confirmed papers are already fully present everywhere they'd go), the item as
    a whole is a **duplicate**: record the researcher's name (and issue number, if
-   any), and which file(s) already have them. Don't write anything — but the
-   researcher's papers still proceed to step 12, since their co-authors are worth
+   any), and which file(s) already have them. Don't write anything to
+   `RESEARCHERS.md` — but the researcher's papers still proceed to step 11 (to
+   load their full author lists) and step 12, since their co-authors are worth
    checking whether or not this run added anything new for the researcher
    themselves. Otherwise it's
    **migrated**, even if some individual destination files were no-ops while
@@ -379,14 +380,21 @@ and pushing wastes the run and leaves more to unwind.
     existing paper line (before the blank line separating it from the next
     entry) — don't touch its affiliation or existing paper lines.
 
-11. **Add a matching entry to each destination file's `BIBLIOGRAPHY.md`.** Every
-    topic folder pairs `RESEARCHERS.md` with a `BIBLIOGRAPHY.md` of the same
-    papers grouped by sub-theme, and the root `BIBLIOGRAPHY.md` mirrors the root
+11. **Add a matching entry to each destination file's `BIBLIOGRAPHY.md`, and
+    record every confirmed paper's full author list regardless.** Every topic
+    folder pairs `RESEARCHERS.md` with a `BIBLIOGRAPHY.md` of the same papers
+    grouped by sub-theme, and the root `BIBLIOGRAPHY.md` mirrors the root
     `RESEARCHERS.md` the same way — a researcher added without this is only half
-    added. For every confirmed paper written in step 10, check whether its exact
-    URL already appears anywhere in that destination file's `BIBLIOGRAPHY.md`
-    (papers can pre-date the researcher's own entry); if so, skip it there — it's
-    already covered. Otherwise add an entry:
+    added. For every confirmed paper (from step 8, whether or not the researcher
+    turned out to be a duplicate in step 9), check whether its exact URL already
+    appears anywhere in the relevant destination file's `BIBLIOGRAPHY.md` (papers
+    can pre-date the researcher's own entry); if so, skip writing a new entry
+    there — it's already covered. **Either way**, fetch the paper's own page (if
+    not already fetched) and record its full author list (not just the first
+    author shown in the citation) — step 12 needs this for every confirmed
+    paper, including one whose `BIBLIOGRAPHY.md` entry was skipped as a
+    duplicate, not only for newly-written entries. Otherwise, when actually
+    writing a new entry:
     - **This format is identical, byte-for-byte, across every `BIBLIOGRAPHY.md`
       file in the repo — it's not a per-file style to rediscover.** The title
       is verbatim from the paper's source page but never keeps a trailing
@@ -426,20 +434,20 @@ and pushing wastes the run and leaves more to unwind.
       publisher/proceedings name and year, or `arXiv (YYYY)` if it's
       arXiv-only) — never leave it blank or guess a venue that page doesn't
       state.
-    - **While fetching each paper's own page for this entry, also record its
-      full author list** (not just the first author shown in the citation) —
-      step 12 needs it.
 
-12. **Recursively expand the co-authors of every paper written in step 11**
-    (whether newly written or found already present there). Each such paper is
-    a "seed" for this step; a paper added later *by this very step* becomes a
-    seed too, one recursion level deeper. **Recursion is capped at 2 levels**
-    from the papers originally written in step 11 (co-authors of those papers
-    are level 1; co-authors of any *new* paper added as a result of level 1 are
-    level 2; do not go a level deeper than that). Hitting this cap on a
-    well-connected co-authorship network is expected, not a failure — note in
-    the final report which level-2 discoveries were left unexplored as a
-    result.
+12. **Recursively expand the co-authors of every confirmed paper from step 11**
+    (whether newly written, found already present in `BIBLIOGRAPHY.md`, or
+    belonging to a researcher who turned out to be a duplicate in step 9 —
+    step 11 records the full author list for all three). Each such paper is
+    a level-0 "seed" for this step. **Recursion is capped at 2 levels**: a
+    paper newly added while processing a level-0 seed's co-authors is a
+    level-1 seed; a paper newly added while processing a level-1 seed's
+    co-authors is a level-2 seed; a paper newly added while processing a
+    level-2 seed's co-authors is **not** itself enqueued as a further seed —
+    its own co-authors are never explored, since that would open a level-3
+    round the cap forbids. Hitting this cap on a well-connected co-authorship
+    network is expected, not a failure — note in the final report which
+    level-2 discoveries were left unexplored as a result.
 
     For each seed paper, take its full author list (step 11), **excluding the
     researcher this run is already processing for that paper** — this step is
@@ -463,8 +471,10 @@ and pushing wastes the run and leaves more to unwind.
       the repo:** any newly confirmed-relevant paper not already listed under
       their existing entry is added to `BIBLIOGRAPHY.md` (step 11's dedup and
       format rules) and appended to their entry — no 3-paper threshold
-      applies here, since they already qualify. Each such paper is a seed one
-      recursion level deeper.
+      applies here, since they already qualify. Unless the current seed paper
+      is already at level 2, each such paper becomes a seed one level deeper;
+      if the current seed paper is already at level 2, these papers are still
+      added/appended as above but none of them are enqueued as further seeds.
     - **If this co-author has no `RESEARCHERS.md` entry yet:** count the
       other confirmed-relevant papers found (excluding the seed). **If there
       are at least 3** (so, together with the seed, at least 4 total): this
@@ -473,10 +483,13 @@ and pushing wastes the run and leaves more to unwind.
       their qualifying papers (step 8's placement rule, creating the file and
       wiring its `README.md` if the folder doesn't have one yet), and add
       every one of the "other" newly confirmed papers to `BIBLIOGRAPHY.md`
-      too (the seed is already there, step 11's format). Each newly-added
-      paper is a seed one recursion level deeper. **If fewer than 3 other
-      confirmed-relevant papers are found**, do not add a `RESEARCHERS.md`
-      entry and do not add any of the probed papers — discard the probe's
+      too (the seed is already there, step 11's format). Unless the current
+      seed paper is already at level 2, each newly-added paper becomes a seed
+      one level deeper; if the current seed paper is already at level 2,
+      these papers are still added but none of them are enqueued as further
+      seeds. **If fewer than 3 other confirmed-relevant papers are found**,
+      do not add a `RESEARCHERS.md` entry and do not add any of the probed
+      papers — discard the probe's
       findings entirely, and just note in the final report that this
       co-author was checked and how many relevant papers were found (short of
       the threshold).

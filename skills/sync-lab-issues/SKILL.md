@@ -8,8 +8,10 @@ description: Pull GitHub issues labeled "lab" from goldener-data/goldener-resear
   and tally authors across those papers — anyone reaching 3 or more confirmed-
   relevant papers (even spread across different themes, and even after checking
   an author's own broader publication record beyond the lab's own output) becomes
-  a relevant researcher, and every paper their co-authors publish is itself
-  recursively checked the same way, up to 2 levels deep. Then branch, commit,
+  a relevant researcher, and every paper such a researcher publishes recursively
+  surfaces its own co-authors, each checked for 3 or more other relevant papers
+  of their own (beyond the paper that surfaced them) before they too qualify as
+  a researcher, up to 2 levels deep. Then branch, commit,
   push, open a PR adding every confirmed-relevant paper found (from the lab and
   from recursion) to the matching topic `BIBLIOGRAPHY.md` file(s) and every
   qualifying researcher to the matching topic `RESEARCHERS.md` file(s), and close
@@ -25,9 +27,10 @@ This repo tracks papers and researchers relevant to its themes in per-topic
 `BIBLIOGRAPHY.md` and `RESEARCHERS.md` files (root, general/cross-cutting, plus
 `training_strategy/`, `data_selection/`, `out_of_distribution/`, `frameworks/`,
 `drift/`, `model_design/`, `augmentation/`, `losses/`, `batching/`, `labeling/`,
-and any other topic folder). Every folder already has a `BIBLIOGRAPHY.md`; not
-every folder has a `RESEARCHERS.md` yet (currently `labeling/` doesn't) — see
-step 12 for creating one when needed.
+and any other topic folder). Every existing folder already has both a
+`BIBLIOGRAPHY.md` and a `RESEARCHERS.md` — but a brand-new topic folder
+created by this run (step 10) will still need one — see step 12 for creating
+one when needed.
 
 Unlike an issue naming one individual paper or one named person, a **`lab`
 issue points at an entire research group** — findings and outputs here are two
@@ -154,7 +157,7 @@ writing files, and pushing wastes the run and leaves more to unwind.
      what to fall back to if a direct request's lab turns out to already have
      an open issue, see step 4): list open `lab` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=lab&state=all&per_page=100"
+     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=lab&state=open&per_page=100"
      ```
      Public reads don't need auth. For each issue, extract `{lab_hint, website,
      source_issue: <issue number>}`: look for a URL in the body first (the more
@@ -272,9 +275,9 @@ writing files, and pushing wastes the run and leaves more to unwind.
      years, or a prolific long-running lab), it's fine — expected, even — to
      prioritize the most recent years first (roughly the last 5–8) rather than
      exhaustively reading decades of output; note in the final report that
-     older output was deprioritized for practicality, the same way GitHub's
-     own API pagination caps are noted elsewhere in this repo's skills. Don't
-     silently give up on a large list — screen what's practical and say so.
+     older output was deprioritized for practicality — a deliberate scoping
+     choice, not an oversight. Don't silently give up on a large list —
+     screen what's practical and say so.
    - **If no publication list can be found or fetched at all** for the
      resolved target, this item is **unresolved** — see "Blockers".
 
@@ -417,8 +420,9 @@ writing files, and pushing wastes the run and leaves more to unwind.
       does for `BIBLIOGRAPHY.md` (root only for clearly cross-cutting work,
       otherwise the best-matching topic folder) — a researcher can land in
       several `RESEARCHERS.md` files if their qualifying papers span topics.
-      If the best-matching topic folder has no `RESEARCHERS.md` yet (currently
-      only `labeling/`), create one first (header `# <Topic title case> -
+      If the best-matching topic folder has no `RESEARCHERS.md` yet (every
+      existing folder has one; this applies only to a brand-new topic folder
+      created by this run), create one first (header `# <Topic title case> -
       Researchers`) and wire it into that topic's own `README.md` (a
       `[👥 Researchers](RESEARCHERS.md)` line in both "At a glance" and
       "Resources", right after the Bibliography line) — this edit is staged
@@ -497,10 +501,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
     of touching the existing one. Stage only the modified `BIBLIOGRAPHY.md`,
     `RESEARCHERS.md`, and (for a newly created `RESEARCHERS.md`) `README.md`
     files — never `git add -A`. Commit message:
-    `Add papers and researchers from GitHub issues labeled lab - YYYY-MM-DD`
-    (today's date; word it differently if that reads better, but always
-    include today's date — reused verbatim as the PR title). Push immediately
-    with `-u origin <branch>`.
+    `Add papers and researchers - YYYY-MM-DD` (today's date; if every migrated
+    item came from GitHub issues, `Add papers and researchers from GitHub
+    issues labeled lab - YYYY-MM-DD` is the more precise, preferred wording —
+    word it differently if that reads better, but always include today's
+    date — reused verbatim as the PR title). Push immediately with
+    `-u origin <branch>`.
 
 15. **Open the PR immediately — no confirmation.** Title: reuse the exact
     commit message verbatim. Build a description that, per lab processed,
