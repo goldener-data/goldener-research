@@ -45,6 +45,15 @@
 </div>
 <br>
 <div>
+  <a href="https://arxiv.org/abs/2208.03142">
+    <strong>BoxShrink: From Bounding Boxes to Segmentation Masks</strong>
+  </a><br>
+  <small><em>👤 First author: Michael Gröger</em></small><br>
+  <small><em>📍 Origin: Medical Image Learning with Limited and Noisy Data, MICCAI Workshop (2022)</em></small><br>
+  📝 Note: rapidly transforms bounding-box annotations into segmentation masks without training a model, improving IoU by about 4% over bounding-box-only weak supervision on colonoscopy images.
+</div>
+<br>
+<div>
   <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Toubal_Modeling_Collaborator_Enabling_Subjective_Vision_Classification_With_Minimal_Human_Effort_CVPR_2024_paper.html">
     <strong>Modeling collaborator: Enabling subjective vision classification with minimal human effort via llm tool-use</strong>
   </a><br>
