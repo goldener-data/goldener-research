@@ -12,12 +12,12 @@
 </div>
 <br>
 <div>
-  <a href="https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10775/2326563/Research-on-data-augmentation-for-lithography-hotspot-detection-using-deep/10.1117/12.2326563.short">
-    <strong>Research on data augmentation for lithography hotspot detection using deep learning</strong>
+  <a href="https://arxiv.org/abs/2210.06280">
+    <strong>Language Models are Realistic Tabular Data Generators</strong>
   </a><br>
   <small><em>👤 First author: Vadim Borisov</em></small><br>
-  <small><em>📍 Origin: Proceedings of SPIE, 34th European Mask and Lithography Conference (2018)</em></small><br>
-  📝 Note: compares data augmentation techniques for integrated-circuit mask data, including mask-clip flipping, to improve deep learning-based lithography hotspot detection.
+  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2023)</em></small><br>
+  📝 Note: conditions an autoregressive LLM on any subset of tabular features to sample the rest, generating highly realistic synthetic tabular data that matches state-of-the-art performance across heterogeneous real-world datasets.
 </div>
 
 ---
@@ -32,12 +32,13 @@
   <small><em>📍 Origin: arXiv (2025)</em></small><br>
   📝 Note: generates text-guided synthetic 3D shapes and filters them with a text/geometry consistency check, improving zero-shot classification by up to 8.7% when doubling dataset size.
 </div>
-<br>
 <div>
-  <a href="https://arxiv.org/abs/2210.06280">
-    <strong>Language Models are Realistic Tabular Data Generators</strong>
+  <a href="https://arxiv.org/abs/2410.03461">
+    <strong>Auto-GDA: Automatic Domain Adaptation for Efficient Grounding Verification in Retrieval-Augmented Generation</strong>
   </a><br>
-  <small><em>👤 First author: Vadim Borisov</em></small><br>
-  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2023)</em></small><br>
-  📝 Note: conditions an autoregressive LLM on any subset of tabular features to sample the rest, generating highly realistic synthetic tabular data that matches state-of-the-art performance across heterogeneous real-world datasets.
+  <small><em>👤 First author: Tobias Leemann</em></small><br>
+  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2025)</em></small><br>
+  📝 Note: iteratively generates synthetic samples and filters them via a teacher NLI model to adapt a lightweight grounding-verification model to a target domain without labeled data.
 </div>
+<br>
+

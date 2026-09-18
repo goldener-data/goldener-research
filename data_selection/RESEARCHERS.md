@@ -115,11 +115,3 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Rethinking Image Super-Resolution from Training Data Perspectives](https://arxiv.org/abs/2409.00768)
 <br>
-
-## 👤 Tobias Leemann
-📍 Affiliation: Amazon Web Services (AWS)
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-GDA: Automatic Domain Adaptation for Efficient Grounding Verification in Retrieval-Augmented Generation](https://arxiv.org/abs/2410.03461)
-<br>

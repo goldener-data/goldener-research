@@ -38,23 +38,6 @@
   📝 Note: No note provided.
 </div>
 <br>
-<div>
-  <a href="https://arxiv.org/abs/2110.01889">
-    <strong>Deep Neural Networks and Tabular Data: A Survey</strong>
-  </a><br>
-  <small><em>👤 First author: Vadim Borisov</em></small><br>
-  <small><em>📍 Origin: IEEE Transactions on Neural Networks and Learning Systems (2024)</em></small><br>
-  📝 Note: categorizes deep learning approaches for tabular data into data transformations, specialized architectures, and regularization models, and benchmarks eleven of them against gradient-boosted trees.
-</div>
-<br>
-<div>
-  <a href="https://link.springer.com/article/10.1007/s41060-022-00350-z">
-    <strong>DeepTLF: robust deep neural networks for heterogeneous tabular data</strong>
-  </a><br>
-  <small><em>👤 First author: Vadim Borisov</em></small><br>
-  <small><em>📍 Origin: International Journal of Data Science and Analytics (2023)</em></small><br>
-  📝 Note: transforms heterogeneous tabular inputs into homogeneous vectors via a tree-driven encoder distilled from decision trees, substantially boosting deep neural network performance on tabular data.
-</div>
 
 ---
 

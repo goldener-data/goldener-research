@@ -63,29 +63,3 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
 <br>
-
-## 👤 Vadim Borisov
-📍 Affiliation: tabularis.ai
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Deep Neural Networks and Tabular Data: A Survey](https://arxiv.org/abs/2110.01889)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [DeepTLF: robust deep neural networks for heterogeneous tabular data](https://link.springer.com/article/10.1007/s41060-022-00350-z)
-<br>
-
-## 👤 Gjergji Kasneci
-📍 Affiliation: Technical University of Munich
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Deep Neural Networks and Tabular Data: A Survey](https://arxiv.org/abs/2110.01889)
-<br>
-
-## 👤 Tobias Leemann
-📍 Affiliation: Amazon Web Services (AWS)
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Deep Neural Networks and Tabular Data: A Survey](https://arxiv.org/abs/2110.01889)
-<br>

@@ -150,15 +150,6 @@
 </div>
 <br>
 <div>
-  <a href="https://arxiv.org/abs/2410.03461">
-    <strong>Auto-GDA: Automatic Domain Adaptation for Efficient Grounding Verification in Retrieval-Augmented Generation</strong>
-  </a><br>
-  <small><em>👤 First author: Tobias Leemann</em></small><br>
-  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2025)</em></small><br>
-  📝 Note: iteratively generates synthetic samples and filters them via a teacher NLI model to adapt a lightweight grounding-verification model to a target domain without labeled data.
-</div>
-<br>
-<div>
   <a href="https://arxiv.org/abs/2506.01701">
     <strong>InfoMax: Data pruning by information maximization</strong>
   </a><br>
