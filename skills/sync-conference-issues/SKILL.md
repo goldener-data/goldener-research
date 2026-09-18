@@ -6,10 +6,13 @@ description: Pull GitHub issues labeled "conference" from goldener-data/goldener
   published program is used), or take one or more conferences named directly in
   the request the same way, resolve the requested edition (proposing the closest
   edition(s), or stopping, when the given year has no published program), fetch
-  its accepted-paper program — downloading and parsing it directly when the
-  conference publishes one as a file, otherwise reading its papers/proceedings
-  page — confirm which papers are relevant to data-centric AI/Goldener, and tally
-  authors across those papers — extending to an author's broader publication
+  its accepted-paper program across every presentation format it publishes —
+  orals, posters, keynotes, and co-located workshops alike — downloading and
+  parsing each one directly when the conference publishes it as a file,
+  otherwise reading its papers/proceedings page, and merging/deduplicating a
+  paper accepted under more than one format of the same edition into a single
+  entry — confirm which papers are relevant to data-centric AI/Goldener, and
+  tally authors across those papers — extending to an author's broader publication
   record when this single edition's output falls short — anyone reaching 3 or
   more confirmed-relevant papers becomes a relevant researcher, and every paper
   such a researcher publishes recursively surfaces its own co-authors, each
@@ -297,36 +300,62 @@ writing files, and pushing wastes the run and leaves more to unwind.
    - Whichever year is settled on (given directly, resolved automatically, or
      chosen from the candidates), that edition proceeds to step 7.
 
-7. **Fetch the resolved edition's accepted-paper program.**
-   - **Prefer a downloadable program file when the conference publishes one**:
-     a PDF/CSV/JSON/ICS "book of abstracts," accepted-papers list, or
-     proceedings index meant to be downloaded rather than browsed
-     page-by-page. Download it, then parse the downloaded file directly
-     (extract each paper's title, and link/session, from the file's own
-     structure) rather than re-fetching the same information by scraping the
-     live site page-by-page — a downloadable program is usually the single
-     canonical list, and parsing it directly is both more complete and avoids
-     redundant fetches during step 9.
-   - **If no downloadable program file exists** (or it doesn't actually
-     enumerate accepted papers, e.g. it's just a schedule of sessions and
-     keynotes), fall back to whichever page does: the conference's own
-     accepted-papers/proceedings page, or a reputable third-party proceedings
-     host for that edition (e.g. `proceedings.mlr.press`,
-     `proceedings.neurips.cc`, `proceedings.iclr.cc`,
-     `openaccess.thecvf.com`, `ojs.aaai.org`, `aclanthology.org`,
-     `openreview.net`, `dblp.org`) — apply the same domain-trust check as
-     step 5 before fetching it.
+7. **Fetch the resolved edition's accepted-paper program, across every
+   presentation format it publishes.** An edition's relevant output is not
+   just its main-track oral papers — **browse orals, posters, keynotes (when
+   a paper or extended abstract accompanies the invited talk), and every
+   workshop co-located with this edition** the same way. Skipping a format
+   because it's "just posters" or "just a workshop" would silently miss
+   confirmed-relevant work this skill exists to catch.
+   - **Prefer a downloadable program file when the conference publishes
+     one**, per format: a PDF/CSV/JSON/ICS "book of abstracts," accepted-
+     papers list, or proceedings index meant to be downloaded rather than
+     browsed page-by-page. Download each one that exists (the main program
+     file, and separately the workshop(s)' own program file(s) when a
+     workshop publishes its own), then parse the downloaded file(s) directly
+     (extract each paper's title, link, and presentation format/session from
+     the file's own structure) rather than re-fetching the same information
+     by scraping the live site page-by-page — a downloadable program is
+     usually the single canonical list for its format, and parsing it
+     directly is both more complete and avoids redundant fetches during
+     step 9.
+   - **If no downloadable program file exists for a given format** (or it
+     doesn't actually enumerate accepted papers, e.g. it's just a schedule
+     of session times), fall back to whichever page does for that format:
+     the conference's own accepted-papers/posters/workshops page, or a
+     reputable third-party proceedings host for that edition (e.g.
+     `proceedings.mlr.press`, `proceedings.neurips.cc`,
+     `proceedings.iclr.cc`, `openaccess.thecvf.com`, `ojs.aaai.org`,
+     `aclanthology.org`, `openreview.net`, `dblp.org`) — apply the same
+     domain-trust check as step 5 before fetching it. A co-located workshop
+     often has its own separate site or OpenReview venue; apply the same
+     trust check to it too before fetching.
+   - **Merge every format's list into one program for this edition, and
+     deduplicate before screening.** The same paper sometimes appears more
+     than once across formats of the same edition — e.g. an oral paper
+     cross-listed in the poster index, a paper highlighted at a keynote that
+     is also in the main proceedings, or a main-track paper reprinted in a
+     workshop's own accepted list. Normalize each paper the same way step 10
+     does (link normalization, falling back to normalized title) and collapse
+     exact repeats into a single program entry before step 8 — record every
+     format it was accepted under (useful for step 11's note and the final
+     report) but treat it as **one** paper going forward, never one per
+     format.
    - Apply the domain-trust check separately to each individual paper's own
      link once step 9 reaches it — a program file or proceedings page can
      link out to anything.
-   - **If the edition's accepted-paper list is very large** (some venues
-     accept thousands of papers): it's fine — expected, even — to screen the
-     whole thing and note in the final report if a track was out of scope
-     (e.g. workshop papers vs. the main track); don't arbitrarily truncate a
-     downloaded program file, since it's already a bounded, complete list,
-     unlike an author's open-ended publication history.
-   - **If no accepted-paper program/list can be found or fetched at all** for
-     the resolved edition, this item is **unresolved** — see "Blockers".
+   - **If the merged program is very large** (some venues accept thousands
+     of papers across their formats): it's fine — expected, even — to screen
+     the whole thing; don't arbitrarily truncate a downloaded program file,
+     since it's already a bounded, complete list, unlike an author's
+     open-ended publication history. Only note a format as out of scope in
+     the final report if it was genuinely inaccessible (no program file and
+     no fetchable page for it), never skip one just because it's large.
+   - **If no accepted-paper program/list can be found or fetched at all, in
+     any format,** for the resolved edition, this item is **unresolved** —
+     see "Blockers". A single format being inaccessible while others aren't
+     is not this case — screen whichever formats were reachable and note the
+     gap.
 
 8. **Title-screen the fetched program for plausible relevance.** Do not fetch
    an abstract for every paper in a large accepted-paper list — that's rarely
@@ -694,6 +723,14 @@ writing files, and pushing wastes the run and leaves more to unwind.
   title/author/venue/abstract, or a relevance judgment — every claim must
   trace back to something you actually fetched and read. If a source is thin
   or ambiguous, say so in the PR description rather than guessing.
+- **A paper accepted into more than one presentation format of the same
+  edition is still one paper** — an oral paper also listed as a poster, a
+  paper highlighted at a keynote, or a main-track paper reprinted in a
+  co-located workshop's own list all collapse into the single merged program
+  entry from step 7, get title-screened and abstract-confirmed once, and (if
+  confirmed relevant) get exactly one `BIBLIOGRAPHY.md` entry and count once
+  toward its authors' tally in step 12 — never once per format it appeared
+  under.
 - A paper's *title* alone is never sufficient justification for relevance —
   step 9 (and steps 12 and 14's recursive checks) requires the abstract to
   actually be read. Title-screening (step 8) only builds the shortlist, it
