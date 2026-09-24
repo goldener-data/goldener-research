@@ -23,8 +23,17 @@ files: `RESEARCHERS.md` (root, general/cross-cutting), `training_strategy/RESEAR
 `data_selection/RESEARCHERS.md`, `out_of_distribution/RESEARCHERS.md`,
 `frameworks/RESEARCHERS.md`, `drift/RESEARCHERS.md`, `model_design/RESEARCHERS.md`,
 `augmentation/RESEARCHERS.md`, `losses/RESEARCHERS.md`, `batching/RESEARCHERS.md`,
-and any other `RESEARCHERS.md` files in topic folders. Not every topic folder has
-one yet (`labeling/` currently doesn't) — see step 8 for creating one when needed.
+and any other `RESEARCHERS.md` files in topic folders.
+
+**The set of topic folders grows over time, and not every folder has every
+file** (e.g. a newly added folder may have neither). Treat the folder lists in
+this skill as examples, not as the source of truth: list the actual topic
+folders at run time (every top-level directory holding a `README.md`,
+excluding `skills/` and hidden directories). Whenever the destination folder
+chosen in step 8 lacks the `RESEARCHERS.md` or `BIBLIOGRAPHY.md` this run
+needs, **create it as part of the run** — see the "Create missing files" rule
+at the end of step 8 — rather than skipping the entry, forcing it into another
+folder, or stopping.
 Each of these is paired with a `BIBLIOGRAPHY.md` in the same folder, listing the
 same kind of papers grouped by sub-theme rather than by researcher — a researcher
 addition is only complete once both files reflect it (see step 11).
@@ -93,8 +102,8 @@ and pushing wastes the run and leaves more to unwind.
 1. **Read the topic map before researching anything.** Read the root `README.md`'s
    "Our open research themes" section (one line per theme) and, for every folder
    candidate (`augmentation`, `batching`, `data_selection`, `drift`, `frameworks`,
-   `labeling`, `losses`, `model_design`, `out_of_distribution`, `training_strategy` and others),
-   its `README.md` "Context" section. Also skim [Goldener's own README](https://github.com/goldener-data/goldener) "Example of features" section
+   `labeling`, `losses`, `model_design`, `out_of_distribution`, `training_strategy` and any
+   added since — list the folders at run time), its `README.md` "Context" section. Also skim [Goldener's own README](https://github.com/goldener-data/goldener) "Example of features" section
    (sampling for annotation, train/val splitting from embeddings, clustering for
    annotation guidelines, data balancing during training, drift/OOD monitoring, ...)
    — a paper can be relevant either because it matches a research theme here or
@@ -308,18 +317,24 @@ and pushing wastes the run and leaves more to unwind.
    → `batching`; embeddings improving drift detection → `drift`) — use root only
    if the paper applies the pattern generically across steps rather than to one.
 
-   If the best-matching topic folder has no `RESEARCHERS.md` yet (currently only
-   `labeling/`), create one first with the header `# <Topic title case> -
-   Researchers` (e.g. `# Labeling - Researchers`), matching the sibling files'
-   pattern exactly, before appending an entry to it. When creating that file, also
-   wire it into that topic's own `README.md`: add a `[👥 Researchers](RESEARCHERS.md)`
-   line to both the "At a glance" list and the "Resources" list (with a one-clause
-   description on the Resources line, matching the style of that file's other
-   entries), positioned right after the Bibliography line and before the Tools
-   line where one exists — every sibling topic's `README.md` already does this
-   (e.g. `augmentation/README.md`, `training_strategy/README.md`); match that
-   file's own line-ending convention. This `README.md` edit is staged and committed 
-   alongside the new `RESEARCHERS.md` file in step 13.
+   **Create missing files.** If the best-matching topic folder has no
+   `RESEARCHERS.md` yet, or no `BIBLIOGRAPHY.md` (step 11 needs both; any newly
+   added topic folder may have neither), create each missing one first with the
+   header `# <Topic title case> - Researchers` / `# <Topic title case> -
+   Bibliography` (e.g. `# Labeling - Researchers`), matching the sibling files'
+   pattern exactly, before appending an entry to it. When creating one, also
+   wire it into that topic's own `README.md`: add a
+   `[👥 Researchers](RESEARCHERS.md)` / `[📚 Bibliography](BIBLIOGRAPHY.md)`
+   line to both the "At a glance" list and the "Resources" list (with a
+   one-clause description on the Resources line, matching the style of that
+   file's other entries), in the order Bibliography, Ideas, Researchers, Tools
+   (skipping ones that don't exist) — every sibling topic's `README.md`
+   already does this (e.g. `augmentation/README.md`,
+   `training_strategy/README.md`); match that file's own line-ending
+   convention. If the folder has no `README.md` at all, create the missing
+   file anyway and skip the wiring, noting it in the final report. Every file
+   created or edited this way is staged and committed alongside the entries
+   in step 13.
 
 9. **Deduplicate against existing entries, per destination file.** Extract every
    `## 👤 <Name>` header from *all* `RESEARCHERS.md` files (as checked out on
@@ -447,7 +462,7 @@ and pushing wastes the run and leaves more to unwind.
     its own co-authors are never explored, since that would open a level-3
     round the cap forbids. Hitting this cap on a well-connected co-authorship
     network is expected, not a failure — note in the final report which
-    level-2 discoveries were left unexplored as a result.
+    discoveries at the recursion cap were left unexplored as a result.
 
     For each seed paper, take its full author list (step 11), **excluding the
     researcher this run is already processing for that paper** — this step is
@@ -480,8 +495,9 @@ and pushing wastes the run and leaves more to unwind.
       are at least 3** (so, together with the seed, at least 4 total): this
       co-author becomes a relevant researcher — write a `RESEARCHERS.md`
       entry for them (step 10's format) in each topic file matching one of
-      their qualifying papers (step 8's placement rule, creating the file and
-      wiring its `README.md` if the folder doesn't have one yet), and add
+      their qualifying papers (step 8's placement rule, creating any missing
+      file and wiring its `README.md` per step 8's "Create missing files"
+      rule), and add
       every one of the "other" newly confirmed papers to `BIBLIOGRAPHY.md`
       too (the seed is already there, step 11's format). Unless the current
       seed paper is already at level 2, each newly-added paper becomes a seed
@@ -503,8 +519,9 @@ and pushing wastes the run and leaves more to unwind.
     is evidence of a past incomplete run, not a base to build on. If a branch with
     today's date already exists locally or on origin, append `-2`, `-3`, etc. to
     the new branch's name instead of touching the existing one. Stage only the
-    modified `RESEARCHERS.md`, `BIBLIOGRAPHY.md`, and (for a newly created
-    `RESEARCHERS.md`) `README.md` files — never `git add -A`. Commit message:
+    modified or newly created `RESEARCHERS.md` and `BIBLIOGRAPHY.md` files,
+    plus the `README.md` of any folder where one was created — never
+    `git add -A`. Commit message:
     `Add researchers - YYYY-MM-DD`
     (today's date; if every migrated item in this run came from GitHub issues,
     `Add researchers from GitHub issues labeled researcher - YYYY-MM-DD` is the
@@ -683,7 +700,7 @@ and pushing wastes the run and leaves more to unwind.
 - Being autonomous means not pausing between successful steps — it does not mean
   hiding what happened. Always end with a summary covering: researchers migrated
   (with issue number if any, destination `RESEARCHERS.md`/`BIBLIOGRAPHY.md` files,
-  and which papers in each), any new `RESEARCHERS.md`/`README.md` pair created,
+  and which papers in each), any new `RESEARCHERS.md`/`BIBLIOGRAPHY.md` file (and its `README.md` wiring) created,
   duplicates (issue number if any, researcher, files already present),
   not-relevant items (issue number if any, researcher, what was checked),
   in-progress items (issue number if any, researcher, covering PR), unresolved

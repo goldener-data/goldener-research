@@ -8,10 +8,11 @@ description: Pull GitHub issues labeled "lab" from goldener-data/goldener-resear
   and tally authors across those papers — anyone reaching 3 or more confirmed-
   relevant papers (even spread across different themes, and even after checking
   an author's own broader publication record beyond the lab's own output) becomes
-  a relevant researcher, and every paper such a researcher publishes recursively
-  surfaces its own co-authors, each checked for 3 or more other relevant papers
-  of their own (beyond the paper that surfaced them) before they too qualify as
-  a researcher, up to 2 levels deep. Then branch, commit,
+  a relevant researcher, and every paper surfaced only through such a
+  broader-record check (not the lab's own output, whose co-authors are already
+  tallied directly) recursively surfaces its own co-authors, each checked for 3
+  or more other relevant papers of their own before they too qualify as a
+  researcher, up to 2 levels deep. Then branch, commit,
   push, open a PR adding every confirmed-relevant paper found (from the lab and
   from recursion) to the matching topic `BIBLIOGRAPHY.md` file(s) and every
   qualifying researcher to the matching topic `RESEARCHERS.md` file(s), and close
@@ -27,10 +28,17 @@ This repo tracks papers and researchers relevant to its themes in per-topic
 `BIBLIOGRAPHY.md` and `RESEARCHERS.md` files (root, general/cross-cutting, plus
 `training_strategy/`, `data_selection/`, `out_of_distribution/`, `frameworks/`,
 `drift/`, `model_design/`, `augmentation/`, `losses/`, `batching/`, `labeling/`,
-and any other topic folder). Every existing folder already has both a
-`BIBLIOGRAPHY.md` and a `RESEARCHERS.md` — but a brand-new topic folder
-created by this run (step 10) will still need one — see step 12 for creating
-one when needed.
+and any other topic folder).
+
+**The set of topic folders grows over time, and not every folder has every
+file** (e.g. a newly added folder may have neither). Treat the folder lists in
+this skill as examples, not as the source of truth: list the actual topic
+folders at run time (every top-level directory holding a `README.md`,
+excluding `skills/` and hidden directories). Whenever the destination folder
+chosen in step 10 or step 12 lacks the `BIBLIOGRAPHY.md` or `RESEARCHERS.md`
+this run needs, **create it as part of the run** — see the "Create missing
+files" rule at the end of step 10 — rather than skipping the entry, forcing it
+into another folder, or stopping.
 
 Unlike an issue naming one individual paper or one named person, a **`lab`
 issue points at an entire research group** — findings and outputs here are two
@@ -107,9 +115,10 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
 1. **Read the topic map before researching anything.** Read the root `README.md`'s
    "Our open research themes" section (one line per theme) and, for every folder
-   candidate (`augmentation`, `batching`, `data_selection`, `drift`, `frameworks`,
-   `labeling`, `losses`, `model_design`, `out_of_distribution`, `training_strategy`
-   and others), its `README.md` "Context" section. Also skim [Goldener's own
+   candidate (list the folders at run time — currently `augmentation`,
+   `batching`, `data_selection`, `drift`, `frameworks`, `labeling`, `losses`,
+   `model_design`, `out_of_distribution`, `training_strategy`, and any added
+   since), its `README.md` "Context" section. Also skim [Goldener's own
    README](https://github.com/goldener-data/goldener) "Example of features"
    section (sampling for annotation, train/val splitting from embeddings,
    clustering for annotation guidelines, data balancing during training,
@@ -332,6 +341,21 @@ writing files, and pushing wastes the run and leaves more to unwind.
       data-centric-AI work; otherwise the single best-matching topic folder,
       or the folder matching the specific AI-lifecycle step for a paper
       confirmed only via the standing embedding criterion.
+    - **Create missing files.** If the chosen folder has no
+      `BIBLIOGRAPHY.md` or no `RESEARCHERS.md` yet (which happens for any
+      newly added topic folder), create it before appending, with the header
+      `# <Topic title case> - Bibliography` / `# <Topic title case> -
+      Researchers` (e.g. `# Frameworks - Bibliography`), copying the header
+      pattern of the sibling files exactly. When creating one, also wire it
+      into that folder's `README.md`: add `[📚 Bibliography](BIBLIOGRAPHY.md)`
+      / `[👥 Researchers](RESEARCHERS.md)` to both the "At a glance" list and
+      the "Resources" list (with a one-clause description on the Resources
+      line, matching that file's other entries), in the order Bibliography,
+      Ideas, Researchers, Tools (skipping ones that don't exist) and keeping
+      that file's own line-ending convention. If the folder has no
+      `README.md` at all, create the missing file anyway and skip the wiring,
+      noting it in the final report. Every file created or edited this way is
+      staged and committed in step 14 alongside the entries.
     - Pick the closest existing `##`/`###` sub-theme by rereading a couple of
       its entries, or add a new one (preceded by the file's own `---`
       convention) if nothing fits.
@@ -420,13 +444,10 @@ writing files, and pushing wastes the run and leaves more to unwind.
       does for `BIBLIOGRAPHY.md` (root only for clearly cross-cutting work,
       otherwise the best-matching topic folder) — a researcher can land in
       several `RESEARCHERS.md` files if their qualifying papers span topics.
-      If the best-matching topic folder has no `RESEARCHERS.md` yet (every
-      existing folder has one; this applies only to a brand-new topic folder
-      created by this run), create one first (header `# <Topic title case> -
-      Researchers`) and wire it into that topic's own `README.md` (a
-      `[👥 Researchers](RESEARCHERS.md)` line in both "At a glance" and
-      "Resources", right after the Bibliography line) — this edit is staged
-      and committed alongside the new file in step 14.
+      If the chosen topic folder has no `RESEARCHERS.md` yet, create it and
+      wire it into that topic's own `README.md` per step 10's "Create missing
+      files" rule — this edit is staged and committed alongside the new file
+      in step 14.
     - Format (identical to every existing entry, `<br>` after every line, one
       blank line before the next `## 👤`):
       ```
@@ -448,14 +469,16 @@ writing files, and pushing wastes the run and leaves more to unwind.
     output, steps 6–10, already had its authors covered by step 11's tally
     against that same output — this step is specifically about papers that
     came from looking *beyond* the lab, which step 11 doesn't otherwise
-    revisit.) Each such paper is a "seed" for this step; a paper added later
-    *by this very step* becomes a seed too, one recursion level deeper.
-    **Recursion is capped at 2 levels** from these step-11 seeds (their
-    direct co-authors are level 1; co-authors of any *new* paper added as a
-    result of level 1 are level 2; do not go a level deeper than that).
-    Hitting this cap on a well-connected co-authorship network is expected,
-    not a failure — note in the final report which level-2 discoveries were
-    left unexplored as a result.
+    revisit.) Each such paper is a level-0 "seed" for this step. **Recursion
+    is capped at 2 levels**: a paper newly added while processing a level-0
+    seed's co-authors is a level-1 seed; a paper newly added while processing
+    a level-1 seed's co-authors is a level-2 seed; a paper newly added while
+    processing a level-2 seed's co-authors is **not** itself enqueued as a
+    further seed — its own co-authors are never explored, since that would
+    open a level-3 round the cap forbids. Hitting this cap on a
+    well-connected co-authorship network is expected, not a failure — note
+    in the final report which discoveries at the recursion cap were left
+    unexplored as a result.
 
     For each seed paper, take its full author list (recorded when it was
     confirmed relevant in step 11), excluding whichever researcher this run
@@ -474,22 +497,29 @@ writing files, and pushing wastes the run and leaves more to unwind.
       the repo:** any newly confirmed-relevant paper not already listed under
       their existing entry is added to `BIBLIOGRAPHY.md` (steps 9–10's dedup
       and format rules) and appended to their entry — no 3-paper threshold
-      applies here, since they already qualify. Each such paper is a seed one
-      recursion level deeper.
+      applies here, since they already qualify. Unless the current seed
+      paper is already at level 2, each such paper becomes a seed one level
+      deeper; if the current seed paper is already at level 2, these papers
+      are still added/appended as above but none of them are enqueued as
+      further seeds.
     - **If this co-author has no `RESEARCHERS.md` entry yet:** count the
       other confirmed-relevant papers found (excluding the seed). **If there
       are at least 3** (so, together with the seed, at least 4 total): this
       co-author becomes a relevant researcher — write a `RESEARCHERS.md`
       entry for them (step 12's format) in each topic file matching one of
       their qualifying papers (step 12's placement rule, creating the file
-      and wiring its `README.md` if the folder doesn't have one yet), and add
+      and wiring its `README.md` per step 10's "Create missing files" rule if
+      the folder doesn't have one yet), and add
       every one of the "other" newly confirmed papers to `BIBLIOGRAPHY.md`
-      too (the seed is already there). Each newly-added paper is a seed one
-      recursion level deeper. **If fewer than 3 other confirmed-relevant
-      papers are found**, do not add a `RESEARCHERS.md` entry and do not add
-      any of the probed papers — discard the probe's findings entirely, and
-      just note in the final report that this co-author was checked and how
-      many relevant papers were found (short of the threshold).
+      too (the seed is already there). Unless the current seed paper is
+      already at level 2, each newly-added paper becomes a seed one level
+      deeper; if the current seed paper is already at level 2, these papers
+      are still added but none of them are enqueued as further seeds. **If
+      fewer than 3 other confirmed-relevant papers are found**, do not add a
+      `RESEARCHERS.md` entry and do not add any of the probed papers —
+      discard the probe's findings entirely, and just note in the final
+      report that this co-author was checked and how many relevant papers
+      were found (short of the threshold).
 
 14. **Branch, commit, push — no confirmation.** By this point `main` is
     checked out and up to date (step 2). **Always create a brand-new branch
@@ -498,9 +528,9 @@ writing files, and pushing wastes the run and leaves more to unwind.
     left over unfinished from a previous run: a leftover branch is evidence of
     a past incomplete run, not a base to build on. If a branch with today's
     date already exists locally or on origin, append `-2`, `-3`, etc. instead
-    of touching the existing one. Stage only the modified `BIBLIOGRAPHY.md`,
-    `RESEARCHERS.md`, and (for a newly created `RESEARCHERS.md`) `README.md`
-    files — never `git add -A`. Commit message:
+    of touching the existing one. Stage only the modified or newly created `BIBLIOGRAPHY.md` and
+    `RESEARCHERS.md` files, plus the `README.md` of any folder where one was
+    created — never `git add -A`. Commit message:
     `Add papers and researchers - YYYY-MM-DD` (today's date; if every migrated
     item came from GitHub issues, `Add papers and researchers from GitHub
     issues labeled lab - YYYY-MM-DD` is the more precise, preferred wording —

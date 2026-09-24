@@ -22,7 +22,7 @@
     {
       "name": "sync-paper-issues",
       "source": "./sync-paper-issues",
-      "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, recursively check each paper's co-authors, requiring 3+ other relevant papers for new researchers and recursing up to 2 levels deep (adding them as researchers when they qualify), then branch, commit, push, open a PR adding every paper found to the matching topic BIBLIOGRAPHY.md file(s), and close any source issues.",
+      "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, recursively check each paper's co-authors, requiring 3+ other relevant papers for new researchers and recursing up to 2 levels deep (adding them as researchers when they qualify), then branch, commit, push, open a PR adding every paper found to the matching topic BIBLIOGRAPHY.md file(s) and every qualifying researcher to the matching topic RESEARCHERS.md file(s), and close any source issues.",
       "strict": false,
       "skills": ["./"]
     },
