@@ -38,6 +38,14 @@
   📝 Note: No note provided.
 </div>
 <br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4464">
+    <strong>Unsupervised Source-Free Ranking of Biomedical Segmentation Models Under Distribution Shift</strong>
+  </a><br>
+  <small><em>👤 First author: Joshua Talks</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: ranks pretrained segmentation models on a new unlabeled dataset by prediction consistency under perturbations, enabling black-box model selection under distribution shift.
+</div>
 
 ---
 
@@ -61,4 +69,24 @@
   <small><em>👤 First author: Dan Friedman</em></small><br>
   <small><em>📍 Origin: Transactions on Machine Learning Research (TMLR) (2023)</em></small><br>
   📝 Note: No note provided.
+</div>
+
+### Model selection
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/5959">
+    <strong>Why Linear Probing Works: Non-Vacuous Generalization Bounds via Effective Dimension</strong>
+  </a><br>
+  <small><em>👤 First author: Dongxin Guo</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: derives non-vacuous generalization bounds for linear probing from the effective dimension of foundation-model features, which alone ranks encoders without labels.
+</div>
+
+### Error analysis
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4881">
+    <strong>GH-ESD: Grounded Hypothesis-Driven Error Slice Discovery for Instance-Level Vision Tasks</strong>
+  </a><br>
+  <small><em>👤 First author: Wei Zhang</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: discovers instance-level error slices of detectors and segmenters by generating grounded failure hypotheses with LLM/VLM priors and verifying them statistically.
 </div>

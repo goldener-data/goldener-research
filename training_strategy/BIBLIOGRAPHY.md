@@ -182,6 +182,15 @@
   <small><em>📍 Origin: Findings of the Association for Computational Linguistics: NAACL 2024</em></small><br>
   📝 Note: No note provided.
 </div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4608">
+    <strong>TiCRL: Textual Image Classification with Reinforcement Learning-Based Curriculum Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Gayoung KIM</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: schedules training samples with an RL agent driven by a feature- and loss-based difficulty measure, reaching higher accuracy with 58-82% of the data.
+</div>
 
 ---
 

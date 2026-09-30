@@ -42,3 +42,44 @@
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-GDA: Automatic Domain Adaptation for Efficient Grounding Verification in Retrieval-Augmented Generation](https://arxiv.org/abs/2410.03461)
 <br>
 
+## 👤 Khawar Islam
+📍 Affiliation: Autonomy AI
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [HSFM: Hard-Set-Guided Feature-Space Meta-Learning for Robust Classification under Spurious Correlations](https://eccv.ecva.net/virtual/2026/poster/5056)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [S²-FracMix: Label-Preserving Self-Saliency Mixup Augmentation](https://arxiv.org/abs/2606.25784)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Context-guided Responsible Data Augmentation with Diffusion Models](https://arxiv.org/abs/2503.10687)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GenMix: Effective Data Augmentation with Generative Diffusion Model Image Editing](https://arxiv.org/abs/2412.02366)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [DiffuseMix: Label-Preserving Data Augmentation with Diffusion Models](https://arxiv.org/abs/2405.14881)
+<br>
+
+## 👤 Naveed Akhtar
+📍 Affiliation: The University of Melbourne
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [HSFM: Hard-Set-Guided Feature-Space Meta-Learning for Robust Classification under Spurious Correlations](https://eccv.ecva.net/virtual/2026/poster/5056)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [S²-FracMix: Label-Preserving Self-Saliency Mixup Augmentation](https://arxiv.org/abs/2606.25784)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Context-guided Responsible Data Augmentation with Diffusion Models](https://arxiv.org/abs/2503.10687)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GenMix: Effective Data Augmentation with Generative Diffusion Model Image Editing](https://arxiv.org/abs/2412.02366)
+<br>
+
+## 👤 Arif Mahmood
+📍 Affiliation: Information Technology University, Lahore
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [S²-FracMix: Label-Preserving Self-Saliency Mixup Augmentation](https://arxiv.org/abs/2606.25784)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GenMix: Effective Data Augmentation with Generative Diffusion Model Image Editing](https://arxiv.org/abs/2412.02366)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [DiffuseMix: Label-Preserving Data Augmentation with Diffusion Models](https://arxiv.org/abs/2405.14881)
+<br>

@@ -27,6 +27,15 @@
   <small><em>📍 Origin: arXiv (2024)</em></small><br>
   📝 Note: survey of data selection methods for language models and their trade-offs.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2606.18209">
+    <strong>Rethinking Dataset Distillation for Classification: Do Distilled Sets Outperform Coresets?</strong>
+  </a><br>
+  <small><em>👤 First author: Trisha Mittal</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: benchmarks seven dataset distillation methods against coreset selection under standardized protocols and finds coresets match or beat them at far lower cost with better data coverage.
+</div>
 
 ---
 
@@ -60,6 +69,15 @@
   <small><em>👤 First author: Rita Chattopadhyay</em></small><br>
   <small><em>📍 Origin: ACM Digital Library (2013)</em></small><br>
   📝 Note: select the next samples so that they match the distribution of already available labeled data (no embedding model).
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4856">
+    <strong>A Mechanism-Driven Theory of Phase Transitions in Active Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Julia Machnio</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: shows active-learning budget regimes correspond to shifts in the dominant generalization mechanism, explaining why representativeness, coverage and uncertainty strategies each win at different budgets.
 </div>
 
 ### Smarter selection
@@ -133,6 +151,51 @@
   <small><em>👤 First author: Shaobo Wang</em></small><br>
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: scores pretraining candidates by projecting their optimizer-induced updates onto a target direction from a proxy dataset, matching full 200B-token training with 30B tokens at only 4.7% overhead (no embedding model).
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/5355">
+    <strong>Mapping the Concept Landscape: Structural Perception of Global Distributions for Transparent Data Pruning</strong>
+  </a><br>
+  <small><em>👤 First author: Dongyue Wu</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: represents image-caption pairs as concept graphs instead of embeddings and greedily selects samples maximizing coverage of rare concepts, giving transparent data pruning.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/5592">
+    <strong>Diagnosing Aerial-View Object Detectors with Foundational Image Generative Models</strong>
+  </a><br>
+  <small><em>👤 First author: Stanislav Panev</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: uses controllable image generation to diagnose where aerial vehicle detectors fail and targets real data collection at those weak categories, gaining up to 13% AP50 with fewer samples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2604.07306">
+    <strong>Beyond Loss Values: Robust Dynamic Pruning via Loss Trajectory Alignment</strong>
+  </a><br>
+  <small><em>👤 First author: Huaiyuan Qin</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: ranks samples by loss-trajectory alignment instead of raw loss so dynamic data pruning stops keeping noisy-label samples, gaining up to 6.3% accuracy.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2603.07433">
+    <strong>Data Agent: Learning to Select Data via End-to-End Dynamic Optimization</strong>
+  </a><br>
+  <small><em>👤 First author: Suorong Yang</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: learns a sample-wise selection policy with an RL agent rewarded by loss-based difficulty and confidence-based uncertainty, halving ImageNet-1k training cost without accuracy loss.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2506.21037">
+    <strong>RL-Selector: Reinforcement Learning-Guided Data Selection via Redundancy Assessment</strong>
+  </a><br>
+  <small><em>👤 First author: Suorong Yang</em></small><br>
+  <small><em>📍 Origin: International Conference on Computer Vision (ICCV) (2025)</em></small><br>
+  📝 Note: measures sample redundancy with an epsilon-sample cover and uses it as reward for an RL agent that learns the data selection policy during training.
 </div>
 
 ---
@@ -625,6 +688,42 @@
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: shows LLM-encoder embeddings used for instruction-tuning data selection are highly redundant, and proposes compressing them (random projection or whitening) to pick a smaller, higher-quality subset that beats full-data training.
 </div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4400">
+    <strong>Distill on a Diet: Efficient Knowledge Distillation via Learnable Data Pruning</strong>
+  </a><br>
+  <small><em>👤 First author: Yifan Wu</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: prunes knowledge-distillation data with influence functions computed in the teacher's feature space and a learnable Beta sampling policy, letting students trained on less data beat full-data distillation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2410.11215">
+    <strong>A CLIP-Powered Framework for Robust and Generalizable Data Selection</strong>
+  </a><br>
+  <small><em>👤 First author: Suorong Yang</em></small><br>
+  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2025)</em></small><br>
+  📝 Note: scores sample influence with CLIP image and text embeddings and optimizes the selected subset with multi-objective optimization, removing noisy samples and beating full-data training with less data.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2507.12750">
+    <strong>Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Suorong Yang</em></small><br>
+  <small><em>📍 Origin: arXiv (2025)</em></small><br>
+  📝 Note: dynamically prunes samples during training by combining task difficulty with cross-modal semantic consistency from a pretrained multimodal foundation model.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2505.03809">
+    <strong>When Dynamic Data Selection Meets Data Augmentation</strong>
+  </a><br>
+  <small><em>👤 First author: Suorong Yang</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: scores samples by local density and multimodal semantic consistency to jointly choose which samples to keep and which to augment, halving ImageNet-1k training cost without accuracy loss.
+</div>
 
 ### Smarter selection based on clustering
 <div>
@@ -653,6 +752,24 @@
   <small><em>📍 Origin: International Conference on Learning Representations (2024)</em></small><br>
   📝 Note: remove data in clusters at different rates depending on population.
 </div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4167">
+    <strong>VisNec: Measuring and Leveraging Visual Necessity for Multimodal Instruction Tuning</strong>
+  </a><br>
+  <small><em>👤 First author: Mingkang Dong</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: scores each instruction-tuning sample by the loss gap with and without the image and keeps high-necessity samples within semantic clusters, matching full LLaVA-665K performance with 15% of the data.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/5266">
+    <strong>Dynamic Cluster Data Sampling for Efficient and Long-Tail-Aware Vision-Language Pre-training</strong>
+  </a><br>
+  <small><em>👤 First author: Mingliang Liang</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: downsamples large and upsamples small semantic clusters of image-text pairs at each epoch, cutting VLM pre-training cost while better covering long-tail concepts.
+</div>
 
 ### Active learning:
 <div>
@@ -662,4 +779,22 @@
   <small><em>👤 First author: Jiancheng Zhang</em></small><br>
   <small><em>📍 Origin: International Conference on Machine Learning (ICML) (2026)</em></small><br>
   📝 Note: make data selection using a foundation model and a small classifier model for image and text with imbalance and label noise.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4105">
+    <strong>Combining Discrepancy-Confusion Uncertainty and Calibration Diversity for Active Fine-Grained Image Classification</strong>
+  </a><br>
+  <small><em>👤 First author: Yinghao Jin</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: combines a discrepancy-confusion uncertainty with uncertainty-weighted clustering to pick diverse, informative samples for active fine-grained classification.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/5087">
+    <strong>FuDU: A Fuzzy Dual-dimension Uncertainty Framework for Streaming Active Learning in Industrial Defect Detection</strong>
+  </a><br>
+  <small><em>👤 First author: Zhaoyang Wang</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: fuses prototype-based image-level and box-level uncertainties with fuzzy inference to pick samples from industrial defect-detection streams for annotation.
 </div>
