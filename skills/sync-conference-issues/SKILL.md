@@ -16,11 +16,12 @@ description: Pull GitHub issues labeled "conference" from goldener-data/goldener
   record when this single edition's output falls short — anyone reaching 3 or
   more confirmed-relevant papers becomes a relevant researcher, and every paper
   such a researcher publishes recursively surfaces its own co-authors, each
-  checked for 3 or more other relevant papers of their own before they too
-  qualify, up to 2 levels deep. Then branch, commit, push, open a PR adding every
+  qualifying once they reach 3 or more relevant papers in total (the
+  co-authored paper that surfaced them included), up to 2 levels deep. Then branch, commit, push, open a PR adding every
   confirmed-relevant paper found to the matching topic `BIBLIOGRAPHY.md` file(s)
   and every qualifying researcher to the matching topic `RESEARCHERS.md` file(s),
-  and close any source issues — fully autonomously, with a confirmation prompt
+  and close any source issues (including an open issue matching a directly
+  requested conference) — fully autonomously, with a confirmation prompt
   only when the requested year needs disambiguating. Use when the user asks to
   sync/import/migrate conference issues into the docs, "add the conference issues
   to the bibliography/researchers", or directly names a conference (and
@@ -38,15 +39,13 @@ and any other topic folder). Every existing folder already has both a
 `BIBLIOGRAPHY.md` and a `RESEARCHERS.md`, but a brand-new topic folder created
 by this run will still need one — see step 13 for creating one when needed.
 
-Unlike an issue naming one individual paper, a **`conference` issue points at
-one edition of an entire venue** — findings here are two steps removed from the
-issue itself: first resolve which edition (year) is actually being asked for,
-then find which of that edition's accepted papers are relevant, then find which
-of *those* papers' authors publish enough relevant work to be worth tracking as
-a researcher in this repo. This skill mines one conference edition's whole
-accepted-paper list rather than reacting to a single named paper, so it
-typically inspects far more candidate papers per run than working through one
-paper at a time would.
+A **`conference` issue points at one edition of an entire venue** — findings
+here are two steps removed from the issue itself: first resolve which edition
+(year) is actually being asked for, then find which of that edition's accepted
+papers are relevant, then find which of *those* papers' authors publish enough
+relevant work to be worth tracking as a researcher in this repo. This skill
+mines one conference edition's whole accepted-paper list, so a single run
+typically inspects a large number of candidate papers.
 
 New conference suggestions have two entry points:
 
@@ -57,6 +56,8 @@ New conference suggestions have two entry points:
 - **Direct requests**, given in the conversation rather than filed as an issue
   — e.g. "add \<conference name\> \<year\> to goldener research", "look at
   \<conference name\>". A single request can name more than one conference.
+  When an open `conference` issue already asks for the same conference
+  edition, that issue is closed as part of the run too (step 3 matches them).
 
 Either way, **a conference name is always required; a year is optional** — a
 request naming only the conference asks this skill to resolve the latest
@@ -162,14 +163,26 @@ writing files, and pushing wastes the run and leaves more to unwind.
    - **Triggered by a direct request** (a message naming one or more
      conferences, each optionally with a year — not a request to sync issues):
      for each conference given, add `{conference_hint: <as given>, year: <as
-     given, or null>, source_issue: null}`. Do not touch the GitHub issues API
-     for these. Skip straight to step 4 for the in-progress-PR check (a direct
-     request can still collide with an already-open PR from a previous run or
-     a human).
+     given, or null>, source_issue: null}`. Then **check whether an open
+     `conference` issue already asks for the same thing**: list open
+     `conference` issues (same `curl` as below) and extract each one's
+     conference and year the same way. An issue matches a direct-request item
+     when it clearly names the same conference (acronym and full name count
+     as the same) and its year agrees — both give the same year, or neither
+     gives one. On a match, set that item's `source_issue` to the issue
+     number, so the issue is checked against open PRs in step 4 and closed in
+     step 17 exactly like an issue-sourced item. Only match issues to the
+     conferences the user named — never add an unrequested issue's
+     conference to the worklist. If several open issues match the same item,
+     attach all of them (step 17 closes each). When the match is uncertain
+     (e.g. an issue with no year while the request names one, or the other
+     way round), confirm it only after step 6: the issue matches if the edition
+     settled on there is the one it asks for (its given year, or the latest
+     published edition when it gives none); otherwise leave it untouched. Then
+     go to step 4 for the in-progress-PR check (a direct request can still
+     collide with an already-open PR from a previous run or a human).
    - **Triggered by a request to sync/process conference issues** (the
-     default — also what to fall back to if a direct request's conference
-     turns out to already have an open issue, see step 4): list open
-     `conference` issues —
+     default): list open `conference` issues —
      ```
      curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=conference&state=open&per_page=100"
      ```
@@ -178,12 +191,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
      the title or body first; whatever text remains once the year is set aside
      becomes `conference_hint` (join title and body content if both add
      distinct descriptive text). An issue naming more than one conference
-     (rare, but possible the same way an issue can name more than one item of
-     any other kind) produces one worklist item per conference, and one item
-     per year if it names more than one year for the same conference.
+     (rare, but possible) produces one worklist item per conference, and one
+     item per year if it names more than one year for the same conference.
 
-   A single run only uses one of these two — don't mix listing issues into a
-   run that was given explicit conferences, or vice versa. Keep a per-issue
+   A single run only uses one of these two — a run given explicit conferences
+   looks at open issues only to match them to those conferences, never to
+   add other issues' conferences to its worklist. Keep a per-issue
    list of its items for issue-sourced ones, since step 17 closes issues, not
    individual conferences.
 
@@ -557,10 +570,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
       deeper; if the current seed paper is already at level 2, these papers
       are still added/appended as above but none of them are enqueued as
       further seeds.
-    - **If this co-author has no `RESEARCHERS.md` entry yet:** count the
-      other confirmed-relevant papers found (excluding the seed). **If there
-      are at least 3** (so, together with the seed, at least 4 total): this
-      co-author becomes a relevant researcher — write a `RESEARCHERS.md`
+    - **If this co-author has no `RESEARCHERS.md` entry yet:** count their
+      confirmed-relevant papers **including the seed paper they co-authored**
+      (plus any other paper of theirs already confirmed relevant earlier in
+      this run). **If the total is at least 3** (so, the seed plus at least 2
+      other confirmed-relevant papers): this co-author becomes a relevant
+      researcher — write a `RESEARCHERS.md`
       entry for them (step 13's format) in each topic file matching one of
       their qualifying papers (step 13's placement rule, creating the file
       and wiring its `README.md` if the folder doesn't have one yet), and add
@@ -569,11 +584,11 @@ writing files, and pushing wastes the run and leaves more to unwind.
       already at level 2, each newly-added paper becomes a seed one level
       deeper; if the current seed paper is already at level 2, these papers
       are still added but none of them are enqueued as further seeds. **If
-      fewer than 3 other confirmed-relevant papers are found**, do not add a
+      the total, seed included, is under 3**, do not add a
       `RESEARCHERS.md` entry and do not add any of the probed papers —
       discard the probe's findings entirely, and just note in the final
       report that this co-author was checked and how many relevant papers
-      were found (short of the threshold).
+      were found in total, seed included (short of the threshold).
 
 15. **Branch, commit, push — no confirmation.** By this point `main` is
     checked out and up to date (step 2). **Always create a brand-new branch
@@ -621,9 +636,11 @@ writing files, and pushing wastes the run and leaves more to unwind.
     ```
 
 17. **Close every issue-sourced item that was handled, each with an
-    explanatory comment.** Runs right after the PR is opened. **In-progress
-    items (step 4) are not touched here**, and neither are direct-request
-    items with no `source_issue`. Step 14's recursively discovered
+    explanatory comment.** Runs right after the PR is opened. This includes
+    direct-request items matched to an open issue in step 3 — close that
+    issue the same way, mentioning in the comment that it was handled by a
+    direct request. **In-progress items (step 4) are not touched here**, and
+    neither are direct-request items with no `source_issue`. Step 14's recursively discovered
     papers/researchers are reported in the PR and final summary, not tied
     back to any single source issue.
 
@@ -684,8 +701,9 @@ writing files, and pushing wastes the run and leaves more to unwind.
   (step 5: no trusted site found even via search): different from "not
   relevant" — research couldn't even start. For an issue-sourced item, leave
   the issue open and suggest the user double check the name/spelling or add
-  a working website to the issue. For a direct-request item, just report the
-  identification failure with the same suggestion.
+  a working website to the issue (this includes an issue matched to a
+  direct-request item in step 3). For a direct-request item with no matched
+  issue, just report the identification failure with the same suggestion.
 - **The requested year has no published program, and no nearby edition (or
   no edition at all) can be resolved** (step 6: candidates couldn't be
   computed, or the user chose to stop this item): also unresolved, distinct
@@ -739,11 +757,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
   it is never satisfied by a single edition's own output alone if that
   output falls short** — step 12 requires checking an author's broader
   publication record before concluding they don't qualify, and step 14
-  applies the same rule (3 *other* papers, 4 total including the seed) to
-  co-authors reached only through that broader record or through further
-  recursion. Never add a `RESEARCHERS.md` entry for anyone under the
+  applies the same 3-paper rule to co-authors reached only through that
+  broader record or through further recursion — counting the co-authored
+  seed paper that surfaced them as one of the 3 (so the seed plus 2 others
+  is enough). Never add a `RESEARCHERS.md` entry for anyone under the
   applicable threshold, and never let a paper already sitting in
-  `BIBLIOGRAPHY.md` from a *different, earlier* skill run count toward any
+  `BIBLIOGRAPHY.md` from an *earlier* run count toward any
   of these tallies unless it was independently reconfirmed relevant during
   *this* run. A duplicate paper found again during this scan (step 10) does
   still count, since it was reconfirmed relevant in step 9 before being
