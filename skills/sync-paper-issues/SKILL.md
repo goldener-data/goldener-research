@@ -83,16 +83,47 @@ and step 13 (close/comment on issues) need authenticated write access to
 GitHub; finding that out after already stashing, branching, researching,
 writing files, and pushing wastes the run and leaves more to unwind.
 
-- If the `gh` CLI is installed, run `gh auth status`. A report of being logged in
-  means write access is available; use `gh` for steps 12 and 13.
-- Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the environment.
-  If so, use the REST API with that token for steps 12 and 13.
-- If neither is available: this is a hard blocker (see "Blockers"). Stop
-  immediately — do not stash, do not check out `main`, do not run step 2 at all —
-  and report that GitHub write access (an authenticated `gh` CLI, or a
-  `GITHUB_TOKEN` environment variable) is required before this skill can open the
-  PR or close issues, and that neither is currently available. Since nothing was
-  touched, there is nothing to restore.
+Being logged in, or having a non-empty token, is **not** enough: it only proves
+the credentials are valid, not that they can write to this repository. A
+read-only account/token would pass such a check and then fail at push/PR/issue
+time after all the work is done. So verify write permission explicitly, with
+**both** checks below; **both** must pass.
+
+1. **API write permission** (used for steps 12 and 13). Pick the client:
+   - If the `gh` CLI is installed and `gh auth status` reports being logged in,
+     use `gh` for steps 12 and 13, and run:
+     ```bash
+     gh api repos/goldener-data/goldener-research --jq '.permissions.push'
+     ```
+   - Otherwise, if `$GITHUB_TOKEN` is set and non-empty, use the REST API with
+     that token for steps 12 and 13, and run:
+     ```bash
+     curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+       https://api.github.com/repos/goldener-data/goldener-research \
+       | python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin).get('permissions',{}).get('push')))"
+     ```
+   The output must be exactly `true`. `false`, `None`/`null`, an empty output, or
+   an HTTP error (401/403/404) means the credentials cannot write here.
+2. **Git push permission** (used to push the branch). The git remote may
+   authenticate with different credentials (SSH key, credential helper) than
+   `gh`/`$GITHUB_TOKEN`, so check it separately with a dry-run push to a
+   throwaway ref name — this contacts the server and is refused without write
+   access, but creates nothing:
+   ```bash
+   git push --dry-run origin HEAD:refs/heads/write-access-probe
+   ```
+   It must exit 0.
+
+- If either check fails (no `gh` login and no `$GITHUB_TOKEN`, `permissions.push`
+  not `true`, or the dry-run push refused): this is a hard blocker (see
+  "Blockers"). Stop immediately — do not stash, do not check out `main`, do not
+  run step 2 at all — and report which check failed and that write access to
+  `goldener-data/goldener-research` (for pushing, opening the PR, and closing
+  issues) is required before this skill can run. Since nothing was touched,
+  there is nothing to restore.
+- Even when both pass, a fine-grained PAT can still be refused at PR/issue time
+  (e.g. the org hasn't approved it yet — see "Blockers"); that case is handled
+  there.
 
 ## Steps
 
@@ -148,8 +179,12 @@ writing files, and pushing wastes the run and leaves more to unwind.
      also what to fall back to if a direct request's paper turns out to already
      have an open issue, see step 4): list open `paper` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=open&per_page=100"
+     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=open&per_page=100" \
+       | python3 -c "import json,sys; print(json.dumps([i for i in json.load(sys.stdin) if 'pull_request' not in i], indent=1))"
      ```
+     This endpoint also returns pull requests that carry the label (any
+     object with a `pull_request` key); the filter above drops them. Never
+     turn a PR into a worklist item or close/comment on it in step 13.
      Public reads don't need auth. The list endpoint already includes `body`;
      use it directly rather than re-fetching each issue, unless a body is
      truncated. Then, **for each issue, extract its candidate paper(s)** —
