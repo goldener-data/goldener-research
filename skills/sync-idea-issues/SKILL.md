@@ -77,17 +77,47 @@ and 10 (close/comment on issues) need authenticated write access to GitHub;
 finding that out at step 9 or 10, after already stashing, branching, writing
 files, and pushing, wastes the run and leaves more to unwind.
 
-- If the `gh` CLI is installed, run `gh auth status`. A report of being logged
-  in means write access is available; use `gh` for steps 9 and 10.
-- Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the
-  environment. If so, use the REST API with that token for steps 9 and 10.
-- If neither is available (`gh` missing or not authenticated, and
-  `$GITHUB_TOKEN` unset/empty): this is a hard blocker (see "Blockers"). Stop
-  immediately — do not stash, do not check out `main`, do not run step 1 at
-  all — and report to the user that GitHub write access is required (an
-  authenticated `gh` CLI, or a `GITHUB_TOKEN` environment variable) before this
-  skill can open the PR or close issues, and that neither is currently
-  available. Since nothing was touched, there is nothing to restore.
+Being logged in, or having a non-empty token, is **not** enough: it only proves
+the credentials are valid, not that they can write to this repository. A
+read-only account/token would pass such a check and then fail at push/PR/issue
+time after all the work is done. So verify write permission explicitly, with
+**both** checks below; **both** must pass.
+
+1. **API write permission** (used for steps 9 and 10). Pick the client:
+   - If the `gh` CLI is installed and `gh auth status` reports being logged in,
+     use `gh` for steps 9 and 10, and run:
+     ```bash
+     gh api repos/goldener-data/goldener-research --jq '.permissions.push'
+     ```
+   - Otherwise, if `$GITHUB_TOKEN` is set and non-empty, use the REST API with
+     that token for steps 9 and 10, and run:
+     ```bash
+     curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+       https://api.github.com/repos/goldener-data/goldener-research \
+       | python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin).get('permissions',{}).get('push')))"
+     ```
+   The output must be exactly `true`. `false`, `None`/`null`, an empty output, or
+   an HTTP error (401/403/404) means the credentials cannot write here.
+2. **Git push permission** (used to push the branch). The git remote may
+   authenticate with different credentials (SSH key, credential helper) than
+   `gh`/`$GITHUB_TOKEN`, so check it separately with a dry-run push to a
+   throwaway ref name — this contacts the server and is refused without write
+   access, but creates nothing:
+   ```bash
+   git push --dry-run origin HEAD:refs/heads/write-access-probe
+   ```
+   It must exit 0.
+
+- If either check fails (no `gh` login and no `$GITHUB_TOKEN`, `permissions.push`
+  not `true`, or the dry-run push refused): this is a hard blocker (see
+  "Blockers"). Stop immediately — do not stash, do not check out `main`, do not
+  run step 1 at all — and report which check failed and that write access to
+  `goldener-data/goldener-research` (for pushing, opening the PR, and closing
+  issues) is required before this skill can run. Since nothing was touched,
+  there is nothing to restore.
+- Even when both pass, a fine-grained PAT can still be refused at PR/issue time
+  (e.g. the org hasn't approved it yet — see "Blockers"); that case is handled
+  there.
 
 ## Steps
 
@@ -104,8 +134,12 @@ files, and pushing, wastes the run and leaves more to unwind.
 
 2. **List open `idea` issues.**
    ```
-   curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=all&per_page=100"
+   curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=all&per_page=100" \
+     | python3 -c "import json,sys; print(json.dumps([i for i in json.load(sys.stdin) if 'pull_request' not in i], indent=1))"
    ```
+   This endpoint also returns pull requests that carry the label (any
+   object with a `pull_request` key); the filter above drops them. Never
+   turn a PR into a worklist item or close/comment on it in step 10.
    Public reads don't need auth.
 
 3. **Fetch full details per issue** (title, body, author, created_at) — the list
@@ -295,8 +329,9 @@ files, and pushing, wastes the run and leaves more to unwind.
 ## Blockers (the only points where you stop and report instead of proceeding)
 
 - **No GitHub write access** (checked before step 1 — see "Prerequisite"
-  above): neither an authenticated `gh` CLI nor a non-empty `$GITHUB_TOKEN` is
-  available. Stop before step 1 runs — nothing has been stashed, branched, or
+  above): the credentials can't be shown to have write permission on this
+  repository (no `gh` login or `$GITHUB_TOKEN`, `permissions.push` not `true`,
+  or the dry-run push refused). Stop before step 1 runs — nothing has been stashed, branched, or
   changed, so there is nothing to restore and step 11 does not run either.
   Report the missing prerequisite and do not proceed with any part of the
   skill until it's resolved.
