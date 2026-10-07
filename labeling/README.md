@@ -30,9 +30,9 @@ small but representative set of samples can reduce cost while preserving model q
 
 This topic therefore focuses on data-centric labeling that uses the data itself to reduce
 annotation cost or improve label quality: choosing which samples to annotate (active
-learning, embedding-based selection, concept coverage), propagating or generating labels
-from a small labeled set (pseudo-labeling, weak supervision, foundation-model or
-embedding-based auto-annotation), detecting and fixing label errors, and deriving
+learning, embedding-based selection, concept coverage), propagating labels from a small
+labeled set (pseudo-labeling, weak supervision), generating labels with foundation models
+or embeddings (auto-annotation), detecting and fixing label errors, and deriving
 annotation guidelines from the data (e.g. clustering to find illustrative samples). Papers
 about annotation tools or crowdsourcing logistics, without a data-driven selection,
 labeling, or quality mechanism, are out of scope.

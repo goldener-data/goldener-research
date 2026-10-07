@@ -148,9 +148,26 @@ time after all the work is done. So verify write permission explicitly, with
 
 2. **List open `idea` issues.**
    ```
-   curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=all&per_page=100" \
-     | python3 -c "import json,sys; d=json.load(sys.stdin); isinstance(d,list) or sys.exit('GitHub API error: '+json.dumps(d)); print(json.dumps([i for i in d if 'pull_request' not in i], indent=1))"
+   python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=all" <<'PY'
+   import json, sys, urllib.request, urllib.error
+   items, page = [], 1
+   while True:
+       try:
+           with urllib.request.urlopen(f"{sys.argv[1]}&per_page=100&page={page}") as r:
+               d = json.load(r)
+       except urllib.error.HTTPError as e:
+           sys.exit(f"GitHub API error: {e.code} {e.read().decode()}")
+       if not isinstance(d, list):
+           sys.exit("GitHub API error: " + json.dumps(d))
+       items += d
+       if len(d) < 100:  # a full page means there may be more
+           break
+       page += 1
+   print(json.dumps([i for i in items if "pull_request" not in i], indent=1))
+   PY
    ```
+   This loops over pages until one comes back short, so a list longer than
+   one 100-item page is never silently truncated.
    This endpoint also returns pull requests that carry the label (any object
    with a `pull_request` key); the filter above drops them. It also exits non-
    zero with GitHub's error message when the response isn't an issue list (rate
@@ -170,12 +187,32 @@ time after all the work is done. So verify write permission explicitly, with
    second, duplicate entry for the same idea into a new PR.
 
    ```
-   gh pr list --state open --json number,title,body,url
+   gh pr list --state open --limit 1000 --json number,title,body,url
    ```
    or, without `gh`:
    ```
-   curl -s "https://api.github.com/repos/goldener-data/goldener-research/pulls?state=open&per_page=100"
+   python3 - "https://api.github.com/repos/goldener-data/goldener-research/pulls?state=open" <<'PY'
+   import json, sys, urllib.request, urllib.error
+   items, page = [], 1
+   while True:
+       try:
+           with urllib.request.urlopen(f"{sys.argv[1]}&per_page=100&page={page}") as r:
+               d = json.load(r)
+       except urllib.error.HTTPError as e:
+           sys.exit(f"GitHub API error: {e.code} {e.read().decode()}")
+       if not isinstance(d, list):
+           sys.exit("GitHub API error: " + json.dumps(d))
+       items += d
+       if len(d) < 100:  # a full page means there may be more
+           break
+       page += 1
+   print(json.dumps(items, indent=1))
+   PY
    ```
+
+   (`gh pr list` stops at 30 PRs without `--limit`, and the API at 100 per
+   page: both commands above fetch every open PR, since a match missed on a
+   later page would mean duplicate work.)
 
    For each open `idea` issue, check whether any open PR's title or body
    references it: an explicit `#<issue number>` mention (this skill's own PR

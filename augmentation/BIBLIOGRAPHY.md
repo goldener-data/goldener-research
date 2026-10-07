@@ -43,7 +43,7 @@
     <strong>Feedback-guided Data Synthesis for Imbalanced Classification</strong>
   </a><br>
   <small><em>👤 First author: Reyhane Askari Hemmat</em></small><br>
-  <small><em>📍 Origin: arXiv (2023)</em></small><br>
+  <small><em>📍 Origin: Conference on Neural Information Processing Systems Workshops (NeurIPSW) (2023)</em></small><br>
   📝 Note: uses one-shot feedback (loss, entropy) from a classifier trained on the real data to steer diffusion sampling towards useful synthetic samples that stay close to the real data support.
 </div>
 <br>

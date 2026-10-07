@@ -234,9 +234,26 @@ time after all the work is done. So verify write permission explicitly, with
    - **Triggered by a request to sync/process conference issues** (the
      default): list open `conference` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=conference&state=open&per_page=100" \
-       | python3 -c "import json,sys; d=json.load(sys.stdin); isinstance(d,list) or sys.exit('GitHub API error: '+json.dumps(d)); print(json.dumps([i for i in d if 'pull_request' not in i], indent=1))"
+     python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=conference&state=open" <<'PY'
+     import json, sys, urllib.request, urllib.error
+     items, page = [], 1
+     while True:
+         try:
+             with urllib.request.urlopen(f"{sys.argv[1]}&per_page=100&page={page}") as r:
+                 d = json.load(r)
+         except urllib.error.HTTPError as e:
+             sys.exit(f"GitHub API error: {e.code} {e.read().decode()}")
+         if not isinstance(d, list):
+             sys.exit("GitHub API error: " + json.dumps(d))
+         items += d
+         if len(d) < 100:  # a full page means there may be more
+             break
+         page += 1
+     print(json.dumps([i for i in items if "pull_request" not in i], indent=1))
+     PY
      ```
+     This loops over pages until one comes back short, so a list longer than
+     one 100-item page is never silently truncated.
      This endpoint also returns pull requests that carry the label (any object
      with a `pull_request` key); the filter above drops them. It also exits
      non-zero with GitHub's error message when the response isn't an issue list
@@ -266,12 +283,32 @@ time after all the work is done. So verify write permission explicitly, with
    edition by hand.
 
    ```
-   gh pr list --state open --json number,title,body,url
+   gh pr list --state open --limit 1000 --json number,title,body,url
    ```
    or, without `gh`:
    ```
-   curl -s "https://api.github.com/repos/goldener-data/goldener-research/pulls?state=open&per_page=100"
+   python3 - "https://api.github.com/repos/goldener-data/goldener-research/pulls?state=open" <<'PY'
+   import json, sys, urllib.request, urllib.error
+   items, page = [], 1
+   while True:
+       try:
+           with urllib.request.urlopen(f"{sys.argv[1]}&per_page=100&page={page}") as r:
+               d = json.load(r)
+       except urllib.error.HTTPError as e:
+           sys.exit(f"GitHub API error: {e.code} {e.read().decode()}")
+       if not isinstance(d, list):
+           sys.exit("GitHub API error: " + json.dumps(d))
+       items += d
+       if len(d) < 100:  # a full page means there may be more
+           break
+       page += 1
+   print(json.dumps(items, indent=1))
+   PY
    ```
+
+   (`gh pr list` stops at 30 PRs without `--limit`, and the API at 100 per
+   page: both commands above fetch every open PR, since a match missed on a
+   later page would mean duplicate work.)
 
    For each worklist item, check whether any open PR's title or body
    references it: for an issue-sourced item, an explicit `#<issue number>`
@@ -475,6 +512,11 @@ time after all the work is done. So verify write permission explicitly, with
     still counted toward its authors' tally in step 12**, it just isn't
     written again in step 11. Papers with no match are **new** and proceed to
     step 11 as well as step 12.
+    Keep this list live for the whole run: add each entry's normalized link and
+    title as soon as it is written — for this edition, for another worklist
+    edition, or by steps 12 and 14's broader-record and recursive additions —
+    so a paper that surfaces again later in the run is matched as a duplicate
+    instead of being written twice.
 
 11. **For each new confirmed-relevant paper: pick the destination
     `BIBLIOGRAPHY.md` file, pick or create the sub-theme heading, and write
@@ -547,9 +589,11 @@ time after all the work is done. So verify write permission explicitly, with
       the other), merge only when a source links them to the same person
       (the DBLP or Scholar profile lists that ORCID, or both papers appear on
       the same profile). When a key is missing on either side, merge a
-      normalized-name match only when it is verified by an overlapping
-      affiliation, overlapping co-authors, or both papers appearing on the
-      same DBLP/Scholar profile. Otherwise count them as **separate**
+      normalized-name match only on distinctive evidence: both papers listed
+      on the same DBLP/Scholar profile or personal publication page. An
+      overlapping affiliation or overlapping co-authors alone is not enough
+      (same-name researchers can share an institution or a group) — use it
+      only to find the profile to check. Otherwise count them as **separate**
       authors (never merge on the name alone) and note the ambiguity in the
       final report.
     - **3 or more confirmed-relevant papers from this edition alone** → this
@@ -663,8 +707,9 @@ time after all the work is done. So verify write permission explicitly, with
       one set of author identities for the whole run, keyed and merged
       exactly as step 12 does (stable identifier first; a normalized name
       only counts as "already processed" when step 12's verification rules
-      confirm it's the same person). This also bounds the recursion, since
-      the set of distinct people is finite and nobody is analyzed twice.
+      confirm it's the same person). This avoids redoing anyone confirmed
+      already processed; an unverifiable name-only match can still be
+      revisited, so termination comes from the 2-level cap, not this set.
     - Web search `"<name>" google scholar` (falling back to a personal
       homepage or a DBLP page) for their publication list, then title-screen
       and abstract-confirm it for relevance per step 1's map/criteria,

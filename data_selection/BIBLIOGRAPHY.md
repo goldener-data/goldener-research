@@ -27,15 +27,6 @@
   <small><em>📍 Origin: arXiv (2024)</em></small><br>
   📝 Note: survey of data selection methods for language models and their trade-offs.
 </div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2606.18209">
-    <strong>Rethinking Dataset Distillation for Classification: Do Distilled Sets Outperform Coresets?</strong>
-  </a><br>
-  <small><em>👤 First author: Trisha Mittal</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
-  📝 Note: benchmarks seven dataset distillation methods against coreset selection under standardized protocols and finds coresets match or beat them at far lower cost with better data coverage.
-</div>
 
 ---
 
@@ -196,6 +187,15 @@
   <small><em>👤 First author: Suorong Yang</em></small><br>
   <small><em>📍 Origin: International Conference on Computer Vision (ICCV) (2025)</em></small><br>
   📝 Note: measures sample redundancy with an epsilon-sample cover and uses it as reward for an RL agent that learns the data selection policy during training.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2606.18209">
+    <strong>Rethinking Dataset Distillation for Classification: Do Distilled Sets Outperform Coresets?</strong>
+  </a><br>
+  <small><em>👤 First author: Trisha Mittal</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: benchmarks seven dataset distillation methods against coreset selection under standardized protocols and finds coresets match or beat them at far lower cost with better data coverage.
 </div>
 
 ---
