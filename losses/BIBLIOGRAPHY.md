@@ -13,6 +13,16 @@
   📝 Note: leverage model loss to decide what to backpropagate.
 </div>
 
+### Margin loss
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/3192">
+    <strong>HEM: a margin-based loss for visual categorisation tasks</strong>
+  </a><br>
+  <small><em>👤 First author: Michael Spratling</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: proposes a high error margin loss as a drop-in replacement for cross-entropy, better for unknown-class rejection, imbalanced data, continual learning and segmentation.
+</div>
+
 ---
 
 ## Leverage embeddings

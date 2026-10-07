@@ -241,3 +241,52 @@
   <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2020)</em></small><br>
   📝 Note: jointly learns representations and pseudo-labels via optimal-transport clustering (Sinkhorn-Knopp), yielding the first self-supervised AlexNet to beat the supervised Pascal VOC detection baseline.
 </div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/3333">
+    <strong>The Label Imitation Game: Turing Test Network for Zero-Shot Pseudo-Label Pruning</strong>
+  </a><br>
+  <small><em>👤 First author: Brent Griffin</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: trains a task-agnostic judge network to prune hallucinated zero-shot pseudo-labels from vision-language models in dataset-wide context, transferring from classification to detection.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4085">
+    <strong>Solving Semi-Supervised Few-Shot Learning from an Auto-Annotation Perspective</strong>
+  </a><br>
+  <small><em>👤 First author: Tian Liu</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: sharpens VLM softmax outputs with temperatures and fine-tunes stage-wise on few labels plus retrieved open data, making semi-supervised few-shot auto-annotation rival supervised fine-tuning.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2608.26309">
+    <strong>Algebraic Multigrid Acceleration for Efficient Label Spreading</strong>
+  </a><br>
+  <small><em>👤 First author: Antonia van Betteray</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
+  📝 Note: speeds up label spreading on large image datasets with fast neighborhood-graph construction and algebraic multigrid solvers, producing accurate labels from few annotated samples.
+</div>
+
+---
+
+## Label quality
+
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4056">
+    <strong>Maximum Spanning Tree Guided Confidence and Sparse Graph for Robust Noisy Label Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Gengfeng Chen</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: refines noisy labels by propagating confidence-gated information along a maximum spanning tree built over sample features.
+</div>
+<br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/3959">
+    <strong>Holistic Optimal Label Selection for Robust Prompt Learning under Partial Labels</strong>
+  </a><br>
+  <small><em>👤 First author: Yaqi Zhao</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: picks the most plausible label among partial candidates using nearest-neighbor density in pretrained feature space and batch-level optimal transport.
+</div>

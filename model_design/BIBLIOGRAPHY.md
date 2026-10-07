@@ -38,6 +38,14 @@
   📝 Note: No note provided.
 </div>
 <br>
+<div>
+  <a href="https://eccv.ecva.net/virtual/2026/poster/4464">
+    <strong>Unsupervised Source-Free Ranking of Biomedical Segmentation Models Under Distribution Shift</strong>
+  </a><br>
+  <small><em>👤 First author: Joshua Talks</em></small><br>
+  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
+  📝 Note: ranks pretrained segmentation models on a new unlabeled dataset by prediction consistency under perturbations, enabling black-box model selection under distribution shift.
+</div>
 
 ---
 

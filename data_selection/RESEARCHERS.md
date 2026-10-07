@@ -115,3 +115,59 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Rethinking Image Super-Resolution from Training Data Perspectives](https://arxiv.org/abs/2409.00768)
 <br>
+
+## 👤 Suorong Yang
+📍 Affiliation: National University of Singapore
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Data Agent: Learning to Select Data via End-to-End Dynamic Optimization](https://arxiv.org/abs/2603.07433)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [When Dynamic Data Selection Meets Data Augmentation](https://arxiv.org/abs/2505.03809)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [A CLIP-Powered Framework for Robust and Generalizable Data Selection](https://arxiv.org/abs/2410.11215)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [RL-Selector: Reinforcement Learning-Guided Data Selection via Redundancy Assessment](https://arxiv.org/abs/2506.21037)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning](https://arxiv.org/abs/2507.12750)
+<br>
+
+## 👤 Furao Shen
+📍 Affiliation: Nanjing University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Data Agent: Learning to Select Data via End-to-End Dynamic Optimization](https://arxiv.org/abs/2603.07433)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [When Dynamic Data Selection Meets Data Augmentation](https://arxiv.org/abs/2505.03809)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [A CLIP-Powered Framework for Robust and Generalizable Data Selection](https://arxiv.org/abs/2410.11215)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [RL-Selector: Reinforcement Learning-Guided Data Selection via Redundancy Assessment](https://arxiv.org/abs/2506.21037)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning](https://arxiv.org/abs/2507.12750)
+<br>
+
+## 👤 Peng Ye
+📍 Affiliation: The Chinese University of Hong Kong
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [When Dynamic Data Selection Meets Data Augmentation](https://arxiv.org/abs/2505.03809)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [A CLIP-Powered Framework for Robust and Generalizable Data Selection](https://arxiv.org/abs/2410.11215)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning](https://arxiv.org/abs/2507.12750)
+<br>
+
+## 👤 Dongzhan Zhou
+📍 Affiliation: Shanghai AI Laboratory
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [When Dynamic Data Selection Meets Data Augmentation](https://arxiv.org/abs/2505.03809)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [A CLIP-Powered Framework for Robust and Generalizable Data Selection](https://arxiv.org/abs/2410.11215)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning](https://arxiv.org/abs/2507.12750)
+<br>
