@@ -29,6 +29,14 @@ This is why smarter training strategies matter: they can improve sample efficien
 annotation cost, speed up convergence, and help the model focus on the regions of the data
 space that matter most.
 
+This topic therefore focuses on training strategies driven by the data itself: deciding which
+samples to present, when, and how often (curriculum learning, online batch selection,
+over/under-sampling of imbalanced data), active and continual learning with data-aware
+selection or replay, using learning dynamics or embeddings to identify easy, hard,
+redundant, or mislabeled samples, and data-driven checkpointing or train/validation
+updates. Papers that only change the optimizer, schedule, or architecture, without using
+information about the data, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

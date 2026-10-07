@@ -27,6 +27,14 @@ pushing parameter weights toward flatter, higher-generalizing regions of the los
 landscape. However, this randomness might also be pushing the model toward unwanted areas,
 especially when the concept distribution in batches is skewed.
 
+This topic therefore focuses on data-centric ways to build mini-batches from the data
+itself: composing batches from the distribution of the training samples (e.g. their
+embeddings, concepts, classes or difficulty) so that each batch is representative or
+deliberately targeted, diversity- or importance-based batch sampling, and measuring how
+batch composition impacts optimization and final performance. Papers that only tune the
+batch size, learning-rate scaling, or the hardware/parallelism side of batching, without
+using the data to decide what goes into a batch, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

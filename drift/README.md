@@ -26,6 +26,14 @@ This is why drift monitoring is essential in real AI pipelines. By tracking the 
 input distributions and comparing them to reference data, it becomes possible to detect early
 signals of degradation before they become severe.
 
+This topic therefore focuses on data-centric drift detection driven by the data itself:
+comparing incoming data to reference data (e.g. distributions of embeddings, features, or
+model outputs), two-sample tests and their statistical power, detecting covariate, label,
+and concept drift (including within subpopulations), estimating the performance impact of
+drift without labels, and selecting which drifted samples to label or retrain on. Papers
+that only adapt a model to a new domain without detecting or measuring the shift in the
+data are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

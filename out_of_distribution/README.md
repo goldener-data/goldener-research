@@ -25,6 +25,14 @@ This is why OOD detection is crucial in practical AI pipelines. By identifying w
 input is unusual or inconsistent with the training distribution, systems can decide to abstain,
 route the sample to human review, trigger retraining, or simply flag the case for monitoring.
 
+This topic therefore focuses on data-centric OOD detection that relies on the training data
+itself: scoring new samples by their distance or density relative to the training data
+(e.g. in a pretrained or in-training embedding space), comparing foundation-model and
+task-model representations for detection, using OOD signals to route samples to review,
+labeling, or retraining, and evaluating detectors on realistic shifts. Papers that only
+improve model robustness or calibration, without identifying which inputs fall outside the
+training data, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,
