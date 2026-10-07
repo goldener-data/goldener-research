@@ -364,7 +364,10 @@ time after all the work is done. So verify write permission explicitly, with
      the embedding-for-a-lifecycle-step pattern — not just shared vocabulary
      with the title. Drop titles that don't hold up.
    - **For every confirmed-relevant paper, record its full author list** (not
-     just the first author) — this is different from a `BIBLIOGRAPHY.md`
+     just the first author), with each author's stable identifier when the
+     lab page, the paper page, or the author's profile gives one (DBLP PID,
+     ORCID, OpenReview profile ID, Google Scholar user ID — see step 11's
+     identity key) — this is different from a `BIBLIOGRAPHY.md`
      entry, which only ever shows one first author; the full list is what
      step 11 tallies against the 3-paper researcher threshold. Also note
      which topic(s) the paper best supports (used in step 10) — usually one,
@@ -446,7 +449,8 @@ time after all the work is done. So verify write permission explicitly, with
       the lab page, the paper page, or the author's profile — a DBLP PID
       (`dblp.org/pid/...`), an ORCID, an OpenReview profile ID (`~First_Last1`),
       or a Google Scholar user ID — recorded alongside the author when the
-      paper is confirmed relevant in step 8.
+      paper is confirmed relevant (step 8, or the broader-record check
+      below).
     - **Names are display/fallback data only.** Use the normalized name
       (trim, collapse whitespace, ASCII-fold, so accented/unaccented
       spellings line up) only to *find candidate* matches. Merge two papers'
@@ -472,7 +476,10 @@ time after all the work is done. So verify write permission explicitly, with
       that record for relevance per step 1's map/criteria, excluding papers
       already counted from the lab's output, and applying the same
       domain-trust check and validate/skip/stop choice as step 8 to each
-      candidate link.
+      candidate link. For each paper confirmed this way, record its full
+      author list with identity keys exactly as step 8 does (step 13 needs
+      it if the paper becomes a seed). The Scholar/DBLP profile used here is
+      itself this author's identity key — record it too.
       - **If this brings the total (lab output + broader record) to 3 or
         more**: this author qualifies. Add every newly confirmed-relevant
         paper found in the broader record to `BIBLIOGRAPHY.md` too (step
@@ -573,7 +580,9 @@ time after all the work is done. So verify write permission explicitly, with
       homepage or a DBLP page) for their publication list, then title-screen
       and abstract-confirm it for relevance per step 1's map/criteria,
       excluding the seed paper itself — including the same domain-trust
-      check and validate/skip/stop choice used in step 8.
+      check and validate/skip/stop choice used in step 8. Record each
+      confirmed paper's full author list with identity keys exactly as step
+      8 does, since a newly-added paper becomes a seed in turn.
     - **If this co-author already has a `RESEARCHERS.md` entry somewhere in
       the repo** (same person confirmed per step 12's dedup rule): any newly confirmed-relevant paper not already listed under
       their existing entry is added to `BIBLIOGRAPHY.md` (steps 9–10's dedup

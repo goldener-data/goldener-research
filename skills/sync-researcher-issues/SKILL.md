@@ -458,7 +458,9 @@ time after all the work is done. So verify write permission explicitly, with
     can pre-date the researcher's own entry); if so, skip writing a new entry
     there — it's already covered. **Either way**, fetch the paper's own page (if
     not already fetched) and record its full author list (not just the first
-    author shown in the citation) — step 12 needs this for every confirmed
+    author shown in the citation), with each author's stable identifier when
+    the source gives one (DBLP PID, ORCID, OpenReview profile ID, Google
+    Scholar user ID) — step 12 needs this for every confirmed
     paper, including one whose `BIBLIOGRAPHY.md` entry was skipped as a
     duplicate, not only for newly-written entries. Otherwise, when actually
     writing a new entry:
@@ -522,9 +524,17 @@ time after all the work is done. So verify write permission explicitly, with
     each remaining co-author:
     - Skip anyone already processed earlier in this run (the researcher(s)
       already handled by steps 6–11, and anyone already visited by this step)
-      — track one normalized-name set for the whole run (trim, collapse
-      whitespace, ASCII-fold accents, so a name typed with or without
-      diacritics still merges into one entry). This also bounds the
+      — track one set of author identities for the whole run, keyed by a
+      stable source identifier (DBLP PID, ORCID, OpenReview
+      profile ID, Google Scholar user ID) recorded alongside each author
+      whenever the paper page or the author's profile gives one. Two
+      different researchers can share a normalized name (trim, collapse
+      whitespace, ASCII-fold accents), so a name match is only a
+      *candidate*: it counts as "already processed" only when the
+      identifiers match, or — when either side has none — when an
+      overlapping affiliation, overlapping co-authors, or a shared
+      DBLP/Scholar profile confirms it's the same person. Otherwise treat
+      them as different people and process the new one. This also bounds the
       recursion, since the set of distinct people is finite and nobody is
       analyzed twice.
     - Research them exactly as steps 6–7 do for the primary researcher: web
@@ -533,7 +543,9 @@ time after all the work is done. So verify write permission explicitly, with
       title-screen and abstract-confirm their publication list for relevance
       per step 1's map/criteria — excluding the seed paper itself — including
       the same domain-trust check and validate/skip/stop choice for an
-      ambiguous paper link used in step 7.
+      ambiguous paper link used in step 7. Record each confirmed paper's
+      full author list with identifiers as step 11 does, since a
+      newly-added paper becomes a seed in turn.
     - **If this co-author already has a `RESEARCHERS.md` entry somewhere in
       the repo** (header matched per step 9's rules, legacy ` - `/`: `
       affiliation suffix stripped, and confirmed to be the same person by
