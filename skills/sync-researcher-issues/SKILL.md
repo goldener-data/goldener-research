@@ -76,8 +76,10 @@ what happened at the end. Only interrupt the run for a genuine blocker you
 cannot resolve yourself (see "Blockers" below), or for a link whose
 trustworthiness is genuinely ambiguous (steps 6, 7, and 12) — never to check in
 on a step that succeeded. **Step 2 (prepare) and step 16 (restore) always run,
-including on every blocker path** — this skill must never leave the repo on an
-unexpected branch or with a dangling stash, whatever else happens in between.
+including on every blocker path except a failed write-access prerequisite**
+(which stops before step 2, so there is nothing to prepare or restore) — this
+skill must never leave the repo on an unexpected branch or with a dangling
+stash, whatever else happens in between.
 
 ## Prerequisite: GitHub write access
 
@@ -86,16 +88,59 @@ step 15 (close/comment on issues) need authenticated write access to GitHub;
 finding that out after already stashing, branching, researching, writing files,
 and pushing wastes the run and leaves more to unwind.
 
-- If the `gh` CLI is installed, run `gh auth status`. A report of being logged in
-  means write access is available; use `gh` for steps 14 and 15.
-- Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the environment.
-  If so, use the REST API with that token for steps 14 and 15.
-- If neither is available: this is a hard blocker (see "Blockers"). Stop
-  immediately — do not stash, do not check out `main`, do not run step 2 at all —
-  and report that GitHub write access (an authenticated `gh` CLI, or a
-  `GITHUB_TOKEN` environment variable) is required before this skill can open the
-  PR or close issues, and that neither is currently available. Since nothing was
-  touched, there is nothing to restore.
+Being logged in, or having a non-empty token, is **not** enough: it only proves
+the credentials are valid, not that they can write to this repository. A
+read-only account/token would pass such a check and then fail at push/PR/issue
+time after all the work is done. So verify write permission explicitly, with
+**both** checks below; **both** must pass.
+
+1. **API write permission** (used for steps 14 and 15). Pick the client
+   and the token it authenticates with:
+   - If the `gh` CLI is installed and `gh auth status` reports being logged in,
+     use `gh` for steps 14 and 15; its token is `$(gh auth token)`.
+   - Otherwise, if `$GITHUB_TOKEN` is set and non-empty, use the REST API with
+     that token for steps 14 and 15.
+
+   Then, with `TOKEN` set to that token, run:
+   ```bash
+   REPO=https://api.github.com/repos/goldener-data/goldener-research
+   # (a) the account's role on the repository
+   curl -s -H "Authorization: Bearer $TOKEN" "$REPO" \
+     | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get('permissions',{}).get('push') if isinstance(d,dict) else None))"
+   # (b) the token's own grants: deliberately invalid (empty-body) create calls
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/pulls"
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/issues"
+   ```
+   (a) must print exactly `true`; `false`, `null`, an empty output, or an HTTP
+   error means the account cannot write here. (a) alone is not enough: it
+   reports the *account's* role, while a fine-grained PAT grants "Pull
+   requests" and "Issues" write access separately, so a push-capable account
+   can still hold a token that can't open the PR or close issues. (b) checks
+   those grants directly: GitHub authorizes the token before validating the
+   body, so each call must print `422` (validation failed — `head`/`base`/
+   `title` missing, so nothing is created), which proves the token holds that
+   write grant. `401`/`403`/`404` (e.g. `Resource not accessible by personal
+   access token`, or a PAT the org hasn't approved yet) means it doesn't; any
+   other code counts as a failure too.
+2. **Git push permission** (used to push the branch). The git remote may
+   authenticate with different credentials (SSH key, credential helper) than
+   `gh`/`$GITHUB_TOKEN`, so check it separately with a dry-run push to a
+   throwaway ref name — this contacts the server and is refused without write
+   access, but creates nothing:
+   ```bash
+   git push --dry-run origin HEAD:refs/heads/write-access-probe-$(date +%s)-$$
+   ```
+   It must exit 0.
+
+- If either check fails (no `gh` login and no `$GITHUB_TOKEN`,
+  `permissions.push` not `true`, a probe not returning `422`, or the dry-run
+  push refused): this is a hard blocker (see "Blockers"). Stop immediately — do
+  not stash, do not check out `main`, do not run step 2 or step 16 — and report
+  which check failed and that write access to `goldener-data/goldener-research`
+  (for pushing, opening the PR, and closing issues) is required before this
+  skill can run. Since nothing was touched, there is nothing to restore.
+- Even when both pass, a token can still be refused at PR/issue time (e.g. its
+  grants change mid-run) — see "Blockers"; that case is handled there.
 
 ## Steps
 
@@ -144,10 +189,16 @@ and pushing wastes the run and leaves more to unwind.
      also what to fall back to if a direct request's name turns out to already
      have an open issue, see step 4): list open `researcher` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=researcher&state=all&per_page=100"
+     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=researcher&state=all&per_page=100" \
+       | python3 -c "import json,sys; d=json.load(sys.stdin); isinstance(d,list) or sys.exit('GitHub API error: '+json.dumps(d)); print(json.dumps([i for i in d if 'pull_request' not in i], indent=1))"
      ```
-     Public reads don't need auth. Continue to step 4 to turn each issue into a
-     worklist item.
+     This endpoint also returns pull requests that carry the label (any object
+     with a `pull_request` key); the filter above drops them. It also exits
+     non-zero with GitHub's error message when the response isn't an issue list
+     (rate limit, 404, ...) — that is a failed read, not an empty worklist:
+     stop and report the error (step 16 still runs). Never turn a PR into a
+     worklist item or close/comment on it in step 15. Public reads don't need
+     auth. Continue to step 4 to turn each issue into a worklist item.
 
    A single run only uses one of these two — don't mix listing issues into a run
    that was given explicit names, or vice versa.
@@ -343,9 +394,10 @@ and pushing wastes the run and leaves more to unwind.
    collapse whitespace, lowercase) *and* also compare an ASCII-folded form (strip
    accents) since a name may be typed with or without diacritics across an issue
    title and an existing entry. Watch for the odd existing entry that appends an
-   affiliation into the header itself (e.g. `Jeffrey A. Bilmes - University of
-   Washington` in `model_design/RESEARCHERS.md`) — strip anything after a trailing
-   ` - ` before comparing.
+   affiliation into the header itself, with ` - ` or `: ` (e.g. `Jeffrey A.
+   Bilmes - University of Washington` in `model_design/RESEARCHERS.md`, `Robert
+   D. Nowak: Wisconsin University` in `frameworks/RESEARCHERS.md`) — strip
+   anything after a ` - ` or `: ` separator before comparing.
 
    For each destination file identified in step 8:
    - **No existing entry for this researcher in this file** → a brand-new
@@ -406,7 +458,9 @@ and pushing wastes the run and leaves more to unwind.
     can pre-date the researcher's own entry); if so, skip writing a new entry
     there — it's already covered. **Either way**, fetch the paper's own page (if
     not already fetched) and record its full author list (not just the first
-    author shown in the citation) — step 12 needs this for every confirmed
+    author shown in the citation), with each author's stable identifier when
+    the source gives one (DBLP PID, ORCID, OpenReview profile ID, Google
+    Scholar user ID) — step 12 needs this for every confirmed
     paper, including one whose `BIBLIOGRAPHY.md` entry was skipped as a
     duplicate, not only for newly-written entries. Otherwise, when actually
     writing a new entry:
@@ -470,9 +524,17 @@ and pushing wastes the run and leaves more to unwind.
     each remaining co-author:
     - Skip anyone already processed earlier in this run (the researcher(s)
       already handled by steps 6–11, and anyone already visited by this step)
-      — track one normalized-name set for the whole run (trim, collapse
-      whitespace, ASCII-fold accents, so a name typed with or without
-      diacritics still merges into one entry). This also bounds the
+      — track one set of author identities for the whole run, keyed by a
+      stable source identifier (DBLP PID, ORCID, OpenReview
+      profile ID, Google Scholar user ID) recorded alongside each author
+      whenever the paper page or the author's profile gives one. Two
+      different researchers can share a normalized name (trim, collapse
+      whitespace, ASCII-fold accents), so a name match is only a
+      *candidate*: it counts as "already processed" only when the
+      identifiers match, or — when either side has none — when an
+      overlapping affiliation, overlapping co-authors, or a shared
+      DBLP/Scholar profile confirms it's the same person. Otherwise treat
+      them as different people and process the new one. This also bounds the
       recursion, since the set of distinct people is finite and nobody is
       analyzed twice.
     - Research them exactly as steps 6–7 do for the primary researcher: web
@@ -481,9 +543,13 @@ and pushing wastes the run and leaves more to unwind.
       title-screen and abstract-confirm their publication list for relevance
       per step 1's map/criteria — excluding the seed paper itself — including
       the same domain-trust check and validate/skip/stop choice for an
-      ambiguous paper link used in step 7.
+      ambiguous paper link used in step 7. Record each confirmed paper's
+      full author list with identifiers as step 11 does, since a
+      newly-added paper becomes a seed in turn.
     - **If this co-author already has a `RESEARCHERS.md` entry somewhere in
-      the repo:** any newly confirmed-relevant paper not already listed under
+      the repo** (header matched per step 9's rules, legacy ` - `/`: `
+      affiliation suffix stripped, and confirmed to be the same person by
+      the entry's affiliation and listed papers): any newly confirmed-relevant paper not already listed under
       their existing entry is added to `BIBLIOGRAPHY.md` (step 11's dedup and
       format rules) and appended to their entry — no 3-paper threshold
       applies here, since they already qualify. Unless the current seed paper

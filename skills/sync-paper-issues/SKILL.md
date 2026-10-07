@@ -75,13 +75,15 @@ confirm each paper, dedupe, pick destination file(s), write `BIBLIOGRAPHY.md`
 entries, recursively expand co-authors into new papers/researchers, branch,
 commit, push, open the PR, close any source issues, and restore the working
 tree in one pass. Don't ask the user to approve the plan, the research
-findings, the file placement, or the push/PR/close steps; just do it and
-report what happened at the end. Only interrupt the run for a genuine blocker
-you cannot resolve yourself (see "Blockers" below), or for a link whose
+findings, the file placement, or the push/PR/close steps; just do it and report
+what happened at the end. Only interrupt the run for a genuine blocker you
+cannot resolve yourself (see "Blockers" below), or for a link whose
 trustworthiness is genuinely ambiguous (steps 5 and 10) — never to check in on
 a step that succeeded. **Step 2 (prepare) and step 14 (restore) always run,
-including on every blocker path** — this skill must never leave the repo on an
-unexpected branch or with a dangling stash, whatever else happens in between.
+including on every blocker path except a failed write-access prerequisite**
+(which stops before step 2, so there is nothing to prepare or restore) — this
+skill must never leave the repo on an unexpected branch or with a dangling
+stash, whatever else happens in between.
 
 ## Prerequisite: GitHub write access
 
@@ -90,16 +92,59 @@ and step 13 (close/comment on issues) need authenticated write access to
 GitHub; finding that out after already stashing, branching, researching,
 writing files, and pushing wastes the run and leaves more to unwind.
 
-- If the `gh` CLI is installed, run `gh auth status`. A report of being logged in
-  means write access is available; use `gh` for steps 12 and 13.
-- Otherwise, check whether `$GITHUB_TOKEN` is set and non-empty in the environment.
-  If so, use the REST API with that token for steps 12 and 13.
-- If neither is available: this is a hard blocker (see "Blockers"). Stop
-  immediately — do not stash, do not check out `main`, do not run step 2 at all —
-  and report that GitHub write access (an authenticated `gh` CLI, or a
-  `GITHUB_TOKEN` environment variable) is required before this skill can open the
-  PR or close issues, and that neither is currently available. Since nothing was
-  touched, there is nothing to restore.
+Being logged in, or having a non-empty token, is **not** enough: it only proves
+the credentials are valid, not that they can write to this repository. A
+read-only account/token would pass such a check and then fail at push/PR/issue
+time after all the work is done. So verify write permission explicitly, with
+**both** checks below; **both** must pass.
+
+1. **API write permission** (used for steps 12 and 13). Pick the client
+   and the token it authenticates with:
+   - If the `gh` CLI is installed and `gh auth status` reports being logged in,
+     use `gh` for steps 12 and 13; its token is `$(gh auth token)`.
+   - Otherwise, if `$GITHUB_TOKEN` is set and non-empty, use the REST API with
+     that token for steps 12 and 13.
+
+   Then, with `TOKEN` set to that token, run:
+   ```bash
+   REPO=https://api.github.com/repos/goldener-data/goldener-research
+   # (a) the account's role on the repository
+   curl -s -H "Authorization: Bearer $TOKEN" "$REPO" \
+     | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get('permissions',{}).get('push') if isinstance(d,dict) else None))"
+   # (b) the token's own grants: deliberately invalid (empty-body) create calls
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/pulls"
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/issues"
+   ```
+   (a) must print exactly `true`; `false`, `null`, an empty output, or an HTTP
+   error means the account cannot write here. (a) alone is not enough: it
+   reports the *account's* role, while a fine-grained PAT grants "Pull
+   requests" and "Issues" write access separately, so a push-capable account
+   can still hold a token that can't open the PR or close issues. (b) checks
+   those grants directly: GitHub authorizes the token before validating the
+   body, so each call must print `422` (validation failed — `head`/`base`/
+   `title` missing, so nothing is created), which proves the token holds that
+   write grant. `401`/`403`/`404` (e.g. `Resource not accessible by personal
+   access token`, or a PAT the org hasn't approved yet) means it doesn't; any
+   other code counts as a failure too.
+2. **Git push permission** (used to push the branch). The git remote may
+   authenticate with different credentials (SSH key, credential helper) than
+   `gh`/`$GITHUB_TOKEN`, so check it separately with a dry-run push to a
+   throwaway ref name — this contacts the server and is refused without write
+   access, but creates nothing:
+   ```bash
+   git push --dry-run origin HEAD:refs/heads/write-access-probe-$(date +%s)-$$
+   ```
+   It must exit 0.
+
+- If either check fails (no `gh` login and no `$GITHUB_TOKEN`,
+  `permissions.push` not `true`, a probe not returning `422`, or the dry-run
+  push refused): this is a hard blocker (see "Blockers"). Stop immediately — do
+  not stash, do not check out `main`, do not run step 2 or step 14 — and report
+  which check failed and that write access to `goldener-data/goldener-research`
+  (for pushing, opening the PR, and closing issues) is required before this
+  skill can run. Since nothing was touched, there is nothing to restore.
+- Even when both pass, a token can still be refused at PR/issue time (e.g. its
+  grants change mid-run) — see "Blockers"; that case is handled there.
 
 ## Steps
 
@@ -156,8 +201,15 @@ writing files, and pushing wastes the run and leaves more to unwind.
      also what to fall back to if a direct request's paper turns out to already
      have an open issue, see step 4): list open `paper` issues —
      ```
-     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=open&per_page=100"
+     curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=paper&state=open&per_page=100" \
+       | python3 -c "import json,sys; d=json.load(sys.stdin); isinstance(d,list) or sys.exit('GitHub API error: '+json.dumps(d)); print(json.dumps([i for i in d if 'pull_request' not in i], indent=1))"
      ```
+     This endpoint also returns pull requests that carry the label (any
+     object with a `pull_request` key); the filter above drops them. It also
+     exits non-zero with GitHub's error message when the response isn't an
+     issue list (rate limit, 404, ...) — that is a failed read, not an empty
+     worklist: stop and report the error (step 14 still runs). Never
+     turn a PR into a worklist item or close/comment on it in step 13.
      Public reads don't need auth. The list endpoint already includes `body`;
      use it directly rather than re-fetching each issue, unless a body is
      truncated. Then, **for each issue, extract its candidate paper(s)** —
@@ -301,7 +353,9 @@ writing files, and pushing wastes the run and leaves more to unwind.
        not-relevant with a short note of what was checked and why nothing held
        up. Do not write a `BIBLIOGRAPHY.md` entry for it.
      - **Confirmed relevant** → record its full author list (not just the
-       first author — this is what step 10 needs) and proceed to step 6 for
+       first author — this is what step 10 needs), with each author's stable
+       identifier when the source gives one (DBLP PID, ORCID, OpenReview
+       profile ID, Google Scholar user ID), and proceed to step 6 for
        this item.
 
 6. **Deduplicate against existing entries.** Extract every `<a href="...">`
@@ -417,11 +471,20 @@ writing files, and pushing wastes the run and leaves more to unwind.
 
     For each seed paper, take its full author list (recorded in step 5, not
     just the single first-author name used in the citation). For each author:
-    - Skip anyone already processed earlier in this run — track one
-      normalized-name set for the whole run (trim, collapse whitespace,
-      ASCII-fold accents, so "\<name\>" and an accented spelling of the same
-      person merge into one entry). This also bounds the recursion, since the
-      set of distinct people is finite and nobody is analyzed twice.
+    - Skip anyone already processed earlier in this run — track one set of
+      author identities for the whole run, keyed by a stable source
+      identifier (DBLP PID, ORCID, OpenReview profile ID, Google Scholar user
+      ID) recorded alongside each author whenever the paper page or the
+      author's profile gives one. Two
+      different researchers can share a normalized name (trim, collapse
+      whitespace, ASCII-fold accents), so a name match is only a
+      *candidate*: it counts as "already processed" only when the
+      identifiers match, or — when either side has none — when an
+      overlapping affiliation, overlapping co-authors, or a shared
+      DBLP/Scholar profile confirms it's the same person. Otherwise treat
+      them as different people and process the new one. This also bounds
+      the recursion, since the set of distinct people is finite and nobody
+      is analyzed twice.
     - Web search `"<name>" google scholar` for their publication list; if no
       profile turns up or the fetch is blocked/empty, fall back to a
       personal/lab homepage or a DBLP page (`"<name>" dblp`, `"<name>"
@@ -429,9 +492,17 @@ writing files, and pushing wastes the run and leaves more to unwind.
     - Title-screen that list for plausible relevance (step 1's map/criteria),
       excluding the seed paper itself, then confirm each shortlisted title by
       abstract exactly as step 5 does — including the same domain-trust check
-      and validate/skip/stop choice for an ambiguous paper link.
+      and validate/skip/stop choice for an ambiguous paper link. Record each
+      confirmed paper's full author list with identifiers as step 5 does,
+      since a newly-added paper becomes a seed in turn.
     - **If this author already has a `RESEARCHERS.md` entry somewhere in the
-      repo:** any newly confirmed-relevant paper not already listed under
+      repo** (compare against each `## 👤` header after stripping any legacy
+      affiliation suffix after a ` - ` or `: ` separator, e.g. `Jeffrey A.
+      Bilmes - University of Washington` or `Robert D. Nowak: Wisconsin
+      University`, with the same name normalization as above; a name match
+      only counts once the entry's affiliation and listed papers confirm it
+      is the same person — otherwise treat them as a new author and say so
+      in the final report): any newly confirmed-relevant paper not already listed under
       their existing entry is added to `BIBLIOGRAPHY.md` (steps 6–9's dedup
       and format rules) and appended to their entry — no 3-paper threshold
       applies here, since they already qualify. Unless the current seed
