@@ -94,8 +94,10 @@ edition(s) or stop, since guessing which edition was actually meant would
 misattribute papers to the wrong year), or for a link whose trustworthiness is
 genuinely ambiguous (steps 5, 7, 9, 12, and 14) — never to check in on a step
 that succeeded. **Step 2 (prepare) and step 18 (restore) always run, including
-on every blocker path** — this skill must never leave the repo on an
-unexpected branch or with a dangling stash, whatever else happens in between.
+on every blocker path except a failed write-access prerequisite** (which stops
+before step 2, so there is nothing to prepare or restore) — this skill must
+never leave the repo on an unexpected branch or with a dangling stash, whatever
+else happens in between.
 
 ## Prerequisite: GitHub write access
 
@@ -110,41 +112,53 @@ read-only account/token would pass such a check and then fail at push/PR/issue
 time after all the work is done. So verify write permission explicitly, with
 **both** checks below; **both** must pass.
 
-1. **API write permission** (used for steps 16 and 17). Pick the client:
+1. **API write permission** (used for steps 16 and 17). Pick the client
+   and the token it authenticates with:
    - If the `gh` CLI is installed and `gh auth status` reports being logged in,
-     use `gh` for steps 16 and 17, and run:
-     ```bash
-     gh api repos/goldener-data/goldener-research --jq '.permissions.push'
-     ```
+     use `gh` for steps 16 and 17; its token is `$(gh auth token)`.
    - Otherwise, if `$GITHUB_TOKEN` is set and non-empty, use the REST API with
-     that token for steps 16 and 17, and run:
-     ```bash
-     curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-       https://api.github.com/repos/goldener-data/goldener-research \
-       | python3 -c "import json,sys; print(json.dumps(json.load(sys.stdin).get('permissions',{}).get('push')))"
-     ```
-   The output must be exactly `true`. `false`, `None`/`null`, an empty output, or
-   an HTTP error (401/403/404) means the credentials cannot write here.
+     that token for steps 16 and 17.
+
+   Then, with `TOKEN` set to that token, run:
+   ```bash
+   REPO=https://api.github.com/repos/goldener-data/goldener-research
+   # (a) the account's role on the repository
+   curl -s -H "Authorization: Bearer $TOKEN" "$REPO" \
+     | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get('permissions',{}).get('push') if isinstance(d,dict) else None))"
+   # (b) the token's own grants: deliberately invalid (empty-body) create calls
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/pulls"
+   curl -s -o /dev/null -w '%{http_code}\n' -X POST -H "Authorization: Bearer $TOKEN" -d '{}' "$REPO/issues"
+   ```
+   (a) must print exactly `true`; `false`, `null`, an empty output, or an HTTP
+   error means the account cannot write here. (a) alone is not enough: it
+   reports the *account's* role, while a fine-grained PAT grants "Pull
+   requests" and "Issues" write access separately, so a push-capable account
+   can still hold a token that can't open the PR or close issues. (b) checks
+   those grants directly: GitHub authorizes the token before validating the
+   body, so each call must print `422` (validation failed — `head`/`base`/
+   `title` missing, so nothing is created), which proves the token holds that
+   write grant. `401`/`403`/`404` (e.g. `Resource not accessible by personal
+   access token`, or a PAT the org hasn't approved yet) means it doesn't; any
+   other code counts as a failure too.
 2. **Git push permission** (used to push the branch). The git remote may
    authenticate with different credentials (SSH key, credential helper) than
    `gh`/`$GITHUB_TOKEN`, so check it separately with a dry-run push to a
    throwaway ref name — this contacts the server and is refused without write
    access, but creates nothing:
    ```bash
-   git push --dry-run origin HEAD:refs/heads/write-access-probe
+   git push --dry-run origin HEAD:refs/heads/write-access-probe-$(date +%s)-$$
    ```
    It must exit 0.
 
-- If either check fails (no `gh` login and no `$GITHUB_TOKEN`, `permissions.push`
-  not `true`, or the dry-run push refused): this is a hard blocker (see
-  "Blockers"). Stop immediately — do not stash, do not check out `main`, do not
-  run step 2 at all — and report which check failed and that write access to
-  `goldener-data/goldener-research` (for pushing, opening the PR, and closing
-  issues) is required before this skill can run. Since nothing was touched,
-  there is nothing to restore.
-- Even when both pass, a fine-grained PAT can still be refused at PR/issue time
-  (e.g. the org hasn't approved it yet — see "Blockers"); that case is handled
-  there.
+- If either check fails (no `gh` login and no `$GITHUB_TOKEN`,
+  `permissions.push` not `true`, a probe not returning `422`, or the dry-run
+  push refused): this is a hard blocker (see "Blockers"). Stop immediately — do
+  not stash, do not check out `main`, do not run step 2 or step 18 — and report
+  which check failed and that write access to `goldener-data/goldener-research`
+  (for pushing, opening the PR, and closing issues) is required before this
+  skill can run. Since nothing was touched, there is nothing to restore.
+- Even when both pass, a token can still be refused at PR/issue time (e.g. its
+  grants change mid-run) — see "Blockers"; that case is handled there.
 
 ## Steps
 
@@ -221,18 +235,21 @@ time after all the work is done. So verify write permission explicitly, with
      default): list open `conference` issues —
      ```
      curl -s "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=conference&state=open&per_page=100" \
-       | python3 -c "import json,sys; print(json.dumps([i for i in json.load(sys.stdin) if 'pull_request' not in i], indent=1))"
+       | python3 -c "import json,sys; d=json.load(sys.stdin); isinstance(d,list) or sys.exit('GitHub API error: '+json.dumps(d)); print(json.dumps([i for i in d if 'pull_request' not in i], indent=1))"
      ```
-     This endpoint also returns pull requests that carry the label (any
-     object with a `pull_request` key); the filter above drops them. Never
-     turn a PR into a worklist item or close/comment on it in step 17.
-     Public reads don't need auth. For each issue, extract `{conference_hint,
-     year, source_issue: <issue number>}`: look for a 4-digit year anywhere in
-     the title or body first; whatever text remains once the year is set aside
-     becomes `conference_hint` (join title and body content if both add
-     distinct descriptive text). An issue naming more than one conference
-     (rare, but possible) produces one worklist item per conference, and one
-     item per year if it names more than one year for the same conference.
+     This endpoint also returns pull requests that carry the label (any object
+     with a `pull_request` key); the filter above drops them. It also exits
+     non-zero with GitHub's error message when the response isn't an issue list
+     (rate limit, 404, ...) — that is a failed read, not an empty worklist:
+     stop and report the error (step 18 still runs). Never turn a PR into a
+     worklist item or close/comment on it in step 17. Public reads don't need
+     auth. For each issue, extract `{conference_hint, year, source_issue:
+     <issue number>}`: look for a 4-digit year anywhere in the title or body
+     first; whatever text remains once the year is set aside becomes
+     `conference_hint` (join title and body content if both add distinct
+     descriptive text). An issue naming more than one conference (rare, but
+     possible) produces one worklist item per conference, and one item per year
+     if it names more than one year for the same conference.
 
    A single run only uses one of these two — a run given explicit conferences
    looks at open issues only to match them to those conferences, never to
@@ -523,12 +540,17 @@ time after all the work is done. So verify write permission explicitly, with
     - **Names are display/fallback data only.** Use the normalized name
       (trim, collapse whitespace, ASCII-fold, so accented/unaccented
       spellings line up) only to *find candidate* matches. Merge two papers'
-      authors on a normalized-name match only when they share an identity
-      key, or — when no key is available on one side — when the match is
-      verified by an overlapping affiliation, overlapping co-authors, or both
-      papers appearing on the same DBLP/Scholar profile. If a name match
-      can't be verified, count them as **separate** authors (never merge on
-      the name alone) and note the ambiguity in the final report.
+      authors whenever their identity keys match, regardless of display-name
+      differences (initials, transliterations, maiden names). When both have
+      a key but the keys differ (e.g. an ORCID on one paper, a DBLP PID on
+      the other), merge only when a source links them to the same person
+      (the DBLP or Scholar profile lists that ORCID, or both papers appear on
+      the same profile). When a key is missing on either side, merge a
+      normalized-name match only when it is verified by an overlapping
+      affiliation, overlapping co-authors, or both papers appearing on the
+      same DBLP/Scholar profile. Otherwise count them as **separate**
+      authors (never merge on the name alone) and note the ambiguity in the
+      final report.
     - **3 or more confirmed-relevant papers from this edition alone** → this
       author already qualifies as a relevant researcher — proceed to step 13
       with their edition-sourced qualifying papers.
@@ -571,8 +593,12 @@ time after all the work is done. So verify write permission explicitly, with
       recent one found; if sources disagree, prefer the more recently dated
       one.
     - Deduplicate against every existing `RESEARCHERS.md` `## 👤 <Name>`
-      header per destination file. Existing entries carry only a name, so a
-      normalized-name match (step 12's folding) is only a candidate: confirm
+      header per destination file. Some legacy headers append the
+      affiliation to the name with ` - ` or `: ` (e.g. `Jeffrey A. Bilmes -
+      University of Washington`, `Robert D. Nowak: Wisconsin University`), so
+      strip anything after a ` - ` or `: ` separator before applying step
+      12's name normalization. Existing entries carry only a name, so a
+      normalized-name match is only a candidate: confirm
       it is the same person by comparing the entry's affiliation and listed
       papers with this researcher's identity (step 12) and profile; if it
       can't be confirmed, treat it as a different person and say so in the
