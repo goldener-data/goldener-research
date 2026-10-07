@@ -24,6 +24,14 @@ random partitions can hide important edge cases, create misleading evaluation sc
 or mask subtle performance degradation. When this happens, the system appears stable on average,
 but still fails on the scenarios that matter most.
 
+This topic therefore focuses on data-centric methods that use the data itself to decide
+which samples to train on, evaluate with, or monitor: coreset and diversity/coverage-based
+sampling (e.g. in an embedding space), data pruning, data valuation and deduplication,
+train/validation/test splits that preserve the concept distribution, and monitoring sets
+able to estimate performance on the full data or to expose edge cases. Papers that only
+propose a new model or optimizer, or take random sampling as a given, without studying how
+the choice of data affects training or evaluation, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

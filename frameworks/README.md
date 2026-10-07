@@ -13,6 +13,13 @@ data-centric AI and lifecycle optimization. It brings together the tools, method
 approaches, and research contributions that help structure experiments, pipelines, and
 large-scale training workflows.
 
+This topic therefore focuses on frameworks, libraries, and system-level methodologies that
+put data-centric AI into practice: tools that curate, select, split, label, value, clean,
+deduplicate, or monitor datasets (often from embeddings or model signals), benchmarks of
+data-centric methods, and pipelines closing the loop between the data and model training or
+monitoring. General-purpose deep learning, training, or serving frameworks that do not act
+on the data itself are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

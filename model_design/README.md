@@ -23,6 +23,14 @@ deployment constraints. Without a careful search procedure, teams may overfit to
 validation set, choose settings that are brittle, or burn large amounts of compute on
 configurations that bring little value.
 
+This topic therefore focuses on data-centric ways to make model and hyperparameter search
+cheaper and more reliable by using the data itself: searching on small, well-selected
+subsets or proxies of the data, building representative validation and cross-validation
+splits (e.g. from embeddings), predicting how a configuration transfers across datasets
+from their similarity, and estimating how much data is needed to rank candidate models
+reliably. Papers that only propose a new architecture or a generic hyperparameter
+optimizer, without studying the role of the data in the search, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

@@ -22,6 +22,14 @@ redundant, or even harmful when they distort the semantics of the data. Random
 augmentations may create many low-value examples, increase training time, and waste
 compute without improving the downstream task.
 
+This topic therefore focuses on how the initial (real) data can drive synthetic
+augmentation: choosing which samples or regions of the data to augment (e.g. from
+learning dynamics), filtering or auditing generated samples against the original samples
+(e.g. in an embedding space), measuring the fidelity and coverage of synthetic data
+relative to the real distribution, or checking the downstream benefit of synthetic data
+on real data. Papers that only propose a new way to generate or mix samples, without
+using the original data to guide or validate them, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,
