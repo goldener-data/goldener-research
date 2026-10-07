@@ -28,6 +28,14 @@ useful for the downstream task. In imbalanced or noisy settings, a naive loss ca
 weak minority-class performance, poor calibration, or a representation space that collapses
 or becomes dominated by a few patterns.
 
+This topic therefore focuses on losses that leverage the data itself to shape the training
+signal: reweighting samples by density, difficulty, or rarity (e.g. measured in an
+embedding space), using the structure of the data to mine positives and negatives for
+contrastive learning, pseudo-labels or soft targets derived from data neighborhoods,
+robustness to label noise and imbalance, and embedding-based objectives (e.g. matching a
+pretrained representation). Papers that propose a new loss purely from an optimization or
+architectural point of view, without using properties of the data, are out of scope.
+
 ## Resources
 
 The resources in this folder are intended to support both research and practical work,

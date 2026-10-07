@@ -12,7 +12,8 @@
 [**What is Goldener?**](#what-is-goldener) |
 [**Why open research?**](#why-open-research) |
 [**What organisation?**](#what-organisation) |
-[**Themes**](#our-open-research-themes)
+[**Themes**](#our-open-research-themes) |
+[**General resources**](#general-resources)
 
 # Goldener's Open Research
 
@@ -86,3 +87,17 @@ This section allows the community to review findings, validate approaches, and b
 - **[Model design](model_design/README.md)**: Selection of the best models and hyperparameters in AI pipelines.<br>
 - **[Out of distribution](out_of_distribution/README.md)**: Detection of out-of-distribution data in AI pipelines.<br>
 - **[Training strategy](training_strategy/README.md)**: Selection of the best training strategy in AI pipelines.
+
+## General resources
+
+The general resources gather the material that serves Goldener's goal across several themes at once: 
+data-centric AI as a whole, the semantic representation of data through embeddings 
+from pretrained/foundation models (Goldener's core principle), and studies of how the data shapes 
+the full AI lifecycle (e.g. the impact of randomness in data-related choices during training). 
+Material that clearly belongs to a single theme goes into that theme's folder instead, 
+and work that does not use the data itself to improve training or monitoring is
+out of scope.
+
+[📚 Bibliography](BIBLIOGRAPHY.md): cross-cutting papers and references on data-centric AI<br>
+[💡 Ideas](IDEAS.md): open questions and research directions spanning several themes<br>
+[👥 Researchers](RESEARCHERS.md): authors and contributors whose work spans several themes
