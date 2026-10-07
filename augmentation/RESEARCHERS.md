@@ -8,26 +8,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Do We Need All the Synthetic Data? Targeted Image Augmentation via Diffusion Models](https://arxiv.org/abs/2505.21574)
 <br>
 
-## 👤 Khawar Islam
-📍 Affiliation: Autonomy AI
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [HSFM: Hard-Set-Guided Feature-Space Meta-Learning for Robust Classification under Spurious Correlations](https://eccv.ecva.net/virtual/2026/poster/5056)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Context-guided Responsible Data Augmentation with Diffusion Models](https://arxiv.org/abs/2503.10687)
-<br>
-
-## 👤 Naveed Akhtar
-📍 Affiliation: The University of Melbourne
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [HSFM: Hard-Set-Guided Feature-Space Meta-Learning for Robust Classification under Spurious Correlations](https://eccv.ecva.net/virtual/2026/poster/5056)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Context-guided Responsible Data Augmentation with Diffusion Models](https://arxiv.org/abs/2503.10687)
-<br>
-
 ## 👤 Mihaela van der Schaar
 📍 Affiliation: University of Cambridge
 <br>
