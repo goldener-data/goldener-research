@@ -345,7 +345,9 @@ time after all the work is done. So verify write permission explicitly, with
        not-relevant with a short note of what was checked and why nothing held
        up. Do not write a `BIBLIOGRAPHY.md` entry for it.
      - **Confirmed relevant** → record its full author list (not just the
-       first author — this is what step 10 needs) and proceed to step 6 for
+       first author — this is what step 10 needs), with each author's stable
+       identifier when the source gives one (DBLP PID, ORCID, OpenReview
+       profile ID, Google Scholar user ID), and proceed to step 6 for
        this item.
 
 6. **Deduplicate against existing entries.** Extract every `<a href="...">`
@@ -444,11 +446,20 @@ time after all the work is done. So verify write permission explicitly, with
 
     For each seed paper, take its full author list (recorded in step 5, not
     just the single first-author name used in the citation). For each author:
-    - Skip anyone already processed earlier in this run — track one
-      normalized-name set for the whole run (trim, collapse whitespace,
-      ASCII-fold accents, so "\<name\>" and an accented spelling of the same
-      person merge into one entry). This also bounds the recursion, since the
-      set of distinct people is finite and nobody is analyzed twice.
+    - Skip anyone already processed earlier in this run — track one set of
+      author identities for the whole run, keyed by a stable source
+      identifier (DBLP PID, ORCID, OpenReview profile ID, Google Scholar user
+      ID) recorded alongside each author whenever the paper page or the
+      author's profile gives one. Two
+      different researchers can share a normalized name (trim, collapse
+      whitespace, ASCII-fold accents), so a name match is only a
+      *candidate*: it counts as "already processed" only when the
+      identifiers match, or — when either side has none — when an
+      overlapping affiliation, overlapping co-authors, or a shared
+      DBLP/Scholar profile confirms it's the same person. Otherwise treat
+      them as different people and process the new one. This also bounds
+      the recursion, since the set of distinct people is finite and nobody
+      is analyzed twice.
     - Web search `"<name>" google scholar` for their publication list; if no
       profile turns up or the fetch is blocked/empty, fall back to a
       personal/lab homepage or a DBLP page (`"<name>" dblp`, `"<name>"
@@ -456,7 +467,9 @@ time after all the work is done. So verify write permission explicitly, with
     - Title-screen that list for plausible relevance (step 1's map/criteria),
       excluding the seed paper itself, then confirm each shortlisted title by
       abstract exactly as step 5 does — including the same domain-trust check
-      and validate/skip/stop choice for an ambiguous paper link.
+      and validate/skip/stop choice for an ambiguous paper link. Record each
+      confirmed paper's full author list with identifiers as step 5 does,
+      since a newly-added paper becomes a seed in turn.
     - **If this author already has a `RESEARCHERS.md` entry somewhere in the
       repo** (compare against each `## 👤` header after stripping any legacy
       affiliation suffix after a ` - ` or `: ` separator, e.g. `Jeffrey A.

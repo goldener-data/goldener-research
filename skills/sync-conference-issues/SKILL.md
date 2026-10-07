@@ -536,7 +536,8 @@ time after all the work is done. So verify write permission explicitly, with
       the program/proceedings/paper page or the author's profile — a DBLP PID
       (`dblp.org/pid/...`), an ORCID, an OpenReview profile ID (`~First_Last1`),
       or a Google Scholar user ID — recorded alongside the author when the
-      paper is confirmed relevant in step 9.
+      paper is confirmed relevant (step 9, or the broader-record check
+      below).
     - **Names are display/fallback data only.** Use the normalized name
       (trim, collapse whitespace, ASCII-fold, so accented/unaccented
       spellings line up) only to *find candidate* matches. Merge two papers'
@@ -561,7 +562,11 @@ time after all the work is done. So verify write permission explicitly, with
       Title-screen and abstract-confirm that record for relevance per step
       1's map/criteria, excluding papers already counted from this edition,
       and applying the same domain-trust check and validate/skip/stop choice
-      as step 9 to each candidate link.
+      as step 9 to each candidate link. For each paper confirmed this way,
+      record its full author list with identity keys exactly as step 9 does
+      (step 14 needs it if the paper becomes a seed). The Scholar/DBLP
+      profile used here is itself this author's identity key — record it
+      too.
       - **If this brings the total (edition output + broader record) to 3 or
         more**: this author qualifies. Add every newly confirmed-relevant
         paper found in the broader record to `BIBLIOGRAPHY.md` too (steps
@@ -664,7 +669,9 @@ time after all the work is done. So verify write permission explicitly, with
       homepage or a DBLP page) for their publication list, then title-screen
       and abstract-confirm it for relevance per step 1's map/criteria,
       excluding the seed paper itself — including the same domain-trust
-      check and validate/skip/stop choice used in step 9.
+      check and validate/skip/stop choice used in step 9. Record each
+      confirmed paper's full author list with identity keys exactly as step
+      9 does, since a newly-added paper becomes a seed in turn.
     - **If this co-author already has a `RESEARCHERS.md` entry somewhere in
       the repo** (same person confirmed per step 13's dedup rule): any newly
       confirmed-relevant paper not already listed for them is added to
