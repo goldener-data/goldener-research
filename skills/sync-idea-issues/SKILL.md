@@ -148,7 +148,7 @@ time after all the work is done. So verify write permission explicitly, with
 
 2. **List open `idea` issues.**
    ```
-   python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=all" <<'PY'
+   python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=idea&state=open" <<'PY'
    import json, sys, urllib.request, urllib.error
    items, page = [], 1
    while True:

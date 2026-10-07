@@ -189,7 +189,7 @@ time after all the work is done. So verify write permission explicitly, with
      also what to fall back to if a direct request's name turns out to already
      have an open issue, see step 4): list open `researcher` issues —
      ```
-     python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=researcher&state=all" <<'PY'
+     python3 - "https://api.github.com/repos/goldener-data/goldener-research/issues?labels=researcher&state=open" <<'PY'
      import json, sys, urllib.request, urllib.error
      items, page = [], 1
      while True:
