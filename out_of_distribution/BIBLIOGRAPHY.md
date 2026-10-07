@@ -75,15 +75,6 @@
 </div>
 <br>
 <div>
-  <a href="https://eccv.ecva.net/virtual/2026/poster/3387">
-    <strong>Ranked Activation Shift for Post-hoc Out-of-Distribution Detection</strong>
-  </a><br>
-  <small><em>👤 First author: Gianluca Guglielmo</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
-  📝 Note: replaces sorted penultimate activations with a fixed in-distribution reference profile, giving a hyperparameter-free post-hoc OOD detector.
-</div>
-<br>
-<div>
   <a href="https://eccv.ecva.net/virtual/2026/poster/5630">
     <strong>Exploiting Local Flatness for Efficient Out-of-Distribution Detection</strong>
   </a><br>

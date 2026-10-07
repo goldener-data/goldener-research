@@ -178,24 +178,6 @@
   <small><em>📍 Origin: arXiv (2023)</em></small><br>
   📝 Note: unsupervised text drift detection and mitigation using pretrained representations.
 </div>
-<br>
-<div>
-  <a href="https://eccv.ecva.net/virtual/2026/poster/4431">
-    <strong>Invisible Shortcuts: Why Vision Encoders Know Your Camera</strong>
-  </a><br>
-  <small><em>👤 First author: Vladan Stojnic</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
-  📝 Note: shows vision encoders encode invisible acquisition and processing metadata and degrade under metadata distribution shift, and proposes mitigations.
-</div>
-<br>
-<div>
-  <a href="https://eccv.ecva.net/virtual/2026/poster/5543">
-    <strong>Lessons and Open Questions from a Unified Study of Camera-Trap Species Recognition Over Time</strong>
-  </a><br>
-  <small><em>👤 First author: Sooyoung Jeon</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
-  📝 Note: benchmarks camera-trap species recognition over time at 546 fixed sites and shows temporal shift and class imbalance can make naive model updates worse than zero-shot.
-</div>
 
 
 ### With clustering

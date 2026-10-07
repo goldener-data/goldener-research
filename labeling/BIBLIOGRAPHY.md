@@ -283,37 +283,10 @@
 </div>
 <br>
 <div>
-  <a href="https://eccv.ecva.net/virtual/2026/poster/4660">
-    <strong>Why Can Accurate Models Be Learned from Inaccurate Annotations?</strong>
-  </a><br>
-  <small><em>👤 First author: Chongjie Si</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
-  📝 Note: shows label noise mainly perturbs lower singular components of the weights and adds a plug-in preserving the principal subspace to learn accurately from inaccurate annotations.
-</div>
-<br>
-<div>
-  <a href="https://eccv.ecva.net/virtual/2026/poster/5198">
-    <strong>Noise-Robust Face Recognition via Non-target Similarity Distribution Guided Sample Selection</strong>
-  </a><br>
-  <small><em>👤 First author: Fanglong Wu</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
-  📝 Note: detects mislabeled face images from the distribution of non-target cosine similarities and filters them during training without knowing the noise rate.
-</div>
-<br>
-<div>
   <a href="https://eccv.ecva.net/virtual/2026/poster/3959">
     <strong>Holistic Optimal Label Selection for Robust Prompt Learning under Partial Labels</strong>
   </a><br>
   <small><em>👤 First author: Yaqi Zhao</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: picks the most plausible label among partial candidates using nearest-neighbor density in pretrained feature space and batch-level optimal transport.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2603.27197">
-    <strong>KαLOS finds Consensus: A Meta-Algorithm for Evaluating Inter-Annotator Agreement in Complex Vision Tasks</strong>
-  </a><br>
-  <small><em>👤 First author: David Tschirschwitz</em></small><br>
-  <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
-  📝 Note: measures inter-annotator agreement for detection, segmentation and pose by resolving localization correspondence first, giving a standard measure of dataset label quality.
 </div>
