@@ -3,8 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Blocks scripts, external loads and form posts even if something from the paper slips
-     through unescaped; only inline styles and the base64 figure are allowed. Keep it. -->
+<!-- Placeholder contract (enforced when filling this template, see SKILL.md step 7):
+     - Text slots ({{TITLE}}, {{AUTHORS}}, {{VENUE}}, {{PAPER_URL}}, {{INTRO}}, {{FIGURE_ALT}},
+       {{FIGURE_CAPTION}}, {{SOURCE_NOTE}}, {{DATE}}) are HTML-escaped: & < > " '.
+       {{PAPER_URL}} must also be an http(s) URL.
+     - Raw-HTML slots ({{DCAI_BODY}}, {{INNOVATIONS_BODY}}, {{LIMITS_AUTHORS}}, {{LIMITS_REVIEWER}})
+       may only use <p>, <ul>, <li>, <strong>, <em>, <code> without attributes; the text inside
+       them is escaped like the text slots.
+     - {{FIGURE_BASE64}} is base64 characters only.
+     The CSP below is a second layer on top of that, not a replacement: it blocks scripts,
+     external loads and form posts; only inline styles and the base64 figure are allowed. Keep it. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
 <title>{{TITLE}}</title>
 <style>
