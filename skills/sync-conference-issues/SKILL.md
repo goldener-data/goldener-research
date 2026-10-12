@@ -21,10 +21,10 @@ description: Pull GitHub issues labeled "conference" from goldener-data/goldener
 This repo tracks papers and researchers relevant to its themes in per-topic
 `BIBLIOGRAPHY.md` and `RESEARCHERS.md` files (root, general/cross-cutting, plus
 `training_strategy/`, `data_selection/`, `out_of_distribution/`, `frameworks/`,
-`drift/`, `model_design/`, `augmentation/`, `losses/`, `batching/`, `labeling/`,
-and any other topic folder). Every existing folder already has both a
-`BIBLIOGRAPHY.md` and a `RESEARCHERS.md`, but a brand-new topic folder created
-by this run will still need one — see step 13 for creating one when needed.
+`drift/`, `model_design/`, `augmentation/`, `losses/`, `batching/`,
+`labeling/`, and any other topic folder). Every existing folder already has
+both a `BIBLIOGRAPHY.md` and a `RESEARCHERS.md`, but a topic folder added since
+may not — see step 13 for creating one when needed.
 
 A **`conference` issue points at one edition of an entire venue** — findings
 here are two steps removed from the issue itself: first resolve which edition
@@ -159,6 +159,72 @@ time after all the work is done. So verify write permission explicitly, with
   skill can run. Since nothing was touched, there is nothing to restore.
 - Even when both pass, a token can still be refused at PR/issue time (e.g. its
   grants change mid-run) — see "Blockers"; that case is handled there.
+
+## Topic folders
+
+**This run never creates a new topic folder** — the reviewer creates one if
+needed. Every item confirmed relevant in this run (a paper, a researcher, or
+an idea) goes into root or an existing topic folder, chosen this way:
+
+1. List the topic folders at run time: every top-level directory holding a
+   `README.md`, excluding `skills/` and hidden directories.
+2. For each one, read its `README.md` "Context" section — including any
+   explicit out-of-scope sentence — and the `##`/`###` headings of its
+   `BIBLIOGRAPHY.md`/`IDEAS.md`. The item matches that folder if it fits the
+   scope the Context describes; an existing heading covering its kind of work
+   is a strong sign of a match, but only within that scope — an explicit
+   out-of-scope sentence in the Context always wins over a heading. A partial
+   but reasonable fit is still a match.
+3. An item that is cross-cutting/general data-centric-AI work goes to the
+   root file.
+4. If the item matches no existing topic, place it in the closest one (root
+   if none is even close) and flag it in the PR description and the final
+   report as a **possible new topic**: the item, a suggested topic name (a
+   broad area of the AI lifecycle such as `curriculum_learning`, never a
+   single paper, method or researcher), and for each existing topic a
+   one-line reason why it doesn't fit. Group items of the same suggested
+   area together. The reviewer decides whether to create the folder and move
+   the entries.
+
+## Counting an author's papers
+
+Every time this skill counts an author's confirmed-relevant papers against the
+3-paper researcher threshold, **the count also includes the author's papers
+already present in the repo**, not only the papers found in this run: a few
+new articles can be what makes an author already partly covered by the
+bibliography a relevant researcher.
+
+- **Finding them.** A `BIBLIOGRAPHY.md` entry only names its first author, so
+  the repo alone can't tell which entries an author co-wrote. Start from the
+  author's own publication list instead (the Google Scholar, DBLP or homepage
+  profile used for the rest of the tally), and compare every paper on it
+  against the links and titles of *all* `BIBLIOGRAPHY.md` files, with the same
+  link/title normalization as the duplicate check (strip a trailing slash,
+  `arxiv.org/abs/<id>` = `arxiv.org/pdf/<id>`; titles trimmed,
+  whitespace-collapsed, lowercased). Each match is one of their papers already
+  in the repo.
+- **Checking authorship.** A match only counts when that profile is
+  confirmed to be this author (same identity rules as the rest of the tally:
+  matching stable identifier, or distinctive evidence such as the seed paper
+  appearing on the same profile — never a name match alone). When in doubt,
+  open the matched paper's own page and check the author is on its author
+  list; if it still can't be confirmed, don't count it and say so in the
+  final report.
+- **No second relevance check.** Such a paper counts without being
+  re-confirmed by abstract: it was already judged relevant when it was added.
+  It is never written to `BIBLIOGRAPHY.md` again, and it is not a new seed for
+  the co-author recursion.
+- **Counted once.** Each distinct paper counts once, however many times it
+  matches: deduplicate the matches across *all* `BIBLIOGRAPHY.md` files first
+  (entries with the same normalized link or the same normalized title are one
+  paper, even when listed in several topic files), and a paper found in this
+  run that is also already in the repo counts once too. Apply the 3-paper
+  threshold only to this deduplicated count.
+- **Researcher entry.** When the author qualifies, their `RESEARCHERS.md`
+  entry lists every qualifying paper, including those already in the repo (in
+  the topic file matching each paper's existing `BIBLIOGRAPHY.md` location).
+- **Reporting.** In the PR description and final report, give each author's
+  count split into papers found in this run and papers already in the repo.
 
 ## Steps
 
@@ -536,9 +602,10 @@ time after all the work is done. So verify write permission explicitly, with
       existing one. If no step ever writes a file, no branch is created (see
       step 15's no-changes path).
     - Prefer root `BIBLIOGRAPHY.md` only for clearly cross-cutting/general
-      data-centric-AI work; otherwise the single best-matching topic folder,
-      or the folder matching the specific AI-lifecycle step for a paper
-      confirmed only via the standing embedding criterion.
+      data-centric-AI work; otherwise the single best-matching topic folder
+      (never a new folder — see "Topic folders"), or the folder matching the
+      specific AI-lifecycle step for a paper confirmed only via the standing
+      embedding criterion.
     - Pick the closest existing `##`/`###` sub-theme by rereading a couple of
       its entries, or add a new one (preceded by the file's own `---`
       convention) if nothing fits.
@@ -596,6 +663,10 @@ time after all the work is done. So verify write permission explicitly, with
       only to find the profile to check. Otherwise count them as **separate**
       authors (never merge on the name alone) and note the ambiguity in the
       final report.
+    - **Papers already in the repo count too:** add each author's papers
+      already present in a `BIBLIOGRAPHY.md` to their count, per "Counting an
+      author's papers". In the bullets below, "this edition" includes those
+      papers.
     - **3 or more confirmed-relevant papers from this edition alone** → this
       author already qualifies as a relevant researcher — proceed to step 13
       with their edition-sourced qualifying papers.
@@ -656,17 +727,17 @@ time after all the work is done. So verify write permission explicitly, with
       qualifying papers not already listed under it; every qualifying paper
       already listed everywhere applicable → this researcher is a **duplicate**
       for this run, record and skip.
-    - Pick the destination file per qualifying paper the same way step 11
-      does for `BIBLIOGRAPHY.md` (root only for clearly cross-cutting work,
+    - Pick the destination file per qualifying paper the same way step 11 does
+      for `BIBLIOGRAPHY.md` (root only for clearly cross-cutting work,
       otherwise the best-matching topic folder) — a researcher can land in
-      several `RESEARCHERS.md` files if their qualifying papers span topics.
-      If the best-matching topic folder has no `RESEARCHERS.md` yet (every
-      existing folder has one; this applies only to a brand-new topic folder
-      created by this run), create one first (header `# <Topic title case> -
-      Researchers`) and wire it into that topic's own `README.md` (a
-      `[👥 Researchers](RESEARCHERS.md)` line in both "At a glance" and
-      "Resources", right after the Bibliography line) — this edit is staged
-      and committed alongside the new file in step 15.
+      several `RESEARCHERS.md` files if their qualifying papers span topics. If
+      the best-matching topic folder has no `RESEARCHERS.md` yet (every
+      existing folder has one; this applies only to a topic folder added
+      since), create one first (header `# <Topic title case> - Researchers`)
+      and wire it into that topic's own `README.md` (a `[👥
+      Researchers](RESEARCHERS.md)` line in both "At a glance" and "Resources",
+      right after the Bibliography line) — this edit is staged and committed
+      alongside the new file in step 15.
     - Format (identical to every existing entry, `<br>` after every line, one
       blank line before the next `## 👤`):
       ```
@@ -736,22 +807,22 @@ time after all the work is done. So verify write permission explicitly, with
     - **If this co-author has no `RESEARCHERS.md` entry yet:** count their
       confirmed-relevant papers **including the seed paper they co-authored**
       (plus any other paper of theirs already confirmed relevant earlier in
-      this run). **If the total is at least 3** (so, the seed plus at least 2
-      other confirmed-relevant papers): this co-author becomes a relevant
-      researcher — write a `RESEARCHERS.md`
-      entry for them (step 13's format) in each topic file matching one of
-      their qualifying papers (step 13's placement rule, creating the file
-      and wiring its `README.md` if the folder doesn't have one yet), and add
-      every one of the "other" newly confirmed papers to `BIBLIOGRAPHY.md`
-      too (the seed is already there). Unless the current seed paper is
-      already at level 2, each newly-added paper becomes a seed one level
-      deeper; if the current seed paper is already at level 2, these papers
-      are still added but none of them are enqueued as further seeds. **If
-      the total, seed included, is under 3**, do not add a
-      `RESEARCHERS.md` entry and do not add any of the probed papers —
-      discard the probe's findings entirely, and just note in the final
-      report that this co-author was checked and how many relevant papers
-      were found in total, seed included (short of the threshold).
+      this run, and any paper of theirs already in a `BIBLIOGRAPHY.md` — see
+      "Counting an author's papers"). **If the total is at least 3** (so, the
+      seed plus at least 2 other confirmed-relevant papers): this co-author
+      becomes a relevant researcher — write a `RESEARCHERS.md` entry for them
+      (step 13's format) in each topic file matching one of their qualifying
+      papers (step 13's placement rule, creating the file and wiring its
+      `README.md` if the folder doesn't have one yet), and add every one of the
+      "other" newly confirmed papers to `BIBLIOGRAPHY.md` too (the seed is
+      already there). Unless the current seed paper is already at level 2, each
+      newly-added paper becomes a seed one level deeper; if the current seed
+      paper is already at level 2, these papers are still added but none of
+      them are enqueued as further seeds. **If the total, seed included, is
+      under 3**, do not add a `RESEARCHERS.md` entry and do not add any of the
+      probed papers — discard the probe's findings entirely, and just note in
+      the final report that this co-author was checked and how many relevant
+      papers were found in total, seed included (short of the threshold).
 
 15. **Commit, push — no confirmation.**
     - **No-changes path:** if steps 11–14 wrote nothing (every
@@ -764,13 +835,14 @@ time after all the work is done. So verify write permission explicitly, with
       step 18.
     - Otherwise, the run branch from step 11 is checked out. Stage only the
       modified `BIBLIOGRAPHY.md`, `RESEARCHERS.md`, and (for a newly created
-      `RESEARCHERS.md`) `README.md` files — never `git add -A`. Commit
-      message: `Add papers and researchers - YYYY-MM-DD` (today's date; if
-      every migrated item came from GitHub issues, `Add papers and
-      researchers from GitHub issues labeled conference - YYYY-MM-DD` is the
-      more precise, preferred wording — word it differently if that reads
-      better, but always include today's date — reused verbatim as the PR
-      title). Push immediately with `-u origin <branch>`.
+      `RESEARCHERS.md`) `README.md` files — never `git add -A`. Commit message:
+      `Add papers and researchers - YYYY-MM-DD` (today's date; if every
+      migrated item came from GitHub issues, `Add papers and researchers from
+      GitHub issues labeled conference
+      - YYYY-MM-DD` is the more precise, preferred wording — word it
+      differently if that reads better, but always include today's date —
+      reused verbatim as the PR title). Push immediately with `-u origin
+      <branch>`.
 
 16. **Open the PR immediately — no confirmation.** Title: reuse the exact
     commit message verbatim. Build a description that, per conference edition
@@ -950,20 +1022,16 @@ time after all the work is done. So verify write permission explicitly, with
   step 9 (and steps 12 and 14's recursive checks) requires the abstract to
   actually be read. Title-screening (step 8) only builds the shortlist, it
   never confirms anything by itself.
-- **The 3-paper researcher threshold is the defining rule of this skill, and
-  it is never satisfied by a single edition's own output alone if that
-  output falls short** — step 12 requires checking an author's broader
-  publication record before concluding they don't qualify, and step 14
-  applies the same 3-paper rule to co-authors reached only through that
-  broader record or through further recursion — counting the co-authored
-  seed paper that surfaced them as one of the 3 (so the seed plus 2 others
-  is enough). Never add a `RESEARCHERS.md` entry for anyone under the
-  applicable threshold, and never let a paper already sitting in
-  `BIBLIOGRAPHY.md` from an *earlier* run count toward any
-  of these tallies unless it was independently reconfirmed relevant during
-  *this* run. A duplicate paper found again during this scan (step 10) does
-  still count, since it was reconfirmed relevant in step 9 before being
-  recognized as a duplicate.
+- **The 3-paper researcher threshold is the defining rule of this skill, and it
+  is never satisfied by a single edition's own output alone if that output
+  falls short** — step 12 requires checking an author's broader publication
+  record before concluding they don't qualify, and step 14 applies the same
+  3-paper rule to co-authors reached only through that broader record or
+  through further recursion — counting the co-authored seed paper that surfaced
+  them as one of the 3 (so the seed plus 2 others is enough). Never add a
+  `RESEARCHERS.md` entry for anyone under the applicable threshold, and count
+  the author's papers already in a `BIBLIOGRAPHY.md` in every one of these
+  tallies (see "Counting an author's papers").
 - A paper can be added to `BIBLIOGRAPHY.md` (step 11, or via steps 12/14)
   without its author(s) ever becoming a tracked researcher (step 13) — these
   are independent outcomes, and it's expected that most confirmed-relevant

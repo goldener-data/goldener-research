@@ -133,6 +133,32 @@ time after all the work is done. So verify write permission explicitly, with
 - Even when both pass, a token can still be refused at PR/issue time (e.g. its
   grants change mid-run) — see "Blockers"; that case is handled there.
 
+## Topic folders
+
+**This run never creates a new topic folder** — the reviewer creates one if
+needed. Every item confirmed relevant in this run (a paper, a researcher, or
+an idea) goes into root or an existing topic folder, chosen this way:
+
+1. List the topic folders at run time: every top-level directory holding a
+   `README.md`, excluding `skills/` and hidden directories.
+2. For each one, read its `README.md` "Context" section — including any
+   explicit out-of-scope sentence — and the `##`/`###` headings of its
+   `BIBLIOGRAPHY.md`/`IDEAS.md`. The item matches that folder if it fits the
+   scope the Context describes; an existing heading covering its kind of work
+   is a strong sign of a match, but only within that scope — an explicit
+   out-of-scope sentence in the Context always wins over a heading. A partial
+   but reasonable fit is still a match.
+3. An item that is cross-cutting/general data-centric-AI work goes to the
+   root file.
+4. If the item matches no existing topic, place it in the closest one (root
+   if none is even close) and flag it in the PR description and the final
+   report as a **possible new topic**: the item, a suggested topic name (a
+   broad area of the AI lifecycle such as `curriculum_learning`, never a
+   single paper, method or researcher), and for each existing topic a
+   one-line reason why it doesn't fit. Group items of the same suggested
+   area together. The reviewer decides whether to create the folder and move
+   the entries.
+
 ## Steps
 
 1. **Prepare the working tree.** Do this before anything else touches git.
@@ -256,28 +282,30 @@ time after all the work is done. So verify write permission explicitly, with
    an issue based on a guess.
 
 6. **Pick the destination file per issue (new issues only — in-progress issues
-   were filtered in step 4, duplicates were filtered in step 5).**
-   Read each candidate folder's `README.md`
-   "Context" section and the existing entries in its `IDEAS.md` to judge topical fit
-   — issues have no topic label, so this is a content-matching judgment call, not a
-   lookup. When an issue spans multiple topics (e.g. touches augmentation, batching,
-   *and* model design), prefer the root `IDEAS.md` — check it first for a similar
-   existing general entry, as that's a strong signal the new one belongs there too.
+   were filtered in step 4, duplicates were filtered in step 5).** Read each
+   candidate folder's `README.md` "Context" section and the existing entries in
+   its `IDEAS.md` to judge topical fit — issues have no topic label, so this is
+   a content-matching judgment call, not a lookup. Never create a new topic
+   folder: an issue matching no existing topic goes to the closest fit (or
+   root) and is flagged in the PR — see "Topic folders". When an issue spans
+   multiple topics (e.g. touches augmentation, batching, *and* model design),
+   prefer the root `IDEAS.md` — check it first for a similar existing general
+   entry, as that's a strong signal the new one belongs there too.
 
    **Create missing files.** If the chosen folder has no `IDEAS.md` yet, create
    it before appending, with the header `# <Topic title case> -
    Ideas/Questions` (e.g. `# Losses - Ideas/Questions`) followed by a blank
-   line, copying the header pattern of the sibling files exactly (entries
-   then follow in step 7's format, starting with the `---` delimiter as in
-   those files). Also wire it into that folder's `README.md`: add
-   `[💡 Ideas](IDEAS.md)` to both the "At a glance" list and the "Resources"
-   list (with a one-clause description on the Resources line, e.g. "research
+   line, copying the header pattern of the sibling files exactly (entries then
+   follow in step 7's format, starting with the `---` delimiter as in those
+   files). Also wire it into that folder's `README.md`: add `[💡
+   Ideas](IDEAS.md)` to both the "At a glance" list and the "Resources" list
+   (with a one-clause description on the Resources line, e.g. "research
    questions and open directions", matching that file's other entries), in the
    order Bibliography, Ideas, Researchers, Tools (skipping ones that don't
-   exist) and keeping that file's own line-ending convention. If the folder
-   has no `README.md` at all, create the `IDEAS.md` anyway and skip the
-   wiring, noting it in the final report. Both files are staged and committed
-   in step 8.
+   exist) and keeping that file's own line-ending convention. If the folder has
+   no `README.md` at all, create the `IDEAS.md` anyway and skip the wiring,
+   noting it in the final report. Both files are staged and committed in step
+   8.
 
 7. **Format each entry** matching the existing style exactly (line-for-line, including
    the `<br>` suffixes and the `---` delimiters before and after):
@@ -299,21 +327,21 @@ time after all the work is done. So verify write permission explicitly, with
    Append entries at the end of the target file (right after its last `---`).
 
 8. **Branch, commit, push — no confirmation.** By this point `main` is checked
-   out and up to date (step 1). **Always create a brand-new branch for this run**
-   — `git checkout -b YYYY-MM-DD-add-new-idea` off `main` (today's date). Never
-   check out or reuse an existing branch, even one left over unfinished from a
-   previous run of this skill (e.g. a same-pattern branch that was pushed but
-   never got a PR — see the "PR creation fails" blocker): a leftover branch is
-   evidence of a past incomplete run, not a base to build on. If a branch with
-   today's date already exists locally or on origin, append `-2`, `-3`, etc. to
-   the new branch's name instead of touching the existing one. Stage only the
-   modified or newly created `IDEAS.md` files, plus the `README.md` of any
-   folder where one was created — never `git add -A`. Commit message:
-   `Add ideas from GitHub issues labeled idea - YYYY-MM-DD` (today's date, same
-   format as the branch name; word it differently if that reads better, but
-   **always include today's date** — this exact string is reused verbatim as
-   the PR title in step 9). Push immediately with `-u origin <branch>` — do not
-   pause before pushing.
+   out and up to date (step 1). **Always create a brand-new branch for this
+   run** — `git checkout -b YYYY-MM-DD-add-new-idea` off `main` (today's date).
+   Never check out or reuse an existing branch, even one left over unfinished
+   from a previous run of this skill (e.g. a same-pattern branch that was
+   pushed but never got a PR — see the "PR creation fails" blocker): a leftover
+   branch is evidence of a past incomplete run, not a base to build on. If a
+   branch with today's date already exists locally or on origin, append `-2`,
+   `-3`, etc. to the new branch's name instead of touching the existing one.
+   Stage only the modified or newly created `IDEAS.md` files, plus the
+   `README.md` of any folder where one was created — never `git add -A`. Commit
+   message: `Add ideas from GitHub issues labeled idea - YYYY-MM-DD` (today's
+   date, same format as the branch name; word it differently if that reads
+   better, but **always include today's date** — this exact string is reused
+   verbatim as the PR title in step 9). Push immediately with `-u origin
+   <branch>` — do not pause before pushing.
 
 9. **Open the PR immediately — no confirmation.** Title: reuse the exact commit
    message from step 8 verbatim (`Add ideas from GitHub issues labeled idea -

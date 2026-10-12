@@ -1,23 +1,24 @@
 ---
 name: sync-paper-issues
-description: Pull GitHub issues labeled "paper" from goldener-data/goldener-research
-  (one issue can list one or several articles/posters/conference proceedings, in
-  its title and/or its body, as a title, a link, or both — a link alone or a
-  title alone is enough to identify one), or take one or more papers named
-  directly in the request the same way (by title, by link, or both), research
-  each paper (fetch its source page, confirm relevance from the abstract), then
-  recursively check each confirmed paper's co-authors for 3 or more other
-  relevant papers of their own (adding those papers and the co-author as a
-  researcher when they qualify, and recursing into their co-authors in turn, up
-  to 2 levels deep), then branch, commit, push, open a PR adding every
-  confirmed paper (seed and recursively discovered) to the matching topic
-  `BIBLIOGRAPHY.md` file(s) and every qualifying researcher to the matching
-  topic `RESEARCHERS.md` file(s), and close any source issues — fully
-  autonomously, no confirmation prompts. Use when the user asks to
-  sync/import/migrate paper issues into the docs, "add the paper issues to
-  BIBLIOGRAPHY.md", "turn the paper issues into bibliography entries", or
-  directly names/links a paper to add (e.g. "add <title> to the bibliography",
-  "add <arXiv/DOI/OpenReview link> to goldener research").
+description: Pull GitHub issues labeled "paper" from
+  goldener-data/goldener-research (one issue can list one or several
+  articles/posters/conference proceedings, in its title and/or its body, as a
+  title, a link, or both — a link alone or a title alone is enough to identify
+  one), or take one or more papers named directly in the request the same way
+  (by title, by link, or both), research each paper (fetch its source page,
+  confirm relevance from the abstract), then recursively check each confirmed
+  paper's co-authors for 3 or more relevant papers of their own (the shared
+  paper included) (adding those papers and the co-author as a researcher when
+  they qualify, and recursing into their co-authors in turn, up to 2 levels
+  deep), then branch, commit, push, open a PR adding every confirmed paper (seed
+  and recursively discovered) to the matching topic `BIBLIOGRAPHY.md` file(s)
+  and every qualifying researcher to the matching topic `RESEARCHERS.md`
+  file(s), and close any source issues — fully autonomously, no confirmation
+  prompts. Use when the user asks to sync/import/migrate paper issues into the
+  docs, "add the paper issues to BIBLIOGRAPHY.md", "turn the paper issues into
+  bibliography entries", or directly names/links a paper to add (e.g. "add
+  <title> to the bibliography", "add <arXiv/DOI/OpenReview link> to goldener
+  research").
 ---
 
 # Sync paper issues into `BIBLIOGRAPHY.md`
@@ -145,6 +146,72 @@ time after all the work is done. So verify write permission explicitly, with
   skill can run. Since nothing was touched, there is nothing to restore.
 - Even when both pass, a token can still be refused at PR/issue time (e.g. its
   grants change mid-run) — see "Blockers"; that case is handled there.
+
+## Topic folders
+
+**This run never creates a new topic folder** — the reviewer creates one if
+needed. Every item confirmed relevant in this run (a paper, a researcher, or
+an idea) goes into root or an existing topic folder, chosen this way:
+
+1. List the topic folders at run time: every top-level directory holding a
+   `README.md`, excluding `skills/` and hidden directories.
+2. For each one, read its `README.md` "Context" section — including any
+   explicit out-of-scope sentence — and the `##`/`###` headings of its
+   `BIBLIOGRAPHY.md`/`IDEAS.md`. The item matches that folder if it fits the
+   scope the Context describes; an existing heading covering its kind of work
+   is a strong sign of a match, but only within that scope — an explicit
+   out-of-scope sentence in the Context always wins over a heading. A partial
+   but reasonable fit is still a match.
+3. An item that is cross-cutting/general data-centric-AI work goes to the
+   root file.
+4. If the item matches no existing topic, place it in the closest one (root
+   if none is even close) and flag it in the PR description and the final
+   report as a **possible new topic**: the item, a suggested topic name (a
+   broad area of the AI lifecycle such as `curriculum_learning`, never a
+   single paper, method or researcher), and for each existing topic a
+   one-line reason why it doesn't fit. Group items of the same suggested
+   area together. The reviewer decides whether to create the folder and move
+   the entries.
+
+## Counting an author's papers
+
+Every time this skill counts an author's confirmed-relevant papers against the
+3-paper researcher threshold, **the count also includes the author's papers
+already present in the repo**, not only the papers found in this run: a few
+new articles can be what makes an author already partly covered by the
+bibliography a relevant researcher.
+
+- **Finding them.** A `BIBLIOGRAPHY.md` entry only names its first author, so
+  the repo alone can't tell which entries an author co-wrote. Start from the
+  author's own publication list instead (the Google Scholar, DBLP or homepage
+  profile used for the rest of the tally), and compare every paper on it
+  against the links and titles of *all* `BIBLIOGRAPHY.md` files, with the same
+  link/title normalization as the duplicate check (strip a trailing slash,
+  `arxiv.org/abs/<id>` = `arxiv.org/pdf/<id>`; titles trimmed,
+  whitespace-collapsed, lowercased). Each match is one of their papers already
+  in the repo.
+- **Checking authorship.** A match only counts when that profile is
+  confirmed to be this author (same identity rules as the rest of the tally:
+  matching stable identifier, or distinctive evidence such as the seed paper
+  appearing on the same profile — never a name match alone). When in doubt,
+  open the matched paper's own page and check the author is on its author
+  list; if it still can't be confirmed, don't count it and say so in the
+  final report.
+- **No second relevance check.** Such a paper counts without being
+  re-confirmed by abstract: it was already judged relevant when it was added.
+  It is never written to `BIBLIOGRAPHY.md` again, and it is not a new seed for
+  the co-author recursion.
+- **Counted once.** Each distinct paper counts once, however many times it
+  matches: deduplicate the matches across *all* `BIBLIOGRAPHY.md` files first
+  (entries with the same normalized link or the same normalized title are one
+  paper, even when listed in several topic files), and a paper found in this
+  run that is also already in the repo counts once too. Apply the 3-paper
+  threshold only to this deduplicated count.
+- **Researcher entry.** When the author qualifies, their `RESEARCHERS.md`
+  entry lists every qualifying paper, including those already in the repo (in
+  the topic file matching each paper's existing `BIBLIOGRAPHY.md` location).
+- **Reporting.** In the PR description and final report, give each author's
+  count split into papers found in this run and papers already in the repo.
 
 ## Steps
 
@@ -414,32 +481,33 @@ time after all the work is done. So verify write permission explicitly, with
    matched as a duplicate instead of being written twice.
 
 7. **Pick the destination file.** Read the candidate folder's `README.md`
-   "Context" section and its existing `BIBLIOGRAPHY.md` entries to judge topical
-   fit — issues (and direct requests) have no topic label, so this is a
+   "Context" section and its existing `BIBLIOGRAPHY.md` entries to judge
+   topical fit — issues (and direct requests) have no topic label, so this is a
    content-matching judgment call, not a lookup. Prefer root `BIBLIOGRAPHY.md`
    only for a paper that is clearly cross-cutting/general data-centric-AI work
    not tied to one specific theme (existing root entries are a good reference
-   for that bar) — otherwise use the single best-matching topic folder. For a
-   paper confirmed only via the embedding-for-a-lifecycle-step criterion (step
-   1), place it in the folder for the specific step it improves (e.g.
-   embeddings improving batch composition → `batching`; embeddings improving
-   drift detection → `drift`) — use root only if the paper applies the pattern
-   generically across steps rather than to one.
+   for that bar) — otherwise use the single best-matching topic folder (never a
+   new folder — see "Topic folders"). For a paper confirmed only via the
+   embedding-for-a-lifecycle-step criterion (step 1), place it in the folder
+   for the specific step it improves (e.g. embeddings improving batch
+   composition → `batching`; embeddings improving drift detection → `drift`) —
+   use root only if the paper applies the pattern generically across steps
+   rather than to one.
 
    **Create missing files.** If the chosen folder has no `BIBLIOGRAPHY.md` or
    no `RESEARCHERS.md` yet (which happens for any newly added topic folder),
    create it before appending, with the header `# <Topic title case> -
    Bibliography` / `# <Topic title case> - Researchers` (e.g. `# Frameworks -
    Bibliography`), copying the header pattern of the sibling files exactly.
-   When creating one, also wire it into that folder's `README.md`: add
-   `[📚 Bibliography](BIBLIOGRAPHY.md)` / `[👥 Researchers](RESEARCHERS.md)` to
-   both the "At a glance" list and the "Resources" list (with a one-clause
-   description on the Resources line, matching that file's other entries),
-   in the order Bibliography, Ideas, Researchers, Tools (skipping ones that
-   don't exist) and keeping that file's own line-ending convention. If the
-   folder has no `README.md` at all, create the missing file anyway and skip
-   the wiring, noting it in the final report. Every file created or edited
-   this way is staged and committed in step 11 alongside the entries.
+   When creating one, also wire it into that folder's `README.md`: add `[📚
+   Bibliography](BIBLIOGRAPHY.md)` / `[👥 Researchers](RESEARCHERS.md)` to both
+   the "At a glance" list and the "Resources" list (with a one-clause
+   description on the Resources line, matching that file's other entries), in
+   the order Bibliography, Ideas, Researchers, Tools (skipping ones that don't
+   exist) and keeping that file's own line-ending convention. If the folder has
+   no `README.md` at all, create the missing file anyway and skip the wiring,
+   noting it in the final report. Every file created or edited this way is
+   staged and committed in step 11 alongside the entries.
 
 8. **Pick or create the sub-theme heading** in the destination file's
    `BIBLIOGRAPHY.md` (the `##`/`###` sections each file is organized into, e.g.
@@ -557,25 +625,28 @@ time after all the work is done. So verify write permission explicitly, with
       deeper; if the current seed paper is already at level 2, these papers
       are still added/appended as above but none of them are enqueued as
       further seeds.
-    - **If this author has no `RESEARCHERS.md` entry yet:** count the other
-      confirmed-relevant papers found (excluding the seed). **If there are at
-      least 3** (so, together with the seed, at least 4 total): this author
+    - **If this author has no `RESEARCHERS.md` entry yet:** count their
+      confirmed-relevant papers **including the seed paper they co-authored**
+      (plus any other paper of theirs already confirmed relevant earlier in
+      this run, and any paper of theirs already in a `BIBLIOGRAPHY.md` — see
+      "Counting an author's papers"). **If the total is at least 3** (so, the
+      seed plus at least 2 other confirmed-relevant papers): this author
       becomes a relevant researcher. Write a `RESEARCHERS.md` entry for them
       (current affiliation via the same Scholar/homepage/DBLP lookup, most
       recent one found) in each topic file matching one of their qualifying
       papers — root only for clearly cross-cutting work, otherwise the
       best-matching topic folder, same rule as step 7; if the folder has no
-      `RESEARCHERS.md` yet, create it and wire it into that topic's
-      `README.md` per step 7's "Create missing files" rule. Add every one of the "other" newly
-      confirmed papers to `BIBLIOGRAPHY.md` too (the seed is already there).
-      Unless the current seed paper is already at level 2, each newly-added
-      paper becomes a seed one level deeper; if the current seed paper is
-      already at level 2, these papers are still added but none of them are
-      enqueued as further seeds. **If fewer than 3 other confirmed-relevant
-      papers are found**, do not add a `RESEARCHERS.md` entry and do not add
-      any of the probed papers — discard the probe's findings entirely, and
-      just note in the final report that this author was checked and how
-      many relevant papers were found (short of the threshold).
+      `RESEARCHERS.md` yet, create it and wire it into that topic's `README.md`
+      per step 7's "Create missing files" rule. Add every one of the "other"
+      newly confirmed papers to `BIBLIOGRAPHY.md` too (the seed is already
+      there). Unless the current seed paper is already at level 2, each
+      newly-added paper becomes a seed one level deeper; if the current seed
+      paper is already at level 2, these papers are still added but none of
+      them are enqueued as further seeds. **If the total, seed included, is
+      under 3**, do not add a `RESEARCHERS.md` entry and do not add any of the
+      probed papers — discard the probe's findings entirely, and just note in
+      the final report that this author was checked and how many relevant
+      papers were found in total, seed included (short of the threshold).
 
     Use the exact `RESEARCHERS.md` format used throughout this repo (`<br>`
     after every line, one blank line before the next `## 👤`):
@@ -596,16 +667,15 @@ time after all the work is done. So verify write permission explicitly, with
     date). Never check out or reuse an existing branch, even one left over
     unfinished from a previous run of this skill: a leftover branch is evidence
     of a past incomplete run, not a base to build on. If a branch with today's
-    date already exists locally or on origin, append `-2`, `-3`, etc. instead of
-    touching the existing one. Stage only the modified or newly created `BIBLIOGRAPHY.md` and
-    `RESEARCHERS.md` files, plus the `README.md` of any folder where one was
-    created — never `git add -A`. Commit message:
-    `Add papers - YYYY-MM-DD`
-    (today's date; if every migrated item in this run came from GitHub issues,
-    `Add papers from GitHub issues labeled paper - YYYY-MM-DD` is the more
-    precise, preferred wording — word it differently if that reads better, but
-    always include today's date — reused verbatim as the PR title). Push
-    immediately with `-u origin <branch>`.
+    date already exists locally or on origin, append `-2`, `-3`, etc. instead
+    of touching the existing one. Stage only the modified or newly created
+    `BIBLIOGRAPHY.md` and `RESEARCHERS.md` files, plus the `README.md` of any
+    folder where one was created — never `git add -A`. Commit message: `Add
+    papers - YYYY-MM-DD` (today's date; if every migrated item in this run came
+    from GitHub issues, `Add papers from GitHub issues labeled paper -
+    YYYY-MM-DD` is the more precise, preferred wording — word it differently if
+    that reads better, but always include today's date — reused verbatim as the
+    PR title). Push immediately with `-u origin <branch>`.
 
 12. **Open the PR immediately — no confirmation.** Title: reuse the exact commit
     message verbatim. Build a description that lists, per modified
@@ -743,13 +813,12 @@ time after all the work is done. So verify write permission explicitly, with
   step 5 (and step 10's recursive checks) requires the abstract to actually
   be read and to genuinely support relevance, not just share keywords with a
   repo theme.
-- **The 3-paper researcher threshold in step 10 is about the co-author's own
-  output, not the repo's history**: never add a `RESEARCHERS.md` entry for a
-  co-author with fewer than 3 *other* confirmed-relevant papers found during
-  this run (4 total including the seed), and never let a paper already
-  sitting in `BIBLIOGRAPHY.md` from an earlier, unrelated skill run count
-  toward that tally unless it was independently reconfirmed relevant during
-  *this* run.
+- **The 3-paper researcher threshold in step 10 counts the co-author's whole
+  relevant output, in this run and already in the repo**: never add a
+  `RESEARCHERS.md` entry for a co-author with fewer than 3 confirmed-relevant
+  papers in total — the co-authored seed paper included (so the seed plus 2
+  others is enough), and their papers already in a `BIBLIOGRAPHY.md` counted
+  too (see "Counting an author's papers").
 - A duplicate paper (step 6) still triggers step 10's co-author expansion —
   being already present in `BIBLIOGRAPHY.md` doesn't make its authors any
   less worth checking.
