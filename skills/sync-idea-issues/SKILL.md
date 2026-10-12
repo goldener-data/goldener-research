@@ -144,8 +144,10 @@ an idea) goes into root or an existing topic folder, chosen this way:
 2. For each one, read its `README.md` "Context" section — including any
    explicit out-of-scope sentence — and the `##`/`###` headings of its
    `BIBLIOGRAPHY.md`/`IDEAS.md`. The item matches that folder if it fits the
-   scope the Context describes, or if an existing heading already covers its
-   kind of work. A partial but reasonable fit is still a match.
+   scope the Context describes; an existing heading covering its kind of work
+   is a strong sign of a match, but only within that scope — an explicit
+   out-of-scope sentence in the Context always wins over a heading. A partial
+   but reasonable fit is still a match.
 3. An item that is cross-cutting/general data-centric-AI work goes to the
    root file.
 4. If the item matches no existing topic, place it in the closest one (root

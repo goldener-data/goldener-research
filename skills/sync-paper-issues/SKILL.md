@@ -158,8 +158,10 @@ an idea) goes into root or an existing topic folder, chosen this way:
 2. For each one, read its `README.md` "Context" section — including any
    explicit out-of-scope sentence — and the `##`/`###` headings of its
    `BIBLIOGRAPHY.md`/`IDEAS.md`. The item matches that folder if it fits the
-   scope the Context describes, or if an existing heading already covers its
-   kind of work. A partial but reasonable fit is still a match.
+   scope the Context describes; an existing heading covering its kind of work
+   is a strong sign of a match, but only within that scope — an explicit
+   out-of-scope sentence in the Context always wins over a heading. A partial
+   but reasonable fit is still a match.
 3. An item that is cross-cutting/general data-centric-AI work goes to the
    root file.
 4. If the item matches no existing topic, place it in the closest one (root
@@ -170,6 +172,42 @@ an idea) goes into root or an existing topic folder, chosen this way:
    one-line reason why it doesn't fit. Group items of the same suggested
    area together. The reviewer decides whether to create the folder and move
    the entries.
+
+## Counting an author's papers
+
+Every time this skill counts an author's confirmed-relevant papers against the
+3-paper researcher threshold, **the count also includes the author's papers
+already present in the repo**, not only the papers found in this run: a few
+new articles can be what makes an author already partly covered by the
+bibliography a relevant researcher.
+
+- **Finding them.** A `BIBLIOGRAPHY.md` entry only names its first author, so
+  the repo alone can't tell which entries an author co-wrote. Start from the
+  author's own publication list instead (the Google Scholar, DBLP or homepage
+  profile used for the rest of the tally), and compare every paper on it
+  against the links and titles of *all* `BIBLIOGRAPHY.md` files, with the same
+  link/title normalization as the duplicate check (strip a trailing slash,
+  `arxiv.org/abs/<id>` = `arxiv.org/pdf/<id>`; titles trimmed,
+  whitespace-collapsed, lowercased). Each match is one of their papers already
+  in the repo.
+- **Checking authorship.** A match only counts when that profile is
+  confirmed to be this author (same identity rules as the rest of the tally:
+  matching stable identifier, or distinctive evidence such as the seed paper
+  appearing on the same profile — never a name match alone). When in doubt,
+  open the matched paper's own page and check the author is on its author
+  list; if it still can't be confirmed, don't count it and say so in the
+  final report.
+- **No second relevance check.** Such a paper counts without being
+  re-confirmed by abstract: it was already judged relevant when it was added.
+  It is never written to `BIBLIOGRAPHY.md` again, and it is not a new seed for
+  the co-author recursion.
+- **Counted once.** A paper found in this run that is also already in the
+  repo counts once.
+- **Researcher entry.** When the author qualifies, their `RESEARCHERS.md`
+  entry lists every qualifying paper, including those already in the repo (in
+  the topic file matching each paper's existing `BIBLIOGRAPHY.md` location).
+- **Reporting.** In the PR description and final report, give each author's
+  count split into papers found in this run and papers already in the repo.
 
 ## Steps
 
