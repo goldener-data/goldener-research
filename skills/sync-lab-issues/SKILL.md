@@ -211,8 +211,12 @@ bibliography a relevant researcher.
   re-confirmed by abstract: it was already judged relevant when it was added.
   It is never written to `BIBLIOGRAPHY.md` again, and it is not a new seed for
   the co-author recursion.
-- **Counted once.** A paper found in this run that is also already in the
-  repo counts once.
+- **Counted once.** Each distinct paper counts once, however many times it
+  matches: deduplicate the matches across *all* `BIBLIOGRAPHY.md` files first
+  (entries with the same normalized link or the same normalized title are one
+  paper, even when listed in several topic files), and a paper found in this
+  run that is also already in the repo counts once too. Apply the 3-paper
+  threshold only to this deduplicated count.
 - **Researcher entry.** When the author qualifies, their `RESEARCHERS.md`
   entry lists every qualifying paper, including those already in the repo (in
   the topic file matching each paper's existing `BIBLIOGRAPHY.md` location).
