@@ -15,14 +15,14 @@
     {
       "name": "sync-researcher-issues",
       "source": "./sync-researcher-issues",
-      "description": "Research GitHub issues labeled \"researcher\" (or researchers named directly, e.g. \"add NAME to goldener research\"), find relevant papers, recursively check each paper's co-authors, requiring 3+ other relevant papers for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding everyone found to the matching topic RESEARCHERS.md file(s) (with BIBLIOGRAPHY.md entries), and close any source issues.",
+      "description": "Research GitHub issues labeled \"researcher\" (or researchers named directly, e.g. \"add NAME to goldener research\"), find relevant papers, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding everyone found to the matching topic RESEARCHERS.md file(s) (with BIBLIOGRAPHY.md entries), and close any source issues.",
       "strict": false,
       "skills": ["./"]
     },
     {
       "name": "sync-paper-issues",
       "source": "./sync-paper-issues",
-      "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, recursively check each paper's co-authors, requiring 3+ other relevant papers for new researchers and recursing up to 2 levels deep (adding them as researchers when they qualify), then branch, commit, push, open a PR adding every paper found to the matching topic BIBLIOGRAPHY.md file(s) and every qualifying researcher to the matching topic RESEARCHERS.md file(s), and close any source issues.",
+      "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep (adding them as researchers when they qualify), then branch, commit, push, open a PR adding every paper found to the matching topic BIBLIOGRAPHY.md file(s) and every qualifying researcher to the matching topic RESEARCHERS.md file(s), and close any source issues.",
       "strict": false,
       "skills": ["./"]
     },
@@ -37,6 +37,13 @@
       "name": "sync-conference-issues",
       "source": "./sync-conference-issues",
       "description": "Research GitHub issues labeled \"conference\" (or conferences named/linked directly, with an optional year), resolve the requested edition (proposing the closest edition(s) or stopping when the given year has no published program, or using the latest one when no year is given), fetch its accepted-paper program across every format (orals, posters, keynotes, and co-located workshops, deduplicating a paper accepted under more than one), confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when this edition's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "strict": false,
+      "skills": ["./"]
+    },
+    {
+      "name": "sync-theme-issues",
+      "source": "./sync-theme-issues",
+      "description": "Research GitHub issues labeled \"theme\" (or ML themes named directly, e.g. AutoML or curriculum learning), run a bibliography search ranked by citation count and keep at most 20 of the most cited papers confirmed relevant to Goldener, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
       "strict": false,
       "skills": ["./"]
     }
