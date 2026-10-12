@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Blocks scripts, external loads and form posts even if something from the paper slips
+     through unescaped; only inline styles and the base64 figure are allowed. Keep it. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; form-action 'none'; base-uri 'none'">
+<title>{{TITLE}}</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1c1e21; --muted: #5f6672; --line: #e2e5ea;
+    --accent: #1f5fbf; --card: #f6f8fb; --opinion-bg: #fff6e8; --opinion-fg: #8a4b00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a; --fg: #e6e8eb; --muted: #9aa3af; --line: #2c3037;
+      --accent: #7fb0ff; --card: #1b1e24; --opinion-bg: #33260f; --opinion-fg: #f5c37a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 6px; }
+  h2 {
+    font-size: 1.1rem; margin: 34px 0 10px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--line); color: var(--accent);
+  }
+  h3 { font-size: .95rem; margin: 16px 0 4px; color: var(--muted); }
+  .ai-badge {
+    display: inline-block; background: #f28c28; color: #ffffff; border-radius: 999px;
+    padding: 3px 12px; font-size: .85rem; font-weight: 700; margin: 4px 0 10px;
+  }
+  .meta { color: var(--muted); font-size: .92rem; margin: 0 0 4px; }
+  .meta a { color: var(--accent); overflow-wrap: anywhere; }
+  .intro { font-size: 1.05rem; margin: 18px 0; }
+  figure { margin: 8px 0 0; }
+  figure img {
+    width: 100%; height: auto; display: block; background: #fff;
+    border: 1px solid var(--line); border-radius: 8px;
+  }
+  figcaption { color: var(--muted); font-size: .86rem; margin-top: 6px; }
+  ul { padding-left: 1.3rem; margin: 8px 0; }
+  li { margin: 4px 0; }
+  .opinion {
+    display: inline-block; background: var(--opinion-bg); color: var(--opinion-fg);
+    border-radius: 999px; padding: 1px 10px; font-size: .78rem; font-weight: 700;
+    margin-left: 6px; vertical-align: middle;
+  }
+  footer {
+    margin-top: 40px; padding-top: 10px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .82rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>{{TITLE}}</h1>
+  <span class="ai-badge">AI generated</span>
+  <p class="meta">{{AUTHORS}}</p>
+  <p class="meta">{{VENUE}} · <a href="{{PAPER_URL}}">{{PAPER_URL}}</a></p>
+
+  <p class="intro">{{INTRO}}</p>
+
+  <figure>
+    <img src="data:image/png;base64,{{FIGURE_BASE64}}" alt="{{FIGURE_ALT}}">
+    <figcaption>{{FIGURE_CAPTION}}</figcaption>
+  </figure>
+
+  <h2>1. Why it is data-centric AI <span class="opinion">includes reviewer's opinion</span></h2>
+  {{DCAI_BODY}}
+
+  <h2>2. Main innovations</h2>
+  {{INNOVATIONS_BODY}}
+
+  <h2>3. Limitations <span class="opinion">includes reviewer's opinion</span></h2>
+  <h3>Stated by the authors</h3>
+  {{LIMITS_AUTHORS}}
+  <h3>Reviewer's view</h3>
+  {{LIMITS_REVIEWER}}
+
+  <footer>
+    {{SOURCE_NOTE}} · reviewed on {{DATE}} · AI-generated summary: check it against the paper.
+  </footer>
+</main>
+</body>
+</html>

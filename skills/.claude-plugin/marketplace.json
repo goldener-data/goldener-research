@@ -39,6 +39,13 @@
       "description": "Research GitHub issues labeled \"conference\" (or conferences named/linked directly, with an optional year), resolve the requested edition (proposing the closest edition(s) or stopping when the given year has no published program, or using the latest one when no year is given), fetch its accepted-paper program across every format (orals, posters, keynotes, and co-located workshops, deduplicating a paper accepted under more than one), confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when this edition's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
       "strict": false,
       "skills": ["./"]
+    },
+    {
+      "name": "paper-review",
+      "source": "./paper-review",
+      "description": "Review one paper given by its title: look it up in the goldener-research bibliography (bundled script searches every BIBLIOGRAPHY.md) or online when it is not there, read its full text and save a short self-contained HTML review: title, authors, link, innovation in 1-2 sentences, the paper's main figure, then why it is data-centric AI, main innovations, and limitations.",
+      "strict": false,
+      "skills": ["./"]
     }
   ]
 }
