@@ -46,6 +46,13 @@
       "description": "Research GitHub issues labeled \"theme\" (or ML themes named directly, e.g. AutoML or curriculum learning), run a bibliography search ranked by citation count and keep at most 20 of the most cited papers confirmed relevant to Goldener, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
       "strict": false,
       "skills": ["./"]
+    },
+    {
+      "name": "paper-review",
+      "source": "./paper-review",
+      "description": "Review one paper given by its title: look it up in the goldener-research bibliography (bundled script searches every BIBLIOGRAPHY.md) or online when it is not there, read its full text and save a short self-contained HTML review: title, authors, link, innovation in 1-2 sentences, the paper's main figure, then why it is data-centric AI, main innovations, and limitations.",
+      "strict": false,
+      "skills": ["./"]
     }
   ]
 }
