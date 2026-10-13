@@ -4,7 +4,7 @@ description: Write a smaller summary of one paper review for goldener-research,
   as a short plain-text file. It introduces the paper with its link, gives its
   main innovative idea, and explains the role it plays as a data-centric
   building block within the AI lifecycle, and always says it was AI
-  generated. It is written from a review made by the `paper-review` skill: an
+  generated. It is written from a review made by the `paper-review` skill — an
   existing review file (given by path, or found in the output directory), or
   a new review produced by calling `paper-review` first — kept, or made in a
   temporary directory and deleted when the user doesn't want to keep it.
@@ -99,7 +99,7 @@ text, the goldener-research resources line of step 3):
 | **LinkedIn** | ~3,000 characters; keep the hook within the first ~200 (shown before "…see more") | short paragraphs separated by blank lines, link alone on its own line (preview card), no Markdown (it isn't rendered); mechanism or results as 2–4 short lines starting with `→` or an emoji marker | Unicode bold (script) | 3–5 on the last line | 2–5, as line markers, not decoration |
 | **X / Twitter** | 280 characters per post; a link counts as 23 | one post if it fits, else a thread of numbered posts (`1/n`), link in the first post | Unicode bold (script), 1–2 per post | 1–2, inline or at the end of the last post | 0–2 per post |
 | **Bluesky** | 300 characters per post | as X | as X | 0–2 | 0–2 per post |
-| **Mastodon** | 500 characters per post | as X, longer posts | none (Unicode bold is unreadable to screen readers there); use line markers instead | 2–4, CamelCase (`#DataCentricAI`) for screen readers | 0–3 |
+| **Mastodon** | 500 characters per post (mastodon.social default; some servers set less), a link counts as 23 | as X, longer posts | none (Unicode bold is unreadable to screen readers there); use line markers instead | 2–4, CamelCase (`#DataCentricAI`) for screen readers | 0–3 |
 | **Threads** | 500 characters per post | as X | as X | 1 | 0–2 per post |
 | **Newsletter / blog** | the length input | a short title line, then paragraphs; Markdown allowed (`[text](url)`) | Markdown `**bold**` | none | none |
 | **Slack / Teams** | the length input | Slack `<url|text>` or Teams Markdown; 3–5 short lines or bullets | Slack `*bold*`, Teams `**bold**` | none | 0–2 |
@@ -157,8 +157,17 @@ or ask if they are unclear.
 - **Threads** (X, Bluesky, Mastodon, Threads): each post must stand alone
   and fit the limit with its `1/n` counter; the resources line and the
   AI-generated mention go in the last post.
-- **Count characters** for limited targets (e.g. `wc -m` on each post, with
-  23 for each link on X) and cut until every post fits.
+- **Count length** for limited targets with each platform's own rules, and
+  cut until every post fits:
+  - **X**: weighted count — each link counts 23; Latin letters, digits,
+    common punctuation and spaces count 1; everything else counts 2,
+    including emoji, CJK text and the Unicode bold letters, so bold
+    keywords cost twice their length.
+  - **Mastodon**: characters, with each link counting 23.
+  - **Bluesky, Threads**: characters as displayed (an emoji counts 1), the
+    link at its full length.
+  - `wc -m` only counts code points; use it as a lower bound on X, never as
+    the final check there.
 
 ## Safety
 
