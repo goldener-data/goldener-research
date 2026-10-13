@@ -9,15 +9,21 @@ Usage:
       first, each with a `score` (1.0 = same title once normalized). A score
       of 0.9 or more is a match; lower scores are only candidates to check.
       TITLE `-` reads the title from stdin, so it never goes through the shell.
+  papers.py random [--root DIR] [--within TEXT]
+      Print one paper picked at random as a JSON object. --within keeps only
+      the papers whose file or section contains TEXT (case-insensitive), e.g.
+      a theme directory or a section heading. --within `-` reads TEXT from stdin.
 
 Each paper is {title, link, first_author, origin, file, section}; papers
-listed in several files are returned once (deduplicated by link).
+listed in several files are returned once (deduplicated by link), with the
+first matching file and section (--within is applied before deduplication).
 """
 import argparse
 import difflib
 import html
 import json
 import re
+import secrets
 import sys
 from pathlib import Path
 
@@ -40,7 +46,11 @@ def normalize_title(title: str) -> str:
     return " ".join(re.findall(r"[a-z0-9]+", title.lower()))
 
 
-def list_papers(root: Path):
+def list_papers(root: Path, within: str = ""):
+    """Papers of every BIBLIOGRAPHY.md, deduplicated by link. `within` keeps only the
+    entries whose file or section contains it, before deduplication, so a paper listed
+    under several themes can be found through any of them."""
+    needle = within.lower()
     files = [root / "BIBLIOGRAPHY.md"] + sorted(
         d / "BIBLIOGRAPHY.md" for d in root.iterdir()
         if d.is_dir() and not d.name.startswith(".") and d.name != "skills")
@@ -53,6 +63,10 @@ def list_papers(root: Path):
             m = LINK_TITLE_RE.match(body)
             if not m:
                 continue
+            file = str(f.relative_to(root))
+            section = next((h for pos, h in reversed(headings) if pos < block.start()), "")
+            if needle and needle not in file.lower() and needle not in section.lower():
+                continue
             key = normalize_link(m.group("link"))
             if key in seen:
                 continue
@@ -63,8 +77,8 @@ def list_papers(root: Path):
                 "link": m.group("link").strip(),
                 "first_author": html.unescape(author.group("v")) if author else "",
                 "origin": html.unescape(origin.group("v")) if origin else "",
-                "file": str(f.relative_to(root)),
-                "section": next((h for pos, h in reversed(headings) if pos < block.start()), ""),
+                "file": file,
+                "section": section,
             })
     return papers
 
@@ -78,24 +92,35 @@ def find(papers, title: str, top: int):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["list", "find"])
+    ap.add_argument("cmd", choices=["list", "find", "random"])
     ap.add_argument("title", nargs="?", help="title to look for (find); - reads it from stdin")
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
                     help="repository root (default: the repo holding this script)")
     ap.add_argument("--top", type=int, default=3)
+    ap.add_argument("--within", help="random: only papers whose file or section contains this text")
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
 
-    papers = list_papers(a.root)
     if a.cmd == "list":
-        print(json.dumps(papers, indent=1, ensure_ascii=False))
+        print(json.dumps(list_papers(a.root), indent=1, ensure_ascii=False))
+    elif a.cmd == "random":
+        if a.title:
+            ap.error("random takes no TITLE; pass a theme or section with --within")
+        if a.within == "-":
+            a.within = sys.stdin.read().strip()
+            if not a.within:
+                sys.exit("no theme or section text on stdin for --within -")
+        papers = list_papers(a.root, a.within or "")
+        if not papers:
+            sys.exit("no paper found" + (f" within {a.within!r}" if a.within else ""))
+        print(json.dumps(secrets.choice(papers), indent=1, ensure_ascii=False))
     else:
         if a.title == "-":
             a.title = sys.stdin.read()
         if not a.title or not normalize_title(a.title):
             ap.error("find needs a TITLE with at least one letter or digit")
-        print(json.dumps(find(papers, a.title, a.top), indent=1, ensure_ascii=False))
+        print(json.dumps(find(list_papers(a.root), a.title, a.top), indent=1, ensure_ascii=False))
 
 
 if __name__ == "__main__":

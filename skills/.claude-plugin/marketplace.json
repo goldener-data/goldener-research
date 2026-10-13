@@ -50,7 +50,14 @@
     {
       "name": "paper-review",
       "source": "./paper-review",
-      "description": "Review one paper given by its title: look it up in the goldener-research bibliography (bundled script searches every BIBLIOGRAPHY.md) or online when it is not there, read its full text and save a short self-contained HTML review: title, authors, link, innovation in 1-2 sentences, the paper's main figure, then why it is data-centric AI, main innovations, and limitations.",
+      "description": "Review one paper given by its title (or picked at random from the bibliography when none is named, optionally within a theme): look it up in the goldener-research bibliography (bundled script searches every BIBLIOGRAPHY.md) or online when it is not there, read its full text and save a short self-contained HTML review: title, authors, link, innovation in 1-2 sentences, the paper's main figure, then why it is data-centric AI, main innovations, and limitations.",
+      "strict": false,
+      "skills": ["./"]
+    },
+    {
+      "name": "short-paper-review",
+      "source": "./short-paper-review",
+      "description": "Write a smaller summary of one paper review: the paper with its link, its main innovative idea, and its role as a data-centric building block within the AI lifecycle, formatted for a publishing target (plain text by default, LinkedIn, X, Bluesky, Mastodon, newsletter, Slack, ...) with its social-media elements (hashtags, mentions, length limits, threads), always marked as AI generated, and adapted to the context given (angle, audience, length, language, the user's own take, Goldener mention, external text and links). Written from a paper-review review, an existing one or one created by calling the paper-review skill (kept or temporary), and saved as a text file, never published.",
       "strict": false,
       "skills": ["./"]
     }
