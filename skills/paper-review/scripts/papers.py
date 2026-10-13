@@ -9,6 +9,10 @@ Usage:
       first, each with a `score` (1.0 = same title once normalized). A score
       of 0.9 or more is a match; lower scores are only candidates to check.
       TITLE `-` reads the title from stdin, so it never goes through the shell.
+  papers.py random [--root DIR] [--within TEXT]
+      Print one paper picked at random as a JSON object. --within keeps only
+      the papers whose file or section contains TEXT (case-insensitive), e.g.
+      a theme directory or a section heading. --within `-` reads TEXT from stdin.
 
 Each paper is {title, link, first_author, origin, file, section}; papers
 listed in several files are returned once (deduplicated by link).
@@ -18,6 +22,7 @@ import difflib
 import html
 import json
 import re
+import secrets
 import sys
 from pathlib import Path
 
@@ -78,11 +83,12 @@ def find(papers, title: str, top: int):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["list", "find"])
+    ap.add_argument("cmd", choices=["list", "find", "random"])
     ap.add_argument("title", nargs="?", help="title to look for (find); - reads it from stdin")
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
                     help="repository root (default: the repo holding this script)")
     ap.add_argument("--top", type=int, default=3)
+    ap.add_argument("--within", help="random: only papers whose file or section contains this text")
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
@@ -90,6 +96,15 @@ def main():
     papers = list_papers(a.root)
     if a.cmd == "list":
         print(json.dumps(papers, indent=1, ensure_ascii=False))
+    elif a.cmd == "random":
+        if a.within == "-":
+            a.within = sys.stdin.read().strip()
+        if a.within:
+            needle = a.within.lower()
+            papers = [p for p in papers if needle in p["file"].lower() or needle in p["section"].lower()]
+        if not papers:
+            sys.exit("no paper found" + (f" within {a.within!r}" if a.within else ""))
+        print(json.dumps(secrets.choice(papers), indent=1, ensure_ascii=False))
     else:
         if a.title == "-":
             a.title = sys.stdin.read()
