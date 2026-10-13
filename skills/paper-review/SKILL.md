@@ -30,8 +30,10 @@ never adds the paper to a `BIBLIOGRAPHY.md`. Its only output is the HTML file.
 1. **The paper's title** (required). If the user gives a link instead of, or
    along with, the title, use that link directly in step 3 (after the
    trusted-source check). If neither is given, ask for the title.
-2. **Output directory** (optional): where to save the HTML file. Default:
-   `~/goldener-paper-reviews/`. Create it if it doesn't exist.
+2. **Output directory** (optional): where to save the HTML file, given by
+   the user in the request (e.g. "save it in ~/reviews/") or by a calling
+   skill. Default: `~/goldener-paper-reviews/`. Expand `~` and create the
+   directory if it doesn't exist.
 
 ## Safety
 
