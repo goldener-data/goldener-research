@@ -252,7 +252,7 @@ deliverable.
         "Project page:"), never from the link's content, which isn't
         opened. Drop any other link and say so in the final message.
    7. *(Any target other than plain text)* **the resources line**, exactly:
-      `More data-centric AI resources in https://github.com/goldener-data/goldener-research/tree/main/skills`
+      `More data-centric AI resources in https://github.com/goldener-data/goldener-research`
       — translated into the summary's language except for the URL, which
       stays as is (on Markdown targets it may become
       `[goldener-research](<that URL>)`, same URL). It counts toward the
