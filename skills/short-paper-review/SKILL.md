@@ -16,7 +16,7 @@ description: Write a smaller summary of one paper review for goldener-research,
   limits, threads) and its way of highlighting the main keywords (Unicode
   bold through a bundled script where Markdown isn't rendered). Social
   posts are written to be engaging — a creative hook, a vivid framing of
-  the idea, a closing thought — without leaving the facts. The content to the context the user gives (angle,
+The content adapts to the context the user gives (angle,
   audience, length, language, their own take, mention of Goldener, external
   text and links to include). The text is a draft and is never published.
   Use when the user asks for a short, smaller or condensed summary of a
