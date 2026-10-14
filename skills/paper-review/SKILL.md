@@ -142,9 +142,11 @@ deliverable.
    - If no readable full text can be found:
      - **Paper picked at random** (step 2) → don't stop: draw a new paper
        with the same command plus one `--exclude '<link>'` per paper
-       already tried (single-quoted, so the link stays literal), e.g.
+       already tried, e.g.
        `python3 <skill dir>/scripts/papers.py random --exclude '<link 1>'`
-       (add `--within -` and its heredoc again when a theme was given), and
+       (add `--within -` and its heredoc again when a theme was given). The
+       single quotes keep the link literal; write any `'` inside the link as
+       `'\''` so it cannot end the quoting. Then
        redo step 3 with it. **3 papers at most**: if the third one is
        unreadable too, or the script finds no paper left, stop and tell the
        user, for each paper tried, its title, the links tried and what

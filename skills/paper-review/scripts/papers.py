@@ -13,8 +13,9 @@ Usage:
       Print one paper picked at random as a JSON object. --within keeps only
       the papers whose file or section contains TEXT (case-insensitive), e.g.
       a theme directory or a section heading. --within `-` reads TEXT from stdin.
-      --exclude (repeatable) leaves out the paper with that link, e.g. papers
-      already drawn whose full text could not be read.
+      --exclude (repeatable) leaves out the paper with that link, and any entry
+      with the same title under another link, e.g. papers already drawn whose
+      full text could not be read.
 
 Each paper is {title, link, first_author, origin, file, section}; papers
 listed in several files are returned once (deduplicated by link), with the
@@ -101,7 +102,7 @@ def main():
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--within", help="random: only papers whose file or section contains this text")
     ap.add_argument("--exclude", action="append", default=[], metavar="LINK",
-                    help="random: leave out the paper with this link (repeatable)")
+                    help="random: leave out the paper with this link, or its title (repeatable)")
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
@@ -116,8 +117,12 @@ def main():
             if not a.within:
                 sys.exit("no theme or section text on stdin for --within -")
         excluded = {normalize_link(link) for link in a.exclude}
+        # The same article can be listed under another link elsewhere: leave out its title too.
+        excluded_titles = {normalize_title(p["title"]) for p in list_papers(a.root)
+                           if normalize_link(p["link"]) in excluded}
         papers = [p for p in list_papers(a.root, a.within or "")
-                  if normalize_link(p["link"]) not in excluded]
+                  if normalize_link(p["link"]) not in excluded
+                  and normalize_title(p["title"]) not in excluded_titles]
         if not papers:
             sys.exit("no paper found" + (f" within {a.within!r}" if a.within else "")
                      + (" outside the excluded links" if excluded else ""))
