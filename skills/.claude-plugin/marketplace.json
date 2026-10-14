@@ -60,6 +60,13 @@
       "description": "Write a smaller summary of one paper review: the paper with its link, its main innovative idea, and its role as a data-centric building block within the AI lifecycle, formatted for a publishing target (plain text by default, LinkedIn, X, Bluesky, Mastodon, newsletter, Slack, ...) with its social-media elements (hashtags, mentions, length limits, threads), always marked as AI generated, and adapted to the context given (angle, audience, length, language, the user's own take, Goldener mention, external text and links). Written from a paper-review review, an existing one or one created by calling the paper-review skill (kept or temporary), and saved as a text file, never published.",
       "strict": false,
       "skills": ["./"]
+    },
+    {
+      "name": "propose-goldener-features",
+      "source": "./propose-goldener-features",
+      "description": "Propose the top 3 next features for Goldener: read Goldener's main branch and its existing issues, read every idea (IDEAS.md) and paper (BIBLIOGRAPHY.md) of this repo, rank grounded candidate features and write an implementation plan for the best 3, then present them one by one and ask the user whether to create an issue for each in goldener-data/goldener.",
+      "strict": false,
+      "skills": ["./"]
     }
   ]
 }
