@@ -9,10 +9,12 @@ Usage:
       first, each with a `score` (1.0 = same title once normalized). A score
       of 0.9 or more is a match; lower scores are only candidates to check.
       TITLE `-` reads the title from stdin, so it never goes through the shell.
-  papers.py random [--root DIR] [--within TEXT]
+  papers.py random [--root DIR] [--within TEXT] [--exclude LINK ...]
       Print one paper picked at random as a JSON object. --within keeps only
       the papers whose file or section contains TEXT (case-insensitive), e.g.
       a theme directory or a section heading. --within `-` reads TEXT from stdin.
+      --exclude (repeatable) leaves out the paper with that link, e.g. papers
+      already drawn whose full text could not be read.
 
 Each paper is {title, link, first_author, origin, file, section}; papers
 listed in several files are returned once (deduplicated by link), with the
@@ -98,6 +100,8 @@ def main():
                     help="repository root (default: the repo holding this script)")
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--within", help="random: only papers whose file or section contains this text")
+    ap.add_argument("--exclude", action="append", default=[], metavar="LINK",
+                    help="random: leave out the paper with this link (repeatable)")
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
@@ -111,9 +115,12 @@ def main():
             a.within = sys.stdin.read().strip()
             if not a.within:
                 sys.exit("no theme or section text on stdin for --within -")
-        papers = list_papers(a.root, a.within or "")
+        excluded = {normalize_link(link) for link in a.exclude}
+        papers = [p for p in list_papers(a.root, a.within or "")
+                  if normalize_link(p["link"]) not in excluded]
         if not papers:
-            sys.exit("no paper found" + (f" within {a.within!r}" if a.within else ""))
+            sys.exit("no paper found" + (f" within {a.within!r}" if a.within else "")
+                     + (" outside the excluded links" if excluded else ""))
         print(json.dumps(secrets.choice(papers), indent=1, ensure_ascii=False))
     else:
         if a.title == "-":
