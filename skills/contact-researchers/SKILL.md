@@ -12,9 +12,11 @@ description: Draft personalized outreach emails introducing Goldener to
   details. Before drafting, it checks that
   no email was ever exchanged with that address (skipping the researcher
   when one was). Each
-  email opens from the researcher's papers listed in the repository (with
-  their bibliography notes), introduces Goldener, asks whether they would be
-  open to a collaboration around data-centric AI and to trying Goldener, and
+  email is casual, in short sentences, and never reads as a sales pitch: it
+  presents Goldener as a non-profit open-source project, cites up to three of
+  the researcher's papers listed in the repository (the most relevant for a
+  usage in Goldener), says why they matter for Goldener, asks whether they
+  would be open to a short discussion and to trying Goldener, and
   invites them to forward it to anyone interested if they don't want to take
   it up themselves. Drafts only, never sent. Use when the user asks to
   contact, email, reach out to or write to researchers of goldener-research
@@ -105,10 +107,14 @@ themselves.
    that and fall back to the next storage only if the user agrees. There is
    no SMTP setting: the skill never sends.
 4. **Sender details** (optional): name, role/affiliation, signature,
-   preferred subject, language [English], tone [warm, professional, concise],
+   preferred subject, language [English], tone [casual, short sentences],
    anything to add (an event, a specific feature, a call-to-action link). Use
    them as given; never invent a sender name, title or affiliation — leave a
    `[Your name]` placeholder in the signature when none is given, and say so.
+   **No signature** (optional): when the user says their mail tool already
+   adds a signature (or asks for none), the email ends with the closing word
+   only (`Cheers,`), without the name and role lines, and no `[Your name]`
+   placeholder; the `From:` display name is still set when a name is given.
 
 ## Safety
 
@@ -258,52 +264,62 @@ through a hosting or sharing feature.
    only says what the repository supports.
 
 5. **Write the email**, one per researcher, plain text, in the user's
-   language, about 180–260 words, in this order:
-   - **Subject**: short and specific, e.g. `Your work on <topic> and
-     Goldener — data-centric AI collaboration?` (the user's subject wins).
-   - **Greeting**: `Dear <full name>,` (no title such as Prof./Dr. unless
-     the user gives it; no gendered forms).
-   - **Introduction from their work** (2–4 sentences): cite **at most three**
-     of their listed papers by title — the three most relevant for a usage in
-     Goldener, i.e. those whose method could most directly become or inform a
-     Goldener feature (judged from the note, the bibliography section and the
-     theme's Context; a paper with a note beats one known by its title only
-     when both fit equally). Fewer when they have fewer papers. **Leave a
-     blank line right after the sentence citing them**, so the citations
-     stand apart from the rest of the paragraph. Then say in a sentence what
-     in them connects to Goldener's work, drawn from the note and the theme's
-     Context (e.g. coreset selection in an embedding space ↔ Goldener's data
-     selection).
-     Mention that their work is referenced in the open goldener-research
-     repository under the theme(s) it belongs to. Never claim to have read
-     more than the repository supports, never praise a result the note
-     doesn't state, and never invent numbers or details.
-   - **Goldener** (2–3 sentences): an open-source Python library (Apache 2)
-     orchestrating data across the AI lifecycle, from training to
-     monitoring, built on embeddings from pre-trained/foundation models,
-     and the feature(s) of the researcher's theme(s); with its link
-     https://github.com/goldener-data/goldener and the research repository
-     https://github.com/goldener-data/goldener-research.
-   - **The ask** (2–3 sentences): whether they would be open to a
-     collaboration around data-centric AI (e.g. joint experiments, shared
-     benchmarks, implementing their method in Goldener, a student project —
-     pick what fits their work, without promising anything the user didn't
-     state), and whether they would like to try Goldener (`pip install
-     goldener`) and share feedback. One concrete, low-effort next step: a
-     short call or a reply.
-   - **Forwarding**: one sentence saying that if they don't wish to take it
-     up themselves, they are welcome to forward this email to colleagues or
-     students who might be interested.
-   - **Closing and signature** from the sender details (`[Your name]`
-     placeholder otherwise).
+   language, about 130–180 words. The tone is casual and researcher to
+   researcher: **short sentences** (one idea each), no business wording
+   ("partnership opportunity", "solution", "leverage", "synergy"), no hype.
+   The email must never read as a sales pitch: Goldener is introduced first
+   as a **non-profit, open-source** project. Parts, in this order, one
+   paragraph each:
+   - **Subject**: names the research topic and the open nature, not the
+     brand, e.g. `Open-source research on synthetic data curation`,
+     `Open-source research on drift detection` (the user's subject wins).
+   - **Greeting**: `Hi <first name>,` (no title, no gendered forms).
+   - **Who is writing** (2 sentences): `I'm writing on behalf of Goldener, a
+     non-profit open-source project on data-centric AI. Everything we build is
+     Apache 2.0, and our research is shared openly.` (or the same in the
+     user's language).
+   - **Their work** (1 sentence): `I came across your work on <topic>, in
+     particular "<title 1>", "<title 2>" and "<title 3>".` — cite **at most
+     three** of their listed papers by full title: the three most relevant
+     for a usage in Goldener, i.e. those whose method could most directly
+     become or inform a Goldener feature (judged from the note, the
+     bibliography section and the theme's Context; a paper with a note beats
+     one known by its title only when both fit equally). Fewer when they have
+     fewer papers. **Leave a blank line right after this sentence**, so the
+     citations stand apart.
+   - **Why it matters for Goldener** (3–5 short sentences): `It is very
+     relevant for us.`, then what Goldener wants to do in their theme (from
+     the theme's Context), then what their cited papers do that fits it (one
+     short sentence per idea, from the notes), ending on a short line such as
+     `These are exactly the building blocks we need.` Don't say the papers
+     are listed in goldener-research. Never claim to have read more than the
+     repository supports, never praise a result the note doesn't state, and
+     never invent numbers or details.
+   - **The ask** (2–3 sentences): `Would you be open to a short discussion? I
+     would love to share what we are working on and hear your view.`, then
+     one sentence on what could follow, kept open: `A research
+     collaboration, joint experiments or a student project could follow if
+     it makes sense.` (pick what fits their work; promise nothing the user
+     didn't state).
+   - **Goldener link** (2 sentences): `The code is here:
+     https://github.com/goldener-data/goldener. Feel free to give it a try
+     (pip install goldener).` — no other link, no feature list.
+   - **Forwarding** (1 sentence): `If this isn't for you, feel free to
+     forward this email to anyone who might be interested.`
+   - **Closing and signature**: `Cheers,` then the sender's name and their
+     role in the project from the sender details, e.g. `Yann Chéné Leroy`
+     then `Goldener (non-profit, open source)` (`[Your name]` placeholder
+     when no name is given). With **no signature** (input 4), stop at
+     `Cheers,`: the mail tool appends its own signature.
    - The user's additions (event, link, feature) where they fit, as given.
-   Keep it personal and sober: no hype words, no bullet lists, one link per
-   resource, no attachment.
+   No bullet lists, no attachment.
 
 6. **Store each draft.**
    - **IMAP mailbox**: build the `.eml` file as for **local** below, in the
      output directory (or the scratchpad when the user wants no local copy),
-     with `From:` set to `OUTREACH_EMAIL` (and the sender name, if given),
+     with `From:` set to the sender's name and `OUTREACH_EMAIL` (e.g.
+     `Yann Chéné Leroy <yann@goldener.ai>`, RFC 2047-encoded by Python's
+     `email` package), so the recipient sees a person, not a bare address,
      then `python3 -I <skill dir>/scripts/mailbox.py draft <file.eml>`, which
      appends it to the drafts folder flagged `\Draft`. Report the folder.
    - **Gmail**: `create_draft` with the researcher's address as the only
