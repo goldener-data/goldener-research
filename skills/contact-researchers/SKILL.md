@@ -51,12 +51,14 @@ themselves.
    address the user gives for a researcher overrides the search for that
    researcher.
 3. **Storage** — where the drafts go:
-   - **IMAP mailbox** (default when configured): a draft in the drafts
-     folder of the mailbox the variables below describe, through the bundled
-     `scripts/mailbox.py`. The variables usually live in the script's own env
-     file, which you never read, so you can't see them: **always run
-     `python3 -I <skill dir>/scripts/mailbox.py config` first** to decide.
-     When it succeeds, this is the storage. When it fails because variables
+   - **IMAP mailbox** (default when configured and the user asked for no
+     other storage): a draft in the drafts folder of the mailbox the
+     variables below describe, through the bundled `scripts/mailbox.py`.
+     When the user names a storage (Gmail, local, a directory), use it and
+     skip this probe. Otherwise, the variables usually live in the script's
+     own env file, which you never read, so you can't see them: **run
+     `python3 -I <skill dir>/scripts/mailbox.py config` first** to decide the
+     default. When it succeeds, this is the storage. When it fails because variables
      are missing, the IMAP mailbox is not configured: use the next storage.
      When it fails for any other reason (locked vault, login refused,
      network), it is configured but broken: report the error and stop

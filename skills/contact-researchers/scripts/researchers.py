@@ -56,6 +56,12 @@ def normalize_text(text: str) -> str:
     return " ".join(re.findall(r"[a-z0-9]+", text.lower()))
 
 
+def identity_key(name: str) -> str:
+    """Key identifying a researcher: case and punctuation are ignored but accents are kept,
+    so that "José" and "Jose" stay two people (normalize_text is only for searching)."""
+    return " ".join(re.findall(r"\w+", unicodedata.normalize("NFC", name).casefold()))
+
+
 def split_heading(heading: str):
     """(name, affiliation suffix): some headings append the affiliation ("Name - University")."""
     name, _, suffix = heading.partition(" - ")
@@ -112,7 +118,7 @@ def list_researchers(root: Path, within: str = ""):
         for i, m in enumerate(starts):
             body = text[m.end(): starts[i + 1].start() if i + 1 < len(starts) else len(text)]
             name, suffix = split_heading(html.unescape(m.group("name")))
-            person = people.setdefault(normalize_text(name), {
+            person = people.setdefault(identity_key(name), {
                 "name": name, "affiliation": "", "files": [], "themes": [], "papers": []})
             aff = AFFILIATION_RE.search(body)
             aff = html.unescape(aff.group("v")) if aff else ""
@@ -167,11 +173,11 @@ def main():
     else:
         if not a.base or not a.base.is_dir():
             ap.error("new needs --base DIR, an existing directory")
-        before = {(normalize_text(p["name"]), f) for p in list_researchers(a.base) for f in p["files"]}
+        before = {(identity_key(p["name"]), f) for p in list_researchers(a.base) for f in p["files"]}
         out = [p for p in list_researchers(a.root)
-               if any((normalize_text(p["name"]), f) not in before for f in p["files"])]
+               if any((identity_key(p["name"]), f) not in before for f in p["files"])]
         for p in out:
-            p["new_in"] = [f for f in p["files"] if (normalize_text(p["name"]), f) not in before]
+            p["new_in"] = [f for f in p["files"] if (identity_key(p["name"]), f) not in before]
     print(json.dumps(out, indent=1, ensure_ascii=False))
 
 
