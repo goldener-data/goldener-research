@@ -33,9 +33,12 @@ Usage:
       Print the settings in use (the password is shown only as set / not set) and
       test the login.
   mailbox.py check ADDRESS
-      Search every folder, read-only, for messages to, from, cc or bcc ADDRESS.
-      Print {address, total, drafts, latest: {folder, date, subject}} as JSON
-      (`drafts` counts the matches in the drafts folder; latest is null if none).
+      Search every folder, read-only, for messages to, from, cc or bcc ADDRESS, and
+      stop with an error if any folder can't be searched. Print {address, total,
+      drafts, others, latest: {folder, date, subject}} as JSON: `total` unique
+      matching messages (deduplicated by Message-ID across folders), `drafts` those in
+      the drafts folder, `others` the rest (a previous exchange); latest is null if
+      none. ADDRESS `-` reads the address from stdin.
   mailbox.py draft FILE.eml
       Append FILE.eml to the drafts folder with the \\Draft and \\Seen flags, and
       print {folder, from} as JSON. The From header is set to OUTREACH_EMAIL when
@@ -43,6 +46,7 @@ Usage:
 """
 import email
 import email.policy
+import email.utils
 import imaplib
 import functools
 import json
@@ -169,43 +173,51 @@ def decoded(value):
     return str(make_header(decode_header(value))) if value else ""
 
 
+ADDRESS_RE = re.compile(r"[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+")
+
+
 def check(address):
-    if not re.fullmatch(r"[^@\s\"()]+@[^@\s\"()]+\.[^@\s\"()]+", address):
-        sys.exit(f"not an email address: {address!r}")
+    if not ADDRESS_RE.fullmatch(address):
+        sys.exit(f"not a plain email address (letters, digits, . _ % + - only): {address!r}")
     conn = connect()
     draft_box = drafts_folder(conn)
-    total, drafts, latest = 0, 0, None
+    # One key per message (Message-ID, else Date + Subject), so that a message seen in several
+    # folders (e.g. Gmail's "All Mail" and "Inbox") is counted once.
+    seen, in_drafts, latest = set(), set(), None
+    q = f'"{address}"'
     for name, flags in folders(conn):
-        # On Gmail, "All Mail" repeats every other folder: skip it to avoid double counts,
-        # except for spam and trash, which it doesn't hold and which are still searched.
-        if "\\All" in flags:
-            continue
-        typ, _ = conn.select(name, readonly=True)
+        typ, data = conn.select(name, readonly=True)
         if typ != "OK":
-            continue
-        q = f'"{address}"'
+            sys.exit(f"IMAP SELECT {name} failed: {data}; the mailbox could not be fully searched")
         typ, data = conn.uid("SEARCH", None, "OR", "OR", "TO", q, "FROM", q, "OR", "CC", q, "BCC", q)
-        uids = data[0].split() if typ == "OK" and data and data[0] else []
-        total += len(uids)
-        if name == draft_box:
-            drafts += len(uids)
-        for uid in uids[-5:]:
-            typ, msg = conn.uid("FETCH", uid, "(BODY.PEEK[HEADER.FIELDS (DATE SUBJECT)])")
-            if typ != "OK" or not msg or not isinstance(msg[0], tuple):
-                continue
-            head = email.message_from_bytes(msg[0][1])
-            try:
-                when = email.utils.parsedate_to_datetime(head["Date"]).timestamp()
-            except (TypeError, ValueError):
-                when = 0
-            if latest is None or when > latest["_ts"]:
-                latest = {"folder": name.strip('"'), "date": head["Date"] or "",
-                          "subject": decoded(head["Subject"]), "_ts": when}
+        if typ != "OK":
+            sys.exit(f"IMAP SEARCH in {name} failed: {data}; the mailbox could not be fully searched")
+        uids = data[0].split() if data and data[0] else []
+        for i in range(0, len(uids), 200):
+            typ, msgs = conn.uid("FETCH", b",".join(uids[i:i + 200]).decode(),
+                                 "(BODY.PEEK[HEADER.FIELDS (DATE SUBJECT MESSAGE-ID)])")
+            if typ != "OK":
+                sys.exit(f"IMAP FETCH in {name} failed: {msgs}; the mailbox could not be fully searched")
+            for part in msgs:
+                if not isinstance(part, tuple):
+                    continue
+                head = email.message_from_bytes(part[1])
+                key = (head["Message-ID"] or "").strip() or f"{head['Date']}|{head['Subject']}"
+                seen.add(key)
+                if name == draft_box:
+                    in_drafts.add(key)
+                try:
+                    when = email.utils.parsedate_to_datetime(head["Date"]).timestamp()
+                except (TypeError, ValueError):
+                    when = 0
+                if latest is None or when > latest["_ts"]:
+                    latest = {"folder": name.strip('"'), "date": head["Date"] or "",
+                              "subject": decoded(head["Subject"]), "_ts": when}
     conn.logout()
     if latest:
         latest.pop("_ts")
-    print(json.dumps({"address": address, "total": total, "drafts": drafts, "latest": latest},
-                     ensure_ascii=False))
+    print(json.dumps({"address": address, "total": len(seen), "drafts": len(in_drafts),
+                      "others": len(seen - in_drafts), "latest": latest}, ensure_ascii=False))
 
 
 def draft(path):
@@ -241,7 +253,9 @@ def main():
                           else "from OUTREACH_PASSWORD_COMMAND",
                           "drafts_folder": box.strip('"'), "login": "ok"}))
     elif sys.argv[1] == "check":
-        check(sys.argv[2].strip().lower())
+        # `-` reads the address from stdin, so it never goes through a shell command line.
+        address = sys.stdin.readline() if sys.argv[2] == "-" else sys.argv[2]
+        check(address.strip().lower())
     else:
         draft(sys.argv[2])
 

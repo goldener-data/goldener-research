@@ -49,9 +49,16 @@ themselves.
    address the user gives for a researcher overrides the search for that
    researcher.
 3. **Storage** — where the drafts go:
-   - **IMAP mailbox** (default when `OUTREACH_IMAP_HOST` is set): a draft in
-     the drafts folder of the mailbox the environment variables below
-     describe, through the bundled `scripts/mailbox.py`;
+   - **IMAP mailbox** (default when configured): a draft in the drafts
+     folder of the mailbox the variables below describe, through the bundled
+     `scripts/mailbox.py`. The variables usually live in the script's own env
+     file, which you never read, so you can't see them: **always run
+     `python3 -I <skill dir>/scripts/mailbox.py config` first** to decide.
+     When it succeeds, this is the storage. When it fails because variables
+     are missing, the IMAP mailbox is not configured: use the next storage.
+     When it fails for any other reason (locked vault, login refused,
+     network), it is configured but broken: report the error and stop
+     rather than falling back;
    - **Gmail** (default otherwise, when a Gmail connector is available): a
      draft in the connected mailbox, optionally with a label the user names;
    - **local**: `.eml` files in a directory the user gives (default
@@ -193,13 +200,24 @@ through a hosting or sharing feature.
 
 3. **Check for any previous contact**, per address, before writing anything
    for that researcher:
-   - **IMAP mailbox**: run `python3 -I <skill dir>/scripts/mailbox.py config`
-     once (tests the login and shows the drafts folder), then per address
-     `python3 -I <skill dir>/scripts/mailbox.py check <address>`. It searches
-     every folder read-only for messages to, from, cc or bcc the address and
-     prints `total`, `drafts` (matches in the drafts folder) and the latest
-     match's folder, date and subject. `total` greater than `drafts` means a
-     previous exchange.
+   - **Addresses come from the web, so they are untrusted**: never put one
+     on a shell command line, even quoted. Pass it on stdin through a quoted
+     heredoc (`<<'EOF'`, which the shell never expands), as below. An
+     address with anything but letters, digits and `. _ % + - @` is
+     rejected by `mailbox.py`; treat it as not found (step 2).
+   - **IMAP mailbox** (after the `config` run of **Storage**), per address:
+     ```bash
+     python3 -I <skill dir>/scripts/mailbox.py check - <<'EOF'
+     <address>
+     EOF
+     ```
+     It searches every folder read-only (Gmail's "All Mail" included) for
+     messages to, from, cc or bcc the address, counting each message once
+     across folders, and prints `total`, `drafts` (those in the drafts
+     folder), `others` (the rest) and the latest match's folder, date and
+     subject. `others` greater than 0 means a previous exchange. It exits
+     with an error when any folder can't be searched: then the mailbox
+     can't be searched (see below).
    - **Gmail**: load the Gmail tools with ToolSearch
      (`select:mcp__claude_ai_Gmail__search_threads,mcp__claude_ai_Gmail__create_draft`,
      plus any other Gmail tool needed only for reading), then search the whole
@@ -207,8 +225,14 @@ through a hosting or sharing feature.
      `in:anywhere (to:<address> OR cc:<address> OR bcc:<address> OR from:<address>)`.
      Also search drafts with `in:drafts to:<address>`.
    - **local storage**: also look for `.eml` files in the output directory
-     whose `To:` holds the address (`grep -ril "^To:.*<address>"`), since an
-     earlier run may have drafted one there.
+     whose `To:` holds the address, since an earlier run may have drafted one
+     there:
+     ```bash
+     grep -rliF --include='*.eml' -f - <output dir> <<'EOF'
+     <address>
+     EOF
+     ```
+     then confirm that each file listed has the address in its `To:` line.
    - Compare addresses case-insensitively.
    - **Any sent message to the address, or any thread with it** → skip that
      researcher; report the most recent thread's subject and date (nothing

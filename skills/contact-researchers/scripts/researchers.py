@@ -29,6 +29,7 @@ import html
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ENTRY_RE = re.compile(r"^##\s+👤\s*(?P<name>.+?)\s*$", re.M)
@@ -50,19 +51,24 @@ def normalize_link(link: str) -> str:
 
 
 def normalize_text(text: str) -> str:
+    # Strip diacritics first, so that "Gürel" and "Gurel" both become "gurel".
+    text = "".join(c for c in unicodedata.normalize("NFKD", text) if not unicodedata.combining(c))
     return " ".join(re.findall(r"[a-z0-9]+", text.lower()))
 
 
-def clean_name(heading: str) -> str:
-    # Some headings append the affiliation ("Name - University"); keep the name only.
-    return heading.split(" - ")[0].strip()
+def split_heading(heading: str):
+    """(name, affiliation suffix): some headings append the affiliation ("Name - University")."""
+    name, _, suffix = heading.partition(" - ")
+    return name.strip(), suffix.strip()
 
 
 def doc_files(root: Path, name: str):
     files = [root / name] + sorted(
         d / name for d in root.iterdir()
         if d.is_dir() and not d.name.startswith(".") and d.name != "skills")
-    return [f for f in files if f.is_file()]
+    # A fetched PR tree is untrusted: never follow a symlink out of the root.
+    base = root.resolve()
+    return [f for f in files if f.is_file() and f.resolve().is_relative_to(base)]
 
 
 def theme_of(file: str) -> str:
@@ -105,12 +111,15 @@ def list_researchers(root: Path, within: str = ""):
         starts = list(ENTRY_RE.finditer(text))
         for i, m in enumerate(starts):
             body = text[m.end(): starts[i + 1].start() if i + 1 < len(starts) else len(text)]
-            name = clean_name(html.unescape(m.group("name")))
+            name, suffix = split_heading(html.unescape(m.group("name")))
             person = people.setdefault(normalize_text(name), {
                 "name": name, "affiliation": "", "files": [], "themes": [], "papers": []})
             aff = AFFILIATION_RE.search(body)
+            aff = html.unescape(aff.group("v")) if aff else ""
+            # The heading's suffix names the institution; the body field may only give a city.
+            aff = ", ".join(dict.fromkeys(a for a in (suffix, aff) if a))
             if aff and not person["affiliation"]:
-                person["affiliation"] = html.unescape(aff.group("v"))
+                person["affiliation"] = aff
             if file not in person["files"]:
                 person["files"].append(file)
                 person["themes"].append(theme_of(file))
