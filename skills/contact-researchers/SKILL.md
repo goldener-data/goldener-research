@@ -263,11 +263,17 @@ through a hosting or sharing feature.
      Goldener — data-centric AI collaboration?` (the user's subject wins).
    - **Greeting**: `Dear <full name>,` (no title such as Prof./Dr. unless
      the user gives it; no gendered forms).
-   - **Introduction from their work** (2–4 sentences): name one to three of
-     their listed papers by title — favor the ones with a note and closest
-     to the email's theme — and say in a sentence what in them connects to
-     Goldener's work, drawn from the note and the theme's Context (e.g.
-     coreset selection in an embedding space ↔ Goldener's data selection).
+   - **Introduction from their work** (2–4 sentences): cite **at most three**
+     of their listed papers by title — the three most relevant for a usage in
+     Goldener, i.e. those whose method could most directly become or inform a
+     Goldener feature (judged from the note, the bibliography section and the
+     theme's Context; a paper with a note beats one known by its title only
+     when both fit equally). Fewer when they have fewer papers. **Leave a
+     blank line right after the sentence citing them**, so the citations
+     stand apart from the rest of the paragraph. Then say in a sentence what
+     in them connects to Goldener's work, drawn from the note and the theme's
+     Context (e.g. coreset selection in an embedding space ↔ Goldener's data
+     selection).
      Mention that their work is referenced in the open goldener-research
      repository under the theme(s) it belongs to. Never claim to have read
      more than the repository supports, never praise a result the note
