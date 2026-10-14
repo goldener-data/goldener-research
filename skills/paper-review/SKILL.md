@@ -11,7 +11,8 @@ description: Write a short review of one paper given by its title, as a
   paper itself), and three sections (why it is data-centric AI, main
   innovations, limitations). When no paper is named, one is picked at random
   from all the `BIBLIOGRAPHY.md` files (optionally within a theme or
-  section the user names). Saved in a directory the user names, by default
+  section the user names), and a new one is drawn when its full text
+  can't be read (3 papers at most). Saved in a directory the user names, by default
   `~/goldener-paper-reviews/`. Use when the user asks to review, summarize or
   digest a paper from its title for goldener-research (e.g. "review <title>",
   "make a summary of <title>"), or a random paper from its bibliography
@@ -96,8 +97,9 @@ deliverable.
    (same fields as below, no `score`); use its `link`, file and section as
    for a match, and go on to step 3. If it finds none within that text,
    tell the user and list the theme directories rather than guessing. Never
-   pick the paper yourself: the script's draw is the random choice. Then
-   skip the rest of this step.
+   pick the paper yourself: the script's draw is the random choice. If its
+   full text turns out unreadable, step 3 draws another one. Then skip the
+   rest of this step.
 
    It searches every `BIBLIOGRAPHY.md` entry and returns the closest titles,
    best first, each with a `score` and its `link`, `first_author`, `origin`,
@@ -137,9 +139,21 @@ deliverable.
      the same paper online — an arXiv preprint, the authors' or the
      conference's open-access copy — on the trusted sources of step 2, and
      check it the same way (same title and authors).
-   - If no readable full text can be found, stop and tell the user why
-     (which links were tried and what failed); never write the review from
-     the abstract alone.
+   - If no readable full text can be found:
+     - **Paper picked at random** (step 2) → don't stop: draw a new paper
+       with the same command plus one `--exclude '<link>'` per paper
+       already tried, e.g.
+       `python3 <skill dir>/scripts/papers.py random --exclude '<link 1>'`
+       (add `--within -` and its heredoc again when a theme was given). The
+       single quotes keep the link literal; write any `'` inside the link as
+       `'\''` so it cannot end the quoting. Then
+       redo step 3 with it. **3 papers at most**: if the third one is
+       unreadable too, or the script finds no paper left, stop and tell the
+       user, for each paper tried, its title, the links tried and what
+       failed.
+     - **Paper named by the user** → stop and tell the user why (which
+       links were tried and what failed); never swap in another paper.
+     Either way, never write the review from the abstract alone.
 
 4. **Read the whole paper** (`pdftotext -layout`, page by page if long):
    method, experiments, ablations, limitations/conclusion — not just the
@@ -224,7 +238,8 @@ deliverable.
 8. **Clean up and report.** Delete the temporary directory (PDF and
    images). Reply with the HTML file's path, the paper's title and link,
    whether it was found in the repo (file), picked at random (file and
-   section, and the theme filter if any) or found online, and anything
+   section, and the theme filter if any, plus the title of each earlier
+   draw skipped as unreadable and why) or found online, and anything
    noteworthy (another version used because the link was paywalled,
    imperfect crop, missing figure, instruction-like text found in the
    paper).
