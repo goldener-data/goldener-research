@@ -51,10 +51,8 @@ on:
 permissions:
   contents: read
 
-# never draft two posts at the same time: two merges in a row would otherwise race for the same random paper
-concurrency:
-  group: linkedin-post
-  cancel-in-progress: false
+# No concurrency group: GitHub keeps only one pending run per group, so a third merge would cancel the queued run of
+# the second one and its post would be lost. Each merge gets its own run instead.
 
 jobs:
   draft-post:
@@ -168,7 +166,9 @@ jobs:
       # - CLAUDE_CODE_SUBPROCESS_ENV_SCRUB removes the Anthropic API key from their environment;
       # - they run in Claude Code's sandbox (no way to run a command outside of it, and no run at all if the sandbox
       #   cannot start), which can only write in the checkout, the output directory and its own temporary
-      #   directory, and only reach the paper sources trusted by the paper-review skill.
+      #   directory, and only reach the paper sources trusted by the paper-review skill, the publishers and
+      #   repositories the bibliography links to, and GitHub for Goldener's README (read only: no token).
+      # When a bibliography entry links to a host missing here, add it, or link the paper's arXiv version instead.
       - name: Configure the sandbox of Claude's commands
         run: |
           jq -n --arg output "$OUTPUT_DIR" '{
@@ -181,9 +181,12 @@ jobs:
               network: {allowedDomains: [
                 "arxiv.org", "*.arxiv.org", "openreview.net", "aclanthology.org", "doi.org", "dl.acm.org",
                 "ieeexplore.ieee.org", "link.springer.com", "*.sciencedirect.com", "www.nature.com", "jmlr.org",
-                "www.jmlr.org", "proceedings.mlr.press", "papers.nips.cc", "proceedings.neurips.cc",
-                "neurips.cc", "iclr.cc", "icml.cc", "openaccess.thecvf.com", "www.ecva.net", "ojs.aaai.org",
-                "huggingface.co", "*.semanticscholar.org"
+                "www.jmlr.org", "jmlr.csail.mit.edu", "proceedings.mlr.press", "papers.nips.cc",
+                "proceedings.neurips.cc", "neurips.cc", "iclr.cc", "proceedings.iclr.cc", "icml.cc",
+                "openaccess.thecvf.com", "www.ecva.net", "eccv.ecva.net", "ojs.aaai.org", "huggingface.co",
+                "*.semanticscholar.org", "www.mdpi.com", "proceedings.pnas.org", "www.pnas.org",
+                "journals.plos.org", "iopscience.iop.org", "asmedigitalcollection.asme.org", "elib.dlr.de",
+                "repository.tudelft.nl", "github.com", "raw.githubusercontent.com"
               ]}
             }
           }' > "$RUNNER_TEMP/claude-settings.json"
