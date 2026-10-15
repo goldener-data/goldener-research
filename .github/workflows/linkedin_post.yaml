@@ -6,10 +6,11 @@ name: Draft and publish a LinkedIn post
 #   when it added none, the skill picks a paper at random from the whole bibliography;
 # - when triggered on demand, the paper named in the `paper` input is reviewed, or a random one when it is empty
 #   (optionally within the `theme` input).
-# When triggered by a merged pull request, the post also mentions that pull request. The post is shown in the run
-# summary and uploaded, with the paper review, as an artifact of the run, then it is published on LinkedIn by the
-# workflow itself (Claude never gets the LinkedIn token). Add the `no-post` label on a pull request before merging it
-# to skip the post. A run triggered on demand only drafts the post, unless its `publish` input is checked.
+# When triggered by a merged pull request, the post also mentions that pull request: "Added to goldener-research in"
+# when it added papers, "Triggered by merging" otherwise. The post is shown in the run summary and uploaded, with
+# the paper review, as an artifact of the run, then it is published on LinkedIn by the workflow itself (Claude never
+# gets the LinkedIn token). Add the `no-post` label on a pull request before merging it to skip the post. A run
+# triggered on demand only drafts the post, unless its `publish` input is checked.
 #
 # Both jobs run in the `linkedin-post` environment, which holds the secrets below. Required reviewers on this
 # environment approve each job: the draft (which spends Anthropic credits), then the publication, after reading the
@@ -70,8 +71,6 @@ jobs:
       OUTPUT_DIR: ${{ github.workspace }}/linkedin-post
       # Claude Code is pinned so that a new release cannot change the runs unnoticed.
       CLAUDE_CODE_VERSION: 2.1.296
-      # the line added to the post when the workflow is triggered by a merged pull request
-      TRIGGER_LINE: "${{ github.event.pull_request.html_url && format('Added to goldener-research in: {0}', github.event.pull_request.html_url) || '' }}"
     steps:
       - name: Check out main
         uses: actions/checkout@v4
@@ -82,13 +81,15 @@ jobs:
           persist-credentials: false
 
       # The base and merge commits are set by GitHub. The papers of the merge commit that are not in the base commit
-      # are the ones the pull request added; one of them is picked at random. Inputs of a manual run are passed
-      # through the environment, never interpolated in the script.
+      # are the ones the pull request added; one of them is picked at random. The step also sets TRIGGER_LINE, the line
+      # mentioning the pull request in the post, worded after whether the pull request added papers. Inputs of a manual
+      # run are passed through the environment, never interpolated in the script.
       - name: Choose the paper
         working-directory: ${{ env.RESEARCH_DIR }}
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
           INPUT_PAPER: ${{ inputs.paper }}
           INPUT_THEME: ${{ inputs.theme }}
         run: |
@@ -102,6 +103,7 @@ jobs:
             python3 -I "$papers" list --root "$RUNNER_TEMP/merged" > "$RUNNER_TEMP/merged.json"
             python3 -I - "$RUNNER_TEMP/base.json" "$RUNNER_TEMP/merged.json" "$OUTPUT_DIR/paper.json" <<'PYTHON'
           import json
+          import os
           import re
           import secrets
           import sys
@@ -117,6 +119,9 @@ jobs:
           if added:
               paper = secrets.choice(added)
               choice = {"title": paper["title"], "link": paper["link"], "theme": ""}
+          prefix = "Added to goldener-research in" if added else "Triggered by merging"
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env:
+              env.write(f"TRIGGER_LINE={prefix}: {os.environ['PR_URL']}\n")
           json.dump(choice, open(sys.argv[3], "w", encoding="utf-8"), ensure_ascii=False, indent=1)
           PYTHON
           else
