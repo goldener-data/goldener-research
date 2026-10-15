@@ -171,3 +171,63 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Multimodal-Guided Dynamic Dataset Pruning for Robust and Efficient Data-Centric Learning](https://arxiv.org/abs/2507.12750)
 <br>
+
+## 👤 Matthias Feurer
+📍 Affiliation: TU Dortmund University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Towards Localization via Data Embedding for TabPFN](https://openreview.net/forum?id=LFyQyV5HxQ)
+<br>
+
+## 👤 Katharina Eggensperger
+📍 Affiliation: TU Dortmund University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Towards Localization via Data Embedding for TabPFN](https://openreview.net/forum?id=LFyQyV5HxQ)
+<br>
+
+## 👤 Afshin Rostamizadeh
+📍 Affiliation: Google Research
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Batch Active Learning at Scale](https://arxiv.org/abs/2107.14263)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Combining MixMatch and Active Learning for Better Accuracy with Fewer Labels](https://arxiv.org/abs/1912.00594)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Is margin all you need? An extensive empirical study of active learning on tabular data](https://arxiv.org/abs/2210.03822)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Leveraging Importance Weights in Subset Selection](https://arxiv.org/abs/2301.12052)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Analyzing similarity metrics for data selection for language model pretraining](https://proceedings.neurips.cc/paper_files/paper/2025/hash/c6b508249ffd707720885d7a5bba5cb5-Abstract-Conference.html)
+<br>
+
+## 👤 Giulia DeSalvo
+📍 Affiliation: Google Research
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Batch Active Learning at Scale](https://arxiv.org/abs/2107.14263)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Two-Step Active Learning for Instance Segmentation with Uncertainty and Diversity Sampling](https://arxiv.org/abs/2309.16139)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Leveraging Importance Weights in Subset Selection](https://arxiv.org/abs/2301.12052)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GIST: Greedy Independent Set Thresholding for Max-Min Diversification with Submodular Utility](https://arxiv.org/abs/2405.18754)
+<br>
+
+## 👤 Gui Citovsky
+📍 Affiliation: Google
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Batch Active Learning at Scale](https://arxiv.org/abs/2107.14263)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Leveraging Importance Weights in Subset Selection](https://arxiv.org/abs/2301.12052)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [GIST: Greedy Independent Set Thresholding for Max-Min Diversification with Submodular Utility](https://arxiv.org/abs/2405.18754)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Analyzing similarity metrics for data selection for language model pretraining](https://proceedings.neurips.cc/paper_files/paper/2025/hash/c6b508249ffd707720885d7a5bba5cb5-Abstract-Conference.html)
+<br>

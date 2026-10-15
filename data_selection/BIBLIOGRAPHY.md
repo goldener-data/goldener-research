@@ -70,6 +70,42 @@
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: shows active-learning budget regimes correspond to shifts in the dominant generalization mechanism, explaining why representativeness, coverage and uncertainty strategies each win at different budgets.
 </div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2107.14263">
+    <strong>Batch Active Learning at Scale</strong>
+  </a><br>
+  <small><em>👤 First author: Gui Citovsky</em></small><br>
+  <small><em>📍 Origin: Advances in Neural Information Processing Systems (NeurIPS) (2021)</em></small><br>
+  📝 Note: combines uncertainty and diversity sampling so that batch active learning scales to batches of 100K-1M examples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/1912.00594">
+    <strong>Combining MixMatch and Active Learning for Better Accuracy with Fewer Labels</strong>
+  </a><br>
+  <small><em>👤 First author: Shuang Song</em></small><br>
+  <small><em>📍 Origin: arXiv (2019)</em></small><br>
+  📝 Note: adds active learning to MixMatch semi-supervised learning and measures the relative value of labeled versus unlabeled data along the learning curve.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2210.03822">
+    <strong>Is margin all you need? An extensive empirical study of active learning on tabular data</strong>
+  </a><br>
+  <small><em>👤 First author: Dara Bahri</em></small><br>
+  <small><em>📍 Origin: arXiv (2022)</em></small><br>
+  📝 Note: on 69 tabular datasets, classical margin sampling matches or beats all other active learning methods, including with self-supervised pre-training.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2309.16139">
+    <strong>Two-Step Active Learning for Instance Segmentation with Uncertainty and Diversity Sampling</strong>
+  </a><br>
+  <small><em>👤 First author: Ke Yu</em></small><br>
+  <small><em>📍 Origin: International Conference on Computer Vision Workshops (ICCVW) (2023)</em></small><br>
+  📝 Note: post-hoc active learning for instance segmentation combining uncertainty-based and diversity-based image sampling.
+</div>
 
 ### Smarter selection
 <div>
@@ -196,6 +232,24 @@
   <small><em>👤 First author: Trisha Mittal</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
   📝 Note: benchmarks seven dataset distillation methods against coreset selection under standardized protocols and finds coresets match or beat them at far lower cost with better data coverage.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2301.12052">
+    <strong>Leveraging Importance Weights in Subset Selection</strong>
+  </a><br>
+  <small><em>👤 First author: Gui Citovsky</em></small><br>
+  <small><em>📍 Origin: International Conference on Learning Representations (ICLR) (2023)</em></small><br>
+  📝 Note: IWeS selects batches by importance sampling with probabilities from the entropy of models trained on earlier batches, and also works for active learning.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2405.18754">
+    <strong>GIST: Greedy Independent Set Thresholding for Max-Min Diversification with Submodular Utility</strong>
+  </a><br>
+  <small><em>👤 First author: Matthew Fahrbach</em></small><br>
+  <small><em>📍 Origin: Advances in Neural Information Processing Systems (NeurIPS) (2025)</em></small><br>
+  📝 Note: subset selection maximizing a submodular utility plus the max-min distance between selected points, with a 1/2-approximation, applied to data sampling.
 </div>
 
 ---
@@ -723,6 +777,15 @@
   <small><em>👤 First author: Suorong Yang</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
   📝 Note: scores samples by local density and multimodal semantic consistency to jointly choose which samples to keep and which to augment, halving ImageNet-1k training cost without accuracy loss.
+</div>
+<br>
+<div>
+  <a href="https://openreview.net/forum?id=LFyQyV5HxQ">
+    <strong>Towards Localization via Data Embedding for TabPFN</strong>
+  </a><br>
+  <small><em>👤 First author: Mykhailo Koshil</em></small><br>
+  <small><em>📍 Origin: NeurIPS Workshop on Table Representation Learning (TRL) (2024)</em></small><br>
+  📝 Note: scales TabPFN to large tables by embedding data points in a learned space and using each query's nearest neighbors as context.
 </div>
 
 ### Smarter selection based on clustering

@@ -63,3 +63,89 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [The vendi score: A diversity evaluation metric for machine learning](https://arxiv.org/abs/2210.02410)
 <br>
+
+## 👤 Frank Hutter
+📍 Affiliation: ELLIS Institute Tübingen
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Efficient and Robust Automated Machine Learning](https://proceedings.neurips.cc/paper_files/paper/2015/hash/11d0e6287202fced83f79975ec59a3a6-Abstract.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Fast Bayesian Optimization of Machine Learning Hyperparameters on Large Datasets](https://arxiv.org/abs/1605.07079)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Initializing Bayesian Hyperparameter Optimization via Meta-Learning](https://ojs.aaai.org/index.php/AAAI/article/view/9354)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-Sklearn 2.0: Hands-free AutoML via Meta-Learning](https://arxiv.org/abs/2007.04074)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Practical Transfer Learning for Bayesian Optimization](https://arxiv.org/abs/1802.02219)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Speeding Up Multi-Objective Hyperparameter Optimization by Task Similarity-Based Meta-Learning for the Tree-Structured Parzen Estimator](https://arxiv.org/abs/2212.06751)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [MASIF: Meta-learned Algorithm Selection using Implicit Fidelity Information](https://openreview.net/forum?id=5aYGXxByI6)
+<br>
+
+## 👤 Matthias Feurer
+📍 Affiliation: TU Dortmund University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Efficient and Robust Automated Machine Learning](https://proceedings.neurips.cc/paper_files/paper/2015/hash/11d0e6287202fced83f79975ec59a3a6-Abstract.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Initializing Bayesian Hyperparameter Optimization via Meta-Learning](https://ojs.aaai.org/index.php/AAAI/article/view/9354)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-Sklearn 2.0: Hands-free AutoML via Meta-Learning](https://arxiv.org/abs/2007.04074)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Practical Transfer Learning for Bayesian Optimization](https://arxiv.org/abs/1802.02219)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Reshuffling Resampling Splits Can Improve Generalization of Hyperparameter Optimization](https://arxiv.org/abs/2405.15393)
+<br>
+
+## 👤 Marius Lindauer
+📍 Affiliation: Leibniz University Hannover
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Hyperparameter Optimization: Foundations, Algorithms, Best Practices and Open Challenges](https://arxiv.org/abs/2107.05847)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-Sklearn 2.0: Hands-free AutoML via Meta-Learning](https://arxiv.org/abs/2007.04074)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [MASIF: Meta-learned Algorithm Selection using Implicit Fidelity Information](https://openreview.net/forum?id=5aYGXxByI6)
+<br>
+
+## 👤 Katharina Eggensperger
+📍 Affiliation: TU Dortmund University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Efficient and Robust Automated Machine Learning](https://proceedings.neurips.cc/paper_files/paper/2015/hash/11d0e6287202fced83f79975ec59a3a6-Abstract.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Auto-Sklearn 2.0: Hands-free AutoML via Meta-Learning](https://arxiv.org/abs/2007.04074)
+<br>
+
+## 👤 Bernd Bischl
+📍 Affiliation: LMU Munich
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Hyperparameter Optimization: Foundations, Algorithms, Best Practices and Open Challenges](https://arxiv.org/abs/2107.05847)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Resampling Methods for Meta-Model Validation with Recommendations for Evolutionary Computation](https://doi.org/10.1162/EVCO_a_00069)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Reshuffling Resampling Splits Can Improve Generalization of Hyperparameter Optimization](https://arxiv.org/abs/2405.15393)
+<br>
+
+## 👤 Afshin Rostamizadeh
+📍 Affiliation: Google Research
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Hyperband: A Novel Bandit-Based Approach to Hyperparameter Optimization](https://arxiv.org/abs/1603.06560)
+<br>
+
+## 👤 Giulia DeSalvo
+📍 Affiliation: Google Research
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Hyperband: A Novel Bandit-Based Approach to Hyperparameter Optimization](https://arxiv.org/abs/1603.06560)
+<br>
