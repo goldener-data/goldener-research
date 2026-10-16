@@ -67,6 +67,13 @@
       "description": "Propose the top 3 next features for Goldener: read Goldener's main branch and its existing issues, read every idea (IDEAS.md) and paper (BIBLIOGRAPHY.md) of this repo, rank grounded candidate features and write an implementation plan for the best 3, then present them one by one and ask the user whether to create an issue for each in goldener-data/goldener.",
       "strict": false,
       "skills": ["./"]
+    },
+    {
+      "name": "contact-researchers",
+      "source": "./contact-researchers",
+      "description": "Draft personalized outreach emails introducing Goldener to researchers listed in the RESEARCHERS.md files (chosen by name, by theme, or as the ones a pull request adds): find each researcher's published email address by web search, check no email was ever exchanged with that address, then write a casual, non-sales email citing up to three of their papers in the repository and why they matter for Goldener, asking for a short discussion and to try Goldener. Stored as drafts (Gmail, an IMAP mailbox set through OUTREACH_* environment variables, or local .eml files), never sent.",
+      "strict": false,
+      "skills": ["./"]
     }
   ]
 }
