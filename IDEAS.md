@@ -51,3 +51,13 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
+❓ **Question:** Is reidentification possible from simple embedding comparison ?<br>
+📅 **Date:** 10/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
+❓ **Question:** Can data registration and alignment be based on foundational features?<br>
+📅 **Date:** 10/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---

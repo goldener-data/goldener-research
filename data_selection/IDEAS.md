@@ -51,3 +51,13 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
+❓ **Question:** Data required to optimize the performance depends on the training status, would it be possible to know this per task in advance ?<br>
+📅 **Date:** 10/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
+❓ **Question:** Use pretrained embeddings to select the best samples for test time in context injection<br>
+📅 **Date:** 10/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---

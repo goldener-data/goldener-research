@@ -21,3 +21,8 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
+❓ **Question:** Weight the loss contribution based on the embeddings of the full training set<br>
+📅 **Date:** 10/2026<br>
+👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
+🧭 **Context:** N/A<br>
+---
