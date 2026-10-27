@@ -17,6 +17,11 @@ Usage:
       with the same title under another link, e.g. papers already drawn whose
       full text could not be read.
 
+Without --root, the repository root is the nearest directory holding
+`BIBLIOGRAPHY.md`, `README.md` and `skills/`, looked up from the current
+directory first, then from this script's location (the skill may be installed
+outside the repository). The script stops with an error when none is found.
+
 Each paper is {title, link, first_author, origin, file, section}; papers
 listed in several files are returned once (deduplicated by link), with the
 first matching file and section (--within is applied before deduplication).
@@ -38,6 +43,18 @@ LINK_TITLE_RE = re.compile(
 AUTHOR_RE = re.compile(r"First author:\s*(?P<v>[^<]*?)\s*</em>")
 ORIGIN_RE = re.compile(r"Origin:\s*(?P<v>[^<]*?)\s*</em>")
 HEADING_RE = re.compile(r"^#{2,3}\s+(.*)$", re.M)
+
+
+def find_root():
+    """Nearest goldener-research checkout above the current directory, else above this
+    script; None when neither is inside one. Topic folders hold no `skills/`, so the
+    lookup can't stop at one of them."""
+    for start in (Path.cwd(), Path(__file__).resolve().parent):
+        for d in (start, *start.parents):
+            if (d / "BIBLIOGRAPHY.md").is_file() and (d / "README.md").is_file() \
+                    and (d / "skills").is_dir():
+                return d
+    return None
 
 
 def normalize_link(link: str) -> str:
@@ -97,8 +114,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cmd", choices=["list", "find", "random"])
     ap.add_argument("title", nargs="?", help="title to look for (find); - reads it from stdin")
-    ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
-                    help="repository root (default: the repo holding this script)")
+    ap.add_argument("--root", type=Path,
+                    help="repository root (default: found from the current directory, "
+                         "then from this script)")
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--within", help="random: only papers whose file or section contains this text")
     ap.add_argument("--exclude", action="append", default=[], metavar="LINK",
@@ -106,6 +124,12 @@ def main():
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
+    a.root = a.root or find_root()
+    if a.root is None:
+        sys.exit("goldener-research repository not found: run from inside a checkout "
+                 "or pass --root")
+    if not (a.root / "BIBLIOGRAPHY.md").is_file():
+        sys.exit(f"no BIBLIOGRAPHY.md in {a.root}: --root must be the repository root")
 
     if a.cmd == "list":
         print(json.dumps(list_papers(a.root), indent=1, ensure_ascii=False))

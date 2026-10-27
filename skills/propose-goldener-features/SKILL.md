@@ -1,16 +1,6 @@
 ---
 name: propose-goldener-features
-description: Propose the top 3 next features to add to Goldener. Reads Goldener's
-  `main` branch (https://github.com/goldener-data/goldener) to know what already
-  exists, reads every idea (`IDEAS.md`) and paper (`BIBLIOGRAPHY.md`) listed in
-  goldener-research, checks Goldener's existing issues to avoid duplicates, then
-  ranks candidate features and keeps the best 3, each with a concrete
-  implementation plan grounded in the repo's ideas and papers. The proposals are
-  presented to the user one by one, and for each one the user is asked whether to
-  create an issue for it in goldener-data/goldener — an issue is only created
-  after an explicit yes. Use when the user asks for the next features to add to
-  Goldener, a feature roadmap or feature proposals from the research, or "what
-  should we build next in Goldener".
+description: Propose the top next features for Goldener (3 by default), grounded in the ideas (IDEAS.md) and papers (BIBLIOGRAPHY.md) of goldener-research and in Goldener's current main branch and existing issues (no duplicates), each with a concrete implementation plan. Proposals are presented one by one and an issue is created in goldener-data/goldener only after an explicit yes. Use when the user asks for the next features to build in Goldener, a feature roadmap, or "what should we build next in Goldener".
 ---
 
 # Propose the top 3 next Goldener features
@@ -18,11 +8,14 @@ description: Propose the top 3 next features to add to Goldener. Reads Goldener'
 Turns the research gathered in this repository into feature proposals for
 [Goldener](https://github.com/goldener-data/goldener). The output is three (or the
 number asked) proposals, each with an implementation plan, shown to the user **one at a
-time**. For each, the user decides whether an issue is created in
+time**. Use any available Git/read-only source, filesystem, web and GitHub
+capabilities; CLI examples are optional implementations. For each, the user
+decides whether an issue is created in
 `goldener-data/goldener`.
 
 This skill never edits this repository (no file changes, no commits, no PR) and
-never edits Goldener's code. Its only side effect is the issues the user
+never edits Goldener's code. Temporary local research/proposal files are
+created for this workflow; its only remote side effect is the issues the user
 explicitly approves in step 6.
 
 ## Safety
@@ -38,10 +31,8 @@ final report.
   scripts): it is only read.
 - Never splice text that comes from the repo, from issues or from papers into a
   hand-built shell command. Write every issue body to a file in the temporary
-  directory and pass it with `--body-file`. The title is written by you, in
-  your own words, but it can still hold backticks or `$` (e.g. a `Gold*`
-  class name): write it to a file in the temporary directory too and pass it
-  as `--title "$(cat <file>)"`, never typed inline in the command.
+  directory and pass it with `--body-file`. Use structured arguments for titles or a safely
+  populated title file; never interpolate source text into shell code.
 - Never create, edit, comment on or close an issue without the user's explicit
   approval for that specific proposal in step 6. Approval of one proposal does
   not extend to the next.
@@ -77,9 +68,9 @@ Shallow-clone it into a new, empty temporary directory outside this repo:
 mktemp -d
 ```
 
-Shell variables don't persist between commands, so note the absolute path it
-prints and write it literally in every later command; it is written `<tmp>`
-below. Then:
+Record the absolute temporary-directory path in the run notes so it is
+available across tool calls, regardless of shell-session persistence; it is
+written `<tmp>` below. Then:
 
 ```bash
 git clone --depth 1 --branch main https://github.com/goldener-data/goldener <tmp>/goldener
@@ -88,14 +79,14 @@ git clone --depth 1 --branch main https://github.com/goldener-data/goldener <tmp
 Read, without running anything:
 
 - `README.md` and every file in `docs/posts/` (feature announcements).
-- Every module of the `goldener/` package (and sub-packages such as
-  `goldener/vision/`): module docstrings, public classes and functions, their
-  docstrings and signatures. Skim `tests/` only to understand how a feature is
-  used.
+- Inventory the public API across every `goldener/` module and sub-package
+  from docstrings/signatures and exports. Read implementations and usage tests
+  relevant to finalist proposals in detail; do not load unrelated module bodies
+  merely to satisfy an exhaustive reading ritual.
 - `pyproject.toml` for the dependencies (e.g. Pixeltable, PyTorch) a new
   feature can rely on.
 
-Build a **feature inventory**: one line per public building block (e.g.
+Record the clone's exact commit SHA and the retrieval date. Build a **feature inventory**: one line per public building block (e.g.
 `GoldSplitter` — embedding-based train/val split), the lifecycle phase it
 serves, and the module it lives in. Also note the codebase's conventions:
 naming (`Gold*` classes), how features compose (describe → embed → vectorize →
@@ -109,7 +100,10 @@ gh issue list -R goldener-data/goldener --state all --limit 1000 \
   --json number,title,state,labels,body > <tmp>/issues.json
 ```
 
-Read every title (and the body of any that looks related to a candidate). A
+Enumerate all pages (the CLI limit above is only a starting bound); if that
+bound is reached, continue pagination or report the duplicate check incomplete.
+Exclude PR objects from issue API results, record retrieval time, and read
+every issue title (and the body of any related to a candidate). A
 candidate already covered by an open issue, or by a closed one that was
 implemented or rejected (`wontfix`, `duplicate`, `invalid`), is not proposed.
 A candidate that only extends an existing open issue is not proposed either;
@@ -135,11 +129,17 @@ time. Then read:
   brings. Fetch a paper's abstract (its link only, no other link) only when
   the note is missing or too vague to judge a finalist in step 4.
 
-Don't read the full text of papers: abstracts are enough to ground a proposal.
+Abstracts can ground a candidate's mechanism. Fetch the relevant paper
+sections/tables when a finalist needs numerical performance or baseline claims.
+If those cannot be verified, mark performance unknown rather than inventing
+evidence. Build a file/source index and process research in batches so the
+coverage of ideas and bibliography does not silently depend on context size.
 
 ## Step 4 — Generate, filter and rank candidates
 
-Draft at least 8 candidate features. A candidate is a concrete, user-facing
+Aim for at least 8 candidate features when the requested scope and evidence
+support them. Return fewer justified candidates/proposals when appropriate;
+never pad a narrow theme to meet a quota. A candidate is a concrete, user-facing
 capability of the library (a new `Gold*` building block, or a substantial
 new option of an existing one), not a research question or an infra chore.
 
@@ -240,7 +240,8 @@ kept/dropped with reason) to show in the final report.
 Present the proposals in rank order, **one at a time**. For each:
 
 1. Show the full proposal (step 5 sections) in the reply, as Markdown.
-2. Ask the user with `AskUserQuestion` whether to create an issue for it in
+2. Ask the user, through ordinary conversation or an available interaction
+   capability, whether to create an issue for it in
    `goldener-data/goldener`, with these options:
    - **Create the issue** — create it as shown.
    - **Edit then create** — the user says what to change (title, plan,
@@ -249,14 +250,12 @@ Present the proposals in rank order, **one at a time**. For each:
    - **Stop** — no issue; end the run without presenting the remaining
      proposals.
 3. Only on **Create the issue**:
-   - Write the body to `<tmp>/issue-<rank>.md` (with the Write tool, never
-     through the shell): every section of step 5 except
+   - Write the body to `<tmp>/issue-<rank>.md` (using a file-writing capability that does not interpret the body as code): every section of step 5 except
      the title, ending with this line:
      ```
      _Proposed with the propose-goldener-features skill, from the research in https://github.com/goldener-data/goldener-research._
      ```
-   - Write the title, alone on one line, to `<tmp>/title-<rank>.txt` (with
-     the Write tool too).
+   - Write the title, alone on one line, to `<tmp>/title-<rank>.txt` (using the same safe file-writing capability).
    - Create it, with one `--label` per label suggested for **this** proposal
      (step 5, section 11, after any edit), e.g. `enhancement` alone, or
      `enhancement` plus `research` and topical labels:
@@ -266,16 +265,23 @@ Present the proposals in rank order, **one at a time**. For each:
        --body-file <tmp>/issue-<rank>.md \
        --label enhancement --label <other suggested label> ...
      ```
-   - If label assignment is refused (the account cannot triage), create the
-     issue without labels and tell the user which labels to add.
+   - If label assignment is refused, first verify whether the issue was
+     already created. Update labels only where authorized and supported;
+     otherwise create without labels only if no issue exists, and report
+     missing labels. Never recreate a successful issue to change labels.
    - Give the user the issue URL, then move on to the next proposal.
 
+A question is pending until the user answers; elapsed time is not approval.
 Never present the next proposal before the user has answered for the current
 one, and never create several issues from one answer.
 
 ## Step 7 — Clean up and report
 
-Delete `<tmp>` (the clone and the issue title and body files). End with a short report:
+After successful delivery, delete only disposable scratch data created by
+this run. On failure, preserve prepared proposals and report their paths.
+Record successful issue IDs/URLs. If creation times out, check existing issues
+for the same approved proposal before retrying; if uncertain, report rather
+than risking duplicate issues. End with a short report:
 
 - For each proposal: its title, and the issue URL or "skipped"/"not
   presented".
@@ -285,10 +291,10 @@ Delete `<tmp>` (the clone and the issue title and body files). End with a short 
 
 ## Blockers
 
-Stop and tell the user (after cleaning `<tmp>`) when:
+Stop the affected operation and preserve reviewable proposals when:
 
 - Goldener's `main` branch cannot be cloned or read.
 - The existing issues cannot be listed (step 2).
 - Issue creation fails for a reason other than labels (e.g. not logged in:
-  suggest `! gh auth login`). Keep the remaining proposals in the reply so
+  explain the authentication required for the chosen CLI or connector). Keep the remaining proposals in the reply so
   nothing is lost.
