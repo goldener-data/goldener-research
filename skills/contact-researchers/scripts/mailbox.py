@@ -51,7 +51,9 @@ Usage:
       OUTREACH_EMAIL has a signature, it is appended to the plain-text body as
       Thunderbird does (after a "-- " line unless the account suppresses it); an HTML
       signature makes the draft multipart/alternative (plain text + HTML), so it
-      opens in Thunderbird's HTML editor with the signature. This script never sends
+      opens in Thunderbird's HTML editor with the signature; its remote images
+      (e.g. a logo) are downloaded and embedded as cid: parts, since Thunderbird
+      blocks remote images in stored drafts. This script never sends
       anything: it has no SMTP code.
 """
 import email
@@ -70,6 +72,7 @@ import shlex
 import subprocess
 import sys
 import time
+import urllib.request
 from email.header import decode_header, make_header
 
 DEFAULT_ENV_FILE = "~/.config/goldener-outreach/.env"
@@ -288,15 +291,48 @@ def signature():
                 is_html = bool(prefs.get(ident + "htmlSigFormat"))
             if not str(raw).strip():
                 return None
+            images = []
             if is_html:
-                sig_html = re.sub(r"<!--.*?-->", "", raw, flags=re.S).strip()
-                sig_text = html_to_text(sig_html)
+                sig_text = html_to_text(raw)
+                sig_html, images = embed_images(raw.strip())
             else:
                 sig_html, sig_text = None, raw.strip("\n")
-            return {"text": sig_text, "html": sig_html,
+            return {"text": sig_text, "html": sig_html, "images": images,
                     "separator": not prefs.get(ident + "suppress_signature_separator"),
                     "source": f"{path} ({m.group(1)}, {'HTML' if is_html else 'plain text'})"}
     return None
+
+
+IMG_SRC_RE = re.compile(r'(<img\b[^>]*?\bsrc\s*=\s*)(["\'])(https?://[^"\']+)\2', re.I | re.S)
+
+
+def embed_images(sig_html):
+    """(html, [(cid, bytes, maintype, subtype)]): the signature's remote images downloaded and
+    pointed to as cid: parts, since Thunderbird blocks remote images in stored drafts. An image
+    that can't be downloaded keeps its link."""
+    images, by_url = [], {}
+
+    def replace(m):
+        url = html.unescape(m.group(3))
+        if url not in by_url:
+            try:
+                with urllib.request.urlopen(url, timeout=30) as resp:
+                    data, ctype = resp.read(), resp.headers.get_content_type()
+            except (OSError, ValueError) as e:
+                print(f"warning: signature image {url} not embedded ({e}); kept as a link",
+                      file=sys.stderr)
+                return m.group(0)
+            if not ctype.startswith("image/"):
+                print(f"warning: signature image {url} is {ctype}; kept as a link", file=sys.stderr)
+                return m.group(0)
+            # The sender's domain, not the default (the local host name), so the id leaks nothing.
+            domain = os.environ.get("OUTREACH_EMAIL", "").partition("@")[2] or "localhost"
+            cid = email.utils.make_msgid("signature", domain=domain)[1:-1]
+            images.append((cid, data, *ctype.split("/", 1)))
+            by_url[url] = cid
+        return f'{m.group(1)}{m.group(2)}cid:{by_url[url]}{m.group(2)}'
+
+    return IMG_SRC_RE.sub(replace, sig_html), images
 
 
 class _TextExtractor(html.parser.HTMLParser):
@@ -350,6 +386,10 @@ def with_signature(msg, sig):
             "content=\"text/html; charset=UTF-8\"></head>\n<body>\n"
             f"{paragraphs}<div class=\"moz-signature\">{sep_html}{sig['html']}</div>\n"
             "</body></html>\n", subtype="html", cte="8bit")
+        html_part = out.get_payload()[1]
+        for cid, data, maintype, subtype in sig["images"]:
+            html_part.add_related(data, maintype=maintype, subtype=subtype, cid=f"<{cid}>",
+                                  disposition="inline", filename=f"signature.{subtype}")
     return out
 
 

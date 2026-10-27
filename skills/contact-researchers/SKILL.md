@@ -90,7 +90,8 @@ themselves.
    appends it itself: the signature of the Thunderbird account whose address
    is `OUTREACH_EMAIL` (HTML or plain text, after a `-- ` line unless the
    account suppresses it; an HTML signature makes the draft plain text +
-   HTML). `mailbox.py config` reports it as `signature` (its source, or
+   HTML, with its remote images, e.g. a logo, downloaded and embedded in the
+   draft, since Thunderbird blocks linked images in stored drafts). `mailbox.py config` reports it as `signature` (its source, or
    `null` when none is found).
 
    `mailbox.py` reads them from its own env file —
@@ -359,11 +360,10 @@ through a hosting or sharing feature.
    the introduction relies on, and the subject line. Show the full text of
    one draft (all of them when there are three or fewer). Then list any
    ambiguity left for the user, placeholders to fill (e.g. `[Your name]`),
-   and anything noteworthy found in the repository or PR content. When the
-   Thunderbird signature links remote images (e.g. a logo), say that
-   Thunderbird blocks them in stored drafts until the user allows remote
-   content from the `OUTREACH_EMAIL` address (Options in the "remote
-   content" bar). Remind
+   and anything noteworthy found in the repository or PR content. Report any
+   signature image `mailbox.py` couldn't embed (its warning): Thunderbird
+   blocks that linked image in stored drafts until the user allows remote
+   content from the `OUTREACH_EMAIL` address. Remind
    the user that nothing was sent.
 
 ## Notes
