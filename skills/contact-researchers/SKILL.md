@@ -1,27 +1,6 @@
 ---
 name: contact-researchers
-description: Draft personalized outreach emails introducing Goldener to
-  researchers listed in the goldener-research `RESEARCHERS.md` files, chosen
-  by name, by theme, or as the researchers a pull request adds. It finds
-  each researcher's email address itself by web search, keeping only an
-  address the researcher or their institution publishes (homepage, staff
-  directory, recent paper), and the user gives how to store the drafts (a
-  Gmail draft in the connected mailbox, a draft in any IMAP mailbox set
-  through optional `OUTREACH_*` environment variables — host, email address,
-  password — or `.eml` files in a local directory), plus optional sender
-  details. Before drafting, it checks that
-  no email was ever exchanged with that address (skipping the researcher
-  when one was). Each
-  email is casual, in short sentences, and never reads as a sales pitch: it
-  presents Goldener as a non-profit open-source project, cites up to three of
-  the researcher's papers listed in the repository (the most relevant for a
-  usage in Goldener), says why they matter for Goldener, asks whether they
-  would be open to a short discussion and to trying Goldener, and
-  invites them to forward it to anyone interested if they don't want to take
-  it up themselves. Drafts only, never sent. Use when the user asks to
-  contact, email, reach out to or write to researchers of goldener-research
-  (e.g. "draft an email to <Name>", "contact the drift researchers", "write
-  to the researchers added in <PR link>").
+description: Draft personalized outreach emails introducing Goldener to researchers listed in goldener-research RESEARCHERS.md files, chosen by name, by theme, or as those a pull request adds. Finds an address the researcher or institution publishes, checks no email was already exchanged with it, cites up to three of their repository papers and why they matter for Goldener, and saves Gmail, IMAP (OUTREACH_* settings) or local .eml drafts. Never sends. Use when the user asks to contact or email researchers (e.g. "draft an email to <Name>", "contact the drift researchers", "write to the researchers added in <PR link>").
 ---
 
 # Draft outreach emails to goldener-research researchers
@@ -58,18 +37,19 @@ themselves.
      skip this probe. Otherwise, the variables usually live in the script's
      own env file, which you never read, so you can't see them: **run
      `python3 -I <skill dir>/scripts/mailbox.py config` first** to decide the
-     default. When it succeeds, this is the storage. When it fails because variables
-     are missing, the IMAP mailbox is not configured: use the next storage.
-     When it fails for any other reason (locked vault, login refused,
-     network), it is configured but broken: report the error and stop
-     rather than falling back;
+     default. When it succeeds, this is the storage. When it reports
+     `status: unconfigured`, use the next storage. A
+     `status: partial` means some settings exist: report missing variable
+     names and ask before selecting another storage. A `status: error` is
+     a configured but broken mailbox: report the sanitized error and stop.
+     Exit codes are 0 (ok), 2 (unconfigured/partial), and 1 (error).
    - **Gmail** (default otherwise, when a Gmail connector is available): a
      draft in the connected mailbox, optionally with a label the user names;
    - **local**: `.eml` files in a directory the user gives (default
      `~/goldener-outreach/`, `~` expanded, created if missing).
    Use what the user gives (mailbox, label, directory, cc/bcc addresses);
-   ask only when the user asks for a storage this skill can't reach (e.g.
-   Outlook with no such connector and no IMAP variables).
+   Ask when the requested storage is unreachable or configuration is partial.
+   Local files alone do not establish absence of previous mailbox contact.
 
    **Optional environment variables** (IMAP mailbox):
 
@@ -86,7 +66,7 @@ themselves.
    `mailbox.py` reads them from its own env file —
    `~/.config/goldener-outreach/.env`, or the file `OUTREACH_ENV_FILE`
    points to — one `KEY=VALUE` per line, for any variable not already set
-   in the environment (so they don't have to be in Claude's settings or
+   in the environment (so they don't have to be in an agent's settings or
    shell). The user creates that file themselves and makes it private
    (`chmod 600`; the script warns otherwise):
    ```
@@ -130,7 +110,7 @@ Allowed actions only: read the repository files; run the bundled
 `draft` only); search the web and open the pages found
 to look for email addresses (step 2) — read only, never submit a form,
 log in, or use a paid lookup or email-finder service; for a PR, read its metadata with `gh` (or the
-GitHub API) and fetch its commits into `FETCH_HEAD` and a scratch directory
+GitHub API) and fetch its recorded commits into an isolated scratch clone and directory
 (step 1); search the mailbox read-only and create drafts; write `.eml` files
 in the output directory. Never send, reply, forward, label existing threads,
 delete or modify existing drafts or messages, and never publish a draft
@@ -140,8 +120,10 @@ through a hosting or sharing feature.
 
 1. **Build the list of researchers.** Run the script with `python3 -I`
    (`<skill dir>/scripts/researchers.py`, repository root by default):
-   - **names** → `researchers.py find - <<< "<name>"` per name (stdin keeps
-     the name out of the shell). A score of 1.0, or a single result at 0.9,
+   - **names** → pass each name to `researchers.py find -` using structured stdin,
+     a safely written input file, or a quoted here-document whose delimiter
+     cannot occur in the name. A double-quoted here-string does not prevent
+     shell expansion of interpolated input. A score of 1.0, or a single result at 0.9,
      is the researcher. Several results at 0.9 or more, or none, → ask the
      user which one they mean (showing names, affiliations and themes) and
      don't draft that one until they answer;
@@ -150,16 +132,21 @@ through a hosting or sharing feature.
      existing topic folders and ask;
    - **a PR** →
      ```bash
-     gh pr view <N> --repo goldener-data/goldener-research --json number,title,state,url
-     git fetch origin "pull/<N>/head"          # only updates FETCH_HEAD
-     HEAD_SHA=$(git rev-parse FETCH_HEAD)
-     BASE_SHA=$(git merge-base FETCH_HEAD origin/main)   # `git fetch origin main` first
+     gh pr view <N> --repo goldener-data/goldener-research \
+       --json number,title,state,url,baseRefOid,headRefOid
+     # Use an isolated scratch clone/object store, not the caller checkout.
+     # Fetch the recorded headRefOid/baseRefOid (or their verified refs).
+     # Record HEAD_SHA=headRefOid and BASE_SHA=merge-base of those exact SHAs.
      mkdir -p <scratch>/pr-<N>/head <scratch>/pr-<N>/base
      git archive "$HEAD_SHA" | tar -x -C <scratch>/pr-<N>/head
      git archive "$BASE_SHA" | tar -x -C <scratch>/pr-<N>/base
      python3 -I <skill dir>/scripts/researchers.py new \
        --root <scratch>/pr-<N>/head --base <scratch>/pr-<N>/base
      ```
+     The archive commands illustrate the snapshot comparison; run them only
+     in the scratch clone. Limit extraction to root/topic README,
+     RESEARCHERS.md and BIBLIOGRAPHY.md files. Reject absolute/traversing
+     archive paths and symlinks before extraction; never execute PR code.
      (`<scratch>`: your scratchpad, otherwise `mktemp -d`.) Only PRs of
      `goldener-data/goldener-research` are accepted; for any other repository
      stop and say so. This never checks out a branch or touches the working
@@ -170,8 +157,8 @@ through a hosting or sharing feature.
    the name, affiliation, themes and papers (title, link, bibliography note,
    origin, section).
 
-2. **Find each researcher's email address** on the web (WebSearch, then
-   WebFetch on the pages found; load them with ToolSearch if deferred). Skip
+2. **Find each researcher's email address** on the web using available
+   search and page-fetch capabilities. Skip
    this for a researcher whose address the user gave.
    - **Where to look**, in this order: the researcher's personal or lab
      homepage; their institution's staff/faculty directory page; their
@@ -226,9 +213,10 @@ through a hosting or sharing feature.
      subject. `others` greater than 0 means a previous exchange. It exits
      with an error when any folder can't be searched: then the mailbox
      can't be searched (see below).
-   - **Gmail**: load the Gmail tools with ToolSearch
-     (`select:mcp__claude_ai_Gmail__search_threads,mcp__claude_ai_Gmail__create_draft`,
-     plus any other Gmail tool needed only for reading), then search the whole
+   - **Gmail**: use an available mailbox search capability and a separate
+     create-draft capability. No provider-specific tool name is required.
+     If either capability is unavailable, report it and offer reachable storage
+     within the prior-contact constraints below. Search the whole
      mailbox, trash and spam included:
      `in:anywhere (to:<address> OR cc:<address> OR bcc:<address> OR from:<address>)`.
      Also search drafts with `in:drafts to:<address>`.
@@ -269,15 +257,21 @@ through a hosting or sharing feature.
    language, about 130–180 words. The tone is casual and researcher to
    researcher: **short sentences** (one idea each), no business wording
    ("partnership opportunity", "solution", "leverage", "synergy"), no hype.
-   The email must never read as a sales pitch: Goldener is introduced first
-   as a **non-profit, open-source** project. Parts, in this order, one
+   Treat the paragraph examples as adaptable writing guidance, not mandatory
+   stock sentences. Fit the requested word budget even when full paper titles
+   are long. Only describe the sender as acting on behalf of Goldener when
+   the user provides that role; otherwise use neutral wording such as
+   “I wanted to share Goldener, an open-source project…” Do not claim a
+   non-profit status without supplied evidence. Keep the email factual and
+   conversational: Goldener is introduced first
+   as an **open-source** project. Adaptable parts, in this order, one
    paragraph each:
    - **Subject**: names the research topic and the open nature, not the
      brand, e.g. `Open-source research on synthetic data curation`,
      `Open-source research on drift detection` (the user's subject wins).
    - **Greeting**: `Hi <first name>,` (no title, no gendered forms).
-   - **Who is writing** (2 sentences): `I'm writing on behalf of Goldener, a
-     non-profit open-source project on data-centric AI. Everything we build is
+   - **Who is writing** (2 sentences): `I'm writing on behalf of Goldener, an
+     open-source project on data-centric AI. Everything we build is
      Apache 2.0, and our research is shared openly.` (or the same in the
      user's language).
    - **Their work** (1 sentence): `I came across your work on <topic>, in
@@ -310,7 +304,7 @@ through a hosting or sharing feature.
      forward this email to anyone who might be interested.`
    - **Closing and signature**: `Cheers,` then the sender's name and their
      role in the project from the sender details, e.g. `Yann Chéné Leroy`
-     then `Goldener (non-profit, open source)` (`[Your name]` placeholder
+     then `Goldener (open source)` (`[Your name]` placeholder
      when no name is given). With **no signature** (input 4), stop at
      `Cheers,`: the mail tool appends its own signature.
    - The user's additions (event, link, feature) where they fit, as given.
@@ -326,7 +320,8 @@ through a hosting or sharing feature.
      appends it to the drafts folder flagged `\Draft`. Report the folder.
    - **Gmail**: `create_draft` with the researcher's address as the only
      `to`, the user's cc/bcc if given, the subject and the plain-text body;
-     then apply the user's label to the new draft if one was asked for. Keep
+     then apply the user's label to the new draft if that capability exists;
+     otherwise report the unapplied label without recreating the draft. Keep
      the draft's id.
    - **local**: write `<output dir>/<researcher-name-slug>.eml`
      (`-2`, `-3`, ... rather than overwriting), UTF-8, with headers
@@ -335,7 +330,11 @@ through a hosting or sharing feature.
      `MIME-Version: 1.0`, `Content-Type: text/plain; charset=utf-8`,
      `Content-Transfer-Encoding: 8bit`, a blank line, then the body.
      Build it with Python's `email` package to get the headers right.
-   A storage error for one researcher doesn't stop the others; report it.
+   Record each successful draft ID/file and recipient before moving on.
+   After a timeout with an uncertain result, search for the just-created draft
+   before retrying. If the result cannot be reconciled, report uncertainty
+   instead of creating another draft. A storage error for one researcher
+   does not stop independent researchers; report it.
 
 7. **Report**: per researcher — name, address and the page it was found on
    (or "given by the user"), status (drafted with the
