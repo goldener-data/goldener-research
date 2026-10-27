@@ -23,6 +23,11 @@ not already set in the environment:
                            the password command only, as BW_SESSION
   OUTREACH_DRAFTS_FOLDER   drafts folder (default: the folder flagged \\Drafts,
                            else "Drafts")
+  OUTREACH_THUNDERBIRD_PROFILE
+                           Thunderbird profile directory holding the signature of the
+                           OUTREACH_EMAIL account (default: the profiles found in the usual
+                           places: ~/.thunderbird, snap, flatpak, macOS); "none" disables
+                           the signature
 
 The env file holds one KEY=VALUE per line (`export ` prefix, quotes around the value,
 blank lines and `#` comments allowed); only OUTREACH_* keys are read. It should be
@@ -30,8 +35,8 @@ readable by its owner only (chmod 600): a warning is printed otherwise.
 
 Usage:
   mailbox.py config
-      Print the settings in use (the password is shown only as set / not set) and
-      test the login.
+      Print the settings in use (the password is shown only as set / not set), the
+      Thunderbird signature found for OUTREACH_EMAIL (or null), and test the login.
   mailbox.py check ADDRESS
       Search every folder, read-only, for messages to, from, cc or bcc ADDRESS, and
       stop with an error if any folder can't be searched. Print {address, total,
@@ -41,14 +46,23 @@ Usage:
       none. ADDRESS `-` reads the address from stdin.
   mailbox.py draft FILE.eml
       Append FILE.eml to the drafts folder with the \\Draft and \\Seen flags, and
-      print {folder, from} as JSON. The From header is set to OUTREACH_EMAIL when
-      the file has none. This script never sends anything: it has no SMTP code.
+      print {folder, from, signature} as JSON. The From header is set to
+      OUTREACH_EMAIL when the file has none. When the Thunderbird account of
+      OUTREACH_EMAIL has a signature, it is appended to the plain-text body as
+      Thunderbird does (after a "-- " line unless the account suppresses it); an HTML
+      signature makes the draft multipart/alternative (plain text + HTML), so it
+      opens in Thunderbird's HTML editor with the signature. This script never sends
+      anything: it has no SMTP code.
 """
 import email
+import email.message
 import email.policy
 import email.utils
 import imaplib
 import functools
+import glob
+import html
+import html.parser
 import json
 import os
 import re
@@ -220,6 +234,125 @@ def check(address):
                       "others": len(seen - in_drafts), "latest": latest}, ensure_ascii=False))
 
 
+THUNDERBIRD_PROFILE_GLOBS = (
+    "~/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/current/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/current/.config/thunderbird/*/prefs.js",
+    "~/.var/app/org.mozilla.Thunderbird/.thunderbird/*/prefs.js",
+    "~/Library/Thunderbird/Profiles/*/prefs.js",
+)
+PREF_RE = re.compile(r'^user_pref\("(?P<key>[^"]+)",\s*(?P<value>"(?:[^"\\]|\\.)*"|true|false|-?\d+)\);', re.M)
+
+
+def read_prefs(path):
+    prefs = {}
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for m in PREF_RE.finditer(f.read()):
+            try:
+                prefs[m.group("key")] = json.loads(m.group("value"))
+            except ValueError:
+                continue
+    return prefs
+
+
+@functools.cache
+def signature():
+    """{"text", "html" (or None), "separator", "source"} of the OUTREACH_EMAIL account's
+    Thunderbird signature, or None when there is none."""
+    profile = os.environ.get("OUTREACH_THUNDERBIRD_PROFILE", "")
+    if profile.lower() == "none":
+        return None
+    sender = os.environ.get("OUTREACH_EMAIL", "").lower()
+    if profile:
+        candidates = [os.path.join(os.path.expanduser(profile), "prefs.js")]
+    else:
+        candidates = [p for g in THUNDERBIRD_PROFILE_GLOBS for p in glob.glob(os.path.expanduser(g))]
+    # The most recently written profile wins when several hold the account.
+    for path in sorted(candidates, key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0,
+                       reverse=True):
+        if not os.path.isfile(path):
+            continue
+        prefs = read_prefs(path)
+        for key, value in prefs.items():
+            m = re.fullmatch(r"mail\.identity\.([^.]+)\.useremail", key)
+            if not m or str(value).lower() != sender:
+                continue
+            ident = f"mail.identity.{m.group(1)}."
+            sig_file = prefs.get(ident + "sig_file", "")
+            if prefs.get(ident + "attach_signature") and sig_file and os.path.isfile(sig_file):
+                with open(sig_file, encoding="utf-8", errors="replace") as f:
+                    raw = f.read()
+                is_html = sig_file.lower().endswith((".htm", ".html"))
+            else:
+                raw = prefs.get(ident + "htmlSigText", "")
+                is_html = bool(prefs.get(ident + "htmlSigFormat"))
+            if not str(raw).strip():
+                return None
+            if is_html:
+                sig_html = re.sub(r"<!--.*?-->", "", raw, flags=re.S).strip()
+                sig_text = html_to_text(sig_html)
+            else:
+                sig_html, sig_text = None, raw.strip("\n")
+            return {"text": sig_text, "html": sig_html,
+                    "separator": not prefs.get(ident + "suppress_signature_separator"),
+                    "source": f"{path} ({m.group(1)}, {'HTML' if is_html else 'plain text'})"}
+    return None
+
+
+class _TextExtractor(html.parser.HTMLParser):
+    BLOCKS = {"br", "div", "p", "tr", "table", "li", "h1", "h2", "h3", "h4", "h5", "h6"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts, self.skip = [], 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("style", "script", "head"):
+            self.skip += 1
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+        elif tag == "td":
+            self.parts.append(" ")
+
+    def handle_endtag(self, tag):
+        if tag in ("style", "script", "head"):
+            self.skip = max(0, self.skip - 1)
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.parts.append(re.sub(r"\s+", " ", data))
+
+
+def html_to_text(source):
+    parser = _TextExtractor()
+    parser.feed(source)
+    lines = (re.sub(r"[ \xa0]+", " ", line).strip() for line in "".join(parser.parts).splitlines())
+    return "\n".join(line for line in lines if line)
+
+
+def with_signature(msg, sig):
+    """A copy of the text/plain message `msg` with the signature appended to its body."""
+    body = msg.get_content().rstrip("\n")
+    sep = "-- \n" if sig["separator"] else ""
+    out = email.message.EmailMessage(policy=email.policy.SMTP)
+    for key, value in msg.items():
+        if key.lower() not in ("mime-version", "content-type", "content-transfer-encoding"):
+            out[key] = value
+    out.set_content(f"{body}\n\n{sep}{sig['text']}\n", cte="8bit")
+    if sig["html"]:
+        paragraphs = "".join(f"<p>{html.escape(p).replace(chr(10), '<br>')}</p>\n"
+                             for p in re.split(r"\n\s*\n", body) if p.strip())
+        sep_html = "-- <br>\n" if sig["separator"] else ""
+        out.add_alternative(
+            "<!DOCTYPE html>\n<html><head><meta http-equiv=\"content-type\" "
+            "content=\"text/html; charset=UTF-8\"></head>\n<body>\n"
+            f"{paragraphs}<div class=\"moz-signature\">{sep_html}{sig['html']}</div>\n"
+            "</body></html>\n", subtype="html", cte="8bit")
+    return out
+
+
 def draft(path):
     with open(path, "rb") as f:
         msg = email.message_from_binary_file(f, policy=email.policy.SMTP)
@@ -228,6 +361,12 @@ def draft(path):
     sender = os.environ.get("OUTREACH_EMAIL", "")
     if not msg["From"]:
         msg["From"] = sender
+    sig = signature()
+    if sig:
+        if msg.get_content_type() != "text/plain" or msg.is_multipart():
+            sys.exit(f"{path} is not a plain-text email: can't append the signature "
+                     "(set OUTREACH_THUNDERBIRD_PROFILE=none to store it without one)")
+        msg = with_signature(msg, sig)
     conn = connect()
     box = drafts_folder(conn)
     typ, data = conn.append(box, "(\\Draft \\Seen)", imaplib.Time2Internaldate(time.time()),
@@ -235,7 +374,8 @@ def draft(path):
     conn.logout()
     if typ != "OK":
         sys.exit(f"IMAP APPEND to {box} failed: {data}")
-    print(json.dumps({"folder": box.strip('"'), "from": str(msg["From"])}, ensure_ascii=False))
+    print(json.dumps({"folder": box.strip('"'), "from": str(msg["From"]),
+                      "signature": sig["source"] if sig else None}, ensure_ascii=False))
 
 
 def main():
@@ -251,7 +391,9 @@ def main():
         print(json.dumps({"env_file": env_file, "host": host, "port": port, "email": user,
                           "password": "from OUTREACH_PASSWORD" if password()[1] == "variable"
                           else "from OUTREACH_PASSWORD_COMMAND",
-                          "drafts_folder": box.strip('"'), "login": "ok"}))
+                          "drafts_folder": box.strip('"'),
+                          "signature": signature()["source"] if signature() else None,
+                          "login": "ok"}, ensure_ascii=False))
     elif sys.argv[1] == "check":
         # `-` reads the address from stdin, so it never goes through a shell command line.
         address = sys.stdin.readline() if sys.argv[2] == "-" else sys.argv[2]
