@@ -56,7 +56,7 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
-❓ **Question:** Make data registration/alignement based on foundational features<br>
+❓ **Question:** Can data registration and alignment be based on foundational features?<br>
 📅 **Date:** 10/2026<br>
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>

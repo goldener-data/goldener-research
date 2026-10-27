@@ -66,17 +66,12 @@
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
-❓ **Question:** Explain mode decision by comparing embeddings with the training<br>
+❓ **Question:** Explain model decisions by comparing embeddings with the training set<br>
 📅 **Date:** 10/2026<br>
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
 ---
 ❓ **Question:** Is it possible to detect failure mode by comparing model performance between clusters?<br>
-📅 **Date:** 10/2026<br>
-👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
-🧭 **Context:** N/A<br>
----
-❓ **Question:** Can we make sample error analysis based on the closest embedding in the training set ?<br>
 📅 **Date:** 10/2026<br>
 👤 **Author:** [Yann Chéné Leroy](https://github.com/Yann-CV)<br>
 🧭 **Context:** N/A<br>
