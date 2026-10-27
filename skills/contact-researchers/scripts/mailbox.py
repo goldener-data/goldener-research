@@ -26,7 +26,8 @@ not already set in the environment:
   OUTREACH_THUNDERBIRD_PROFILE
                            Thunderbird profile directory holding the signature of the
                            OUTREACH_EMAIL account (default: the profiles found in the usual
-                           places: ~/.thunderbird, snap, flatpak, macOS); "none" disables
+                           places: ~/.thunderbird, snap (common and current), flatpak,
+                           macOS); "none" disables
                            the signature
 
 The env file holds one KEY=VALUE per line (`export ` prefix, quotes around the value,
@@ -53,8 +54,9 @@ Usage:
       Thunderbird does (after a "-- " line unless the account suppresses it); an HTML
       signature makes the draft multipart/alternative (plain text + HTML), so it
       opens in Thunderbird's HTML editor with the signature; its remote images
-      (e.g. a logo) are downloaded and embedded as cid: parts, since Thunderbird
-      blocks remote images in stored drafts. This script never sends
+      (e.g. a logo; <img src> with a quoted absolute http(s) URL, up to 5 MiB each)
+      are downloaded and embedded as cid: parts, since Thunderbird blocks remote
+      images in stored drafts; any other image is kept as is. This script never sends
       anything: it has no SMTP code.
 """
 import email
@@ -240,6 +242,7 @@ def check(address):
 
 THUNDERBIRD_PROFILE_GLOBS = (
     "~/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/common/.thunderbird/*/prefs.js",
     "~/snap/thunderbird/current/.thunderbird/*/prefs.js",
     "~/snap/thunderbird/current/.config/thunderbird/*/prefs.js",
     "~/.var/app/org.mozilla.Thunderbird/.thunderbird/*/prefs.js",
@@ -282,8 +285,12 @@ def signature():
             if not m or str(value).lower() != sender:
                 continue
             ident = f"mail.identity.{m.group(1)}."
-            sig_file = prefs.get(ident + "sig_file", "")
-            if prefs.get(ident + "attach_signature") and sig_file and os.path.isfile(sig_file):
+            if prefs.get(ident + "attach_signature"):
+                sig_file = signature_file(prefs, ident, os.path.dirname(path))
+                if not sig_file:
+                    print(f"warning: the signature file of {sender} in {path} is missing; "
+                          "drafts get no signature", file=sys.stderr)
+                    return None
                 with open(sig_file, encoding="utf-8", errors="replace") as f:
                     raw = f.read()
                 is_html = sig_file.lower().endswith((".htm", ".html"))
@@ -292,18 +299,26 @@ def signature():
                 is_html = bool(prefs.get(ident + "htmlSigFormat"))
             if not str(raw).strip():
                 return None
-            images = []
             if is_html:
-                sig_text = html_to_text(raw)
-                sig_html, images = embed_images(raw.strip())
+                sig_html, sig_text = raw.strip(), html_to_text(raw)
             else:
                 sig_html, sig_text = None, raw.strip("\n")
-            return {"text": sig_text, "html": sig_html, "images": images,
+            return {"text": sig_text, "html": sig_html,
                     "separator": not prefs.get(ident + "suppress_signature_separator"),
                     "source": f"{path} ({m.group(1)}, {'HTML' if is_html else 'plain text'})"}
     return None
 
 
+def signature_file(prefs, ident, profile_dir):
+    """The identity's attached signature file, from its portable `sig_file-rel` ("[ProfD]..."
+    relative to the profile) or its absolute `sig_file`, or None when neither exists."""
+    rel = prefs.get(ident + "sig_file-rel", "")
+    paths = [os.path.join(profile_dir, rel[len("[ProfD]"):])] if rel.startswith("[ProfD]") else []
+    paths.append(prefs.get(ident + "sig_file", ""))
+    return next((p for p in paths if p and os.path.isfile(p)), None)
+
+
+MAX_IMAGE_BYTES = 5 * 1024 * 1024
 IMG_SRC_RE = re.compile(r'(<img\b[^>]*?\bsrc\s*=\s*)(["\'])(https?://[^"\']+)\2', re.I | re.S)
 
 
@@ -318,7 +333,9 @@ def embed_images(sig_html):
         if url not in by_url:
             try:
                 with urllib.request.urlopen(url, timeout=30) as resp:
-                    data, ctype = resp.read(), resp.headers.get_content_type()
+                    data, ctype = resp.read(MAX_IMAGE_BYTES + 1), resp.headers.get_content_type()
+                if len(data) > MAX_IMAGE_BYTES:
+                    raise ValueError(f"larger than {MAX_IMAGE_BYTES // 2**20} MiB")
             except (OSError, ValueError) as e:
                 print(f"warning: signature image {url} not embedded ({e}); kept as a link",
                       file=sys.stderr)
@@ -382,13 +399,15 @@ def with_signature(msg, sig):
         paragraphs = "".join(f"<p>{html.escape(p).replace(chr(10), '<br>')}</p>\n"
                              for p in re.split(r"\n\s*\n", body) if p.strip())
         sep_html = "-- <br>\n" if sig["separator"] else ""
+        # Downloaded only now, so `config` never contacts the images' hosts.
+        sig_html, images = embed_images(sig["html"])
         out.add_alternative(
             "<!DOCTYPE html>\n<html><head><meta http-equiv=\"content-type\" "
             "content=\"text/html; charset=UTF-8\"></head>\n<body>\n"
-            f"{paragraphs}<div class=\"moz-signature\">{sep_html}{sig['html']}</div>\n"
+            f"{paragraphs}<div class=\"moz-signature\">{sep_html}{sig_html}</div>\n"
             "</body></html>\n", subtype="html", cte="8bit")
         html_part = out.get_payload()[1]
-        for cid, data, maintype, subtype in sig["images"]:
+        for cid, data, maintype, subtype in images:
             html_part.add_related(data, maintype=maintype, subtype=subtype, cid=f"<{cid}>",
                                   disposition="inline", filename=f"signature.{subtype}")
     return out
@@ -403,9 +422,12 @@ def draft(path):
     if not msg["From"]:
         msg["From"] = sender
     # Without a Date, mail clients list the draft out of place (Thunderbird sorts it as undated).
+    # An empty header is replaced: these headers can appear only once.
     if not msg["Date"]:
+        del msg["Date"]
         msg["Date"] = email.utils.formatdate(localtime=True)
     if not msg["Message-ID"]:
+        del msg["Message-ID"]
         msg["Message-ID"] = email.utils.make_msgid(domain=sender.partition("@")[2] or None)
     sig = signature()
     if sig:
