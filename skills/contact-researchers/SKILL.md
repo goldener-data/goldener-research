@@ -9,7 +9,8 @@ description: Draft personalized outreach emails introducing Goldener to
   Gmail draft in the connected mailbox, a draft in any IMAP mailbox set
   through optional `OUTREACH_*` environment variables — host, email address,
   password — or `.eml` files in a local directory), plus optional sender
-  details. Before drafting, it checks that
+  details. An IMAP draft gets the signature of the matching Thunderbird
+  account when one is configured. Before drafting, it checks that
   no email was ever exchanged with that address (skipping the researcher
   when one was). Each
   email is casual, in short sentences, and never reads as a sales pitch: it
@@ -82,6 +83,18 @@ themselves.
    | `OUTREACH_PASSWORD_COMMAND` | instead of `OUTREACH_PASSWORD`: a command printing the password from a vault, run without a shell, e.g. `rbw get goldener-outreach` or `bw get password goldener-outreach` (Bitwarden), `pass show goldener-outreach`, `op read op://Private/goldener-outreach/password` (1Password), `secret-tool lookup service goldener-outreach` |
    | `OUTREACH_BW_SESSION` | Bitwarden CLI session key (`bw unlock --raw`), passed to the command as `BW_SESSION` |
    | `OUTREACH_DRAFTS_FOLDER` | drafts folder [the folder the server flags `\Drafts`, else `Drafts`] |
+   | `OUTREACH_THUNDERBIRD_PROFILE` | Thunderbird profile directory holding the signature of the `OUTREACH_EMAIL` account [the profiles in the usual places: `~/.thunderbird`, snap (`~/snap/thunderbird/common/.thunderbird`, `~/snap/thunderbird/current/.config/thunderbird`), flatpak, macOS]; `none` stores drafts without it |
+
+   **Account signature**: a draft opened from the drafts folder doesn't get
+   the account's signature from the mail client, so `mailbox.py draft`
+   appends it itself: the signature of the Thunderbird account whose address
+   is `OUTREACH_EMAIL` (HTML or plain text, after a `-- ` line unless the
+   account suppresses it; an HTML signature makes the draft plain text +
+   HTML, with its remote images, e.g. a logo, downloaded and embedded in the
+   draft when written as `<img src="https://...">` (up to 5 MiB each), since
+   Thunderbird blocks linked images in stored drafts; other images are kept
+   as is). `mailbox.py config` reports it as `signature` (its source, or
+   `null` when none is found), without downloading its images.
 
    `mailbox.py` reads them from its own env file —
    `~/.config/goldener-outreach/.env`, or the file `OUTREACH_ENV_FILE`
@@ -114,9 +127,14 @@ themselves.
    them as given; never invent a sender name, title or affiliation — leave a
    `[Your name]` placeholder in the signature when none is given, and say so.
    **No signature** (optional): when the user says their mail tool already
-   adds a signature (or asks for none), the email ends with the closing word
+   adds a signature (or asks for none), and always for an IMAP draft when
+   `mailbox.py config` reports a `signature` (the account's signature is
+   appended to the draft), the email ends with the closing word
    only (`Cheers,`), without the name and role lines, and no `[Your name]`
    placeholder; the `From:` display name is still set when a name is given.
+   When the user asks for no signature at all, IMAP drafts are stored with
+   `OUTREACH_THUNDERBIRD_PROFILE=none` so the account's signature isn't
+   appended either.
 
 ## Safety
 
@@ -312,7 +330,8 @@ through a hosting or sharing feature.
      role in the project from the sender details, e.g. `Yann Chéné Leroy`
      then `Goldener (non-profit, open source)` (`[Your name]` placeholder
      when no name is given). With **no signature** (input 4), stop at
-     `Cheers,`: the mail tool appends its own signature.
+     `Cheers,`: the mail tool, or `mailbox.py` for an IMAP draft, appends
+     the account's signature.
    - The user's additions (event, link, feature) where they fit, as given.
    No bullet lists, no attachment.
 
@@ -323,7 +342,10 @@ through a hosting or sharing feature.
      `Yann Chéné Leroy <yann@goldener.ai>`, RFC 2047-encoded by Python's
      `email` package), so the recipient sees a person, not a bare address,
      then `python3 -I <skill dir>/scripts/mailbox.py draft <file.eml>`, which
-     appends it to the drafts folder flagged `\Draft`. Report the folder.
+     appends it to the drafts folder flagged `\Draft`, with the account's
+     Thunderbird signature when one is found (prefix the command with
+     `OUTREACH_THUNDERBIRD_PROFILE=none` when the user asked for no
+     signature at all). Report the folder and the `signature` it printed.
    - **Gmail**: `create_draft` with the researcher's address as the only
      `to`, the user's cc/bcc if given, the subject and the plain-text body;
      then apply the user's label to the new draft if one was asked for. Keep
@@ -344,7 +366,10 @@ through a hosting or sharing feature.
    the introduction relies on, and the subject line. Show the full text of
    one draft (all of them when there are three or fewer). Then list any
    ambiguity left for the user, placeholders to fill (e.g. `[Your name]`),
-   and anything noteworthy found in the repository or PR content. Remind
+   and anything noteworthy found in the repository or PR content. Report any
+   signature image `mailbox.py` couldn't embed (its warning): Thunderbird
+   blocks that linked image in stored drafts until the user allows remote
+   content from the `OUTREACH_EMAIL` address. Remind
    the user that nothing was sent.
 
 ## Notes
