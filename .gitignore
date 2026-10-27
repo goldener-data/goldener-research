@@ -20,3 +20,7 @@ copilot-*.log
 
 # python
 __pycache__/
+
+
+# git actions
+.worktree/
