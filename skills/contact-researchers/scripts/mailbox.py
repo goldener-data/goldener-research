@@ -47,7 +47,8 @@ Usage:
   mailbox.py draft FILE.eml
       Append FILE.eml to the drafts folder with the \\Draft and \\Seen flags, and
       print {folder, from, signature} as JSON. The From header is set to
-      OUTREACH_EMAIL when the file has none. When the Thunderbird account of
+      OUTREACH_EMAIL, and Date and Message-ID to now and a new id, when the file
+      has none. When the Thunderbird account of
       OUTREACH_EMAIL has a signature, it is appended to the plain-text body as
       Thunderbird does (after a "-- " line unless the account suppresses it); an HTML
       signature makes the draft multipart/alternative (plain text + HTML), so it
@@ -401,6 +402,11 @@ def draft(path):
     sender = os.environ.get("OUTREACH_EMAIL", "")
     if not msg["From"]:
         msg["From"] = sender
+    # Without a Date, mail clients list the draft out of place (Thunderbird sorts it as undated).
+    if not msg["Date"]:
+        msg["Date"] = email.utils.formatdate(localtime=True)
+    if not msg["Message-ID"]:
+        msg["Message-ID"] = email.utils.make_msgid(domain=sender.partition("@")[2] or None)
     sig = signature()
     if sig:
         if msg.get_content_type() != "text/plain" or msg.is_multipart():
