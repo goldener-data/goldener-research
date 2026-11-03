@@ -23,6 +23,12 @@ not already set in the environment:
                            the password command only, as BW_SESSION
   OUTREACH_DRAFTS_FOLDER   drafts folder (default: the folder flagged \\Drafts,
                            else "Drafts")
+  OUTREACH_THUNDERBIRD_PROFILE
+                           Thunderbird profile directory holding the signature of the
+                           OUTREACH_EMAIL account (default: the profiles found in the usual
+                           places: ~/.thunderbird, snap (common and current), flatpak,
+                           macOS); "none" disables
+                           the signature
 
 The env file holds one KEY=VALUE per line (`export ` prefix, quotes around the value,
 blank lines and `#` comments allowed); only OUTREACH_* keys are read. It should be
@@ -32,7 +38,8 @@ Usage:
   mailbox.py config
       Print JSON status: ok (exit 0), unconfigured/partial (exit 2), or error
       (exit 1). Test login only when required settings exist. Never print
-      credential values or raw vault/provider errors.
+      credential values or raw vault/provider errors. Include the matching
+      Thunderbird signature source (or null), without downloading its images.
   mailbox.py check ADDRESS
       Search every folder, read-only, for messages to, from, cc or bcc ADDRESS, and
       stop with an error if any folder can't be searched. Print {address, total,
@@ -42,14 +49,27 @@ Usage:
       none. ADDRESS `-` reads the address from stdin.
   mailbox.py draft FILE.eml
       Append FILE.eml to the drafts folder with the \\Draft and \\Seen flags, and
-      print {folder, from} as JSON. The From header is set to OUTREACH_EMAIL when
-      the file has none. This script never sends anything: it has no SMTP code.
+      print {folder, from, signature} as JSON. The From header is set to
+      OUTREACH_EMAIL, and Date and Message-ID to now and a new id, when the file
+      has none. When the Thunderbird account of
+      OUTREACH_EMAIL has a signature, it is appended to the plain-text body as
+      Thunderbird does (after a "-- " line unless the account suppresses it); an HTML
+      signature makes the draft multipart/alternative (plain text + HTML), so it
+      opens in Thunderbird's HTML editor with the signature; its remote images
+      (e.g. a logo; <img src> with a quoted absolute http(s) URL, up to 5 MiB each)
+      are downloaded and embedded as cid: parts, since Thunderbird blocks remote
+      images in stored drafts; any other image is kept as is. This script never sends
+      anything: it has no SMTP code.
 """
 import email
+import email.message
 import email.policy
 import email.utils
 import imaplib
 import functools
+import glob
+import html
+import html.parser
 import json
 import os
 import re
@@ -57,6 +77,7 @@ import shlex
 import subprocess
 import sys
 import time
+import urllib.request
 from email.header import decode_header, make_header
 
 DEFAULT_ENV_FILE = "~/.config/goldener-outreach/.env"
@@ -64,12 +85,16 @@ ENV_LINE_RE = re.compile(r"^\s*(?:export\s+)?(?P<key>OUTREACH_[A-Z_]+)\s*=\s*(?P
 LIST_RE = re.compile(r'\((?P<flags>[^)]*)\) (?:"[^"]*"|NIL) (?P<name>.+)$')
 
 
+class MissingEnvFile(SystemExit):
+    """A configuration-path error safe to include in status output."""
+
+
 def load_env_file():
     """Set the OUTREACH_* variables of the env file that aren't already in the environment."""
     path = os.path.expanduser(os.environ.get("OUTREACH_ENV_FILE") or DEFAULT_ENV_FILE)
     if not os.path.isfile(path):
         if os.environ.get("OUTREACH_ENV_FILE"):
-            sys.exit(f"OUTREACH_ENV_FILE points to a missing file: {path}")
+            raise MissingEnvFile(f"OUTREACH_ENV_FILE points to a missing file: {path}")
         return None
     if os.stat(path).st_mode & 0o077:
         print(f"warning: {path} is readable by other users; run chmod 600 on it", file=sys.stderr)
@@ -115,12 +140,12 @@ def password():
     return pwd, "command"
 
 
-def settings():
+def settings(include_source=False):
     host, user = (os.environ.get(k, "") for k in ("OUTREACH_IMAP_HOST", "OUTREACH_EMAIL"))
     missing = [k for k, v in (("OUTREACH_IMAP_HOST", host), ("OUTREACH_EMAIL", user)) if not v]
-    pwd = ""
+    pwd, source = "", ""
     if not missing:
-        pwd, _ = password()
+        pwd, source = password()
         if not pwd:
             missing.append("OUTREACH_PASSWORD or OUTREACH_PASSWORD_COMMAND")
     if missing:
@@ -128,11 +153,12 @@ def settings():
         sys.exit("missing variable(s): " + ", ".join(missing)
                  + f" (set them in {where} or in the environment)")
     port = int(os.environ.get("OUTREACH_IMAP_PORT") or 993)
-    return host, port, user, pwd
+    result = (host, port, user, pwd)
+    return result + (source,) if include_source else result
 
 
-def connect():
-    host, port, user, pwd = settings()
+def connect(resolved_settings=None):
+    host, port, user, pwd = resolved_settings if resolved_settings is not None else settings()
     try:
         if port == 143:
             conn = imaplib.IMAP4(host, port)
@@ -221,6 +247,179 @@ def check(address):
                       "others": len(seen - in_drafts), "latest": latest}, ensure_ascii=False))
 
 
+THUNDERBIRD_PROFILE_GLOBS = (
+    "~/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/common/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/current/.thunderbird/*/prefs.js",
+    "~/snap/thunderbird/current/.config/thunderbird/*/prefs.js",
+    "~/.var/app/org.mozilla.Thunderbird/.thunderbird/*/prefs.js",
+    "~/Library/Thunderbird/Profiles/*/prefs.js",
+)
+PREF_RE = re.compile(r'^user_pref\("(?P<key>[^"]+)",\s*(?P<value>"(?:[^"\\]|\\.)*"|true|false|-?\d+)\);', re.M)
+
+
+def read_prefs(path):
+    prefs = {}
+    with open(path, encoding="utf-8", errors="replace") as f:
+        for m in PREF_RE.finditer(f.read()):
+            try:
+                prefs[m.group("key")] = json.loads(m.group("value"))
+            except ValueError:
+                continue
+    return prefs
+
+
+@functools.cache
+def signature():
+    """{"text", "html" (or None), "separator", "source"} of the OUTREACH_EMAIL account's
+    Thunderbird signature, or None when there is none."""
+    profile = os.environ.get("OUTREACH_THUNDERBIRD_PROFILE", "")
+    if profile.lower() == "none":
+        return None
+    sender = os.environ.get("OUTREACH_EMAIL", "").lower()
+    if profile:
+        candidates = [os.path.join(os.path.expanduser(profile), "prefs.js")]
+    else:
+        candidates = [p for g in THUNDERBIRD_PROFILE_GLOBS for p in glob.glob(os.path.expanduser(g))]
+    # The most recently written profile wins when several hold the account.
+    for path in sorted(candidates, key=lambda p: os.path.getmtime(p) if os.path.exists(p) else 0,
+                       reverse=True):
+        if not os.path.isfile(path):
+            continue
+        prefs = read_prefs(path)
+        for key, value in prefs.items():
+            m = re.fullmatch(r"mail\.identity\.([^.]+)\.useremail", key)
+            if not m or str(value).lower() != sender:
+                continue
+            ident = f"mail.identity.{m.group(1)}."
+            if prefs.get(ident + "attach_signature"):
+                sig_file = signature_file(prefs, ident, os.path.dirname(path))
+                if not sig_file:
+                    print(f"warning: the signature file of {sender} in {path} is missing; "
+                          "drafts get no signature", file=sys.stderr)
+                    return None
+                with open(sig_file, encoding="utf-8", errors="replace") as f:
+                    raw = f.read()
+                is_html = sig_file.lower().endswith((".htm", ".html"))
+            else:
+                raw = prefs.get(ident + "htmlSigText", "")
+                is_html = bool(prefs.get(ident + "htmlSigFormat"))
+            if not str(raw).strip():
+                return None
+            if is_html:
+                sig_html, sig_text = raw.strip(), html_to_text(raw)
+            else:
+                sig_html, sig_text = None, raw.strip("\n")
+            return {"text": sig_text, "html": sig_html,
+                    "separator": not prefs.get(ident + "suppress_signature_separator"),
+                    "source": f"{path} ({m.group(1)}, {'HTML' if is_html else 'plain text'})"}
+    return None
+
+
+def signature_file(prefs, ident, profile_dir):
+    """The identity's attached signature file, from its portable `sig_file-rel` ("[ProfD]..."
+    relative to the profile) or its absolute `sig_file`, or None when neither exists."""
+    rel = prefs.get(ident + "sig_file-rel", "")
+    paths = [os.path.join(profile_dir, rel[len("[ProfD]"):])] if rel.startswith("[ProfD]") else []
+    paths.append(prefs.get(ident + "sig_file", ""))
+    return next((p for p in paths if p and os.path.isfile(p)), None)
+
+
+MAX_IMAGE_BYTES = 5 * 1024 * 1024
+IMG_SRC_RE = re.compile(r'(<img\b[^>]*?\bsrc\s*=\s*)(["\'])(https?://[^"\']+)\2', re.I | re.S)
+
+
+def embed_images(sig_html):
+    """(html, [(cid, bytes, maintype, subtype)]): the signature's remote images downloaded and
+    pointed to as cid: parts, since Thunderbird blocks remote images in stored drafts. An image
+    that can't be downloaded keeps its link."""
+    images, by_url = [], {}
+
+    def replace(m):
+        url = html.unescape(m.group(3))
+        if url not in by_url:
+            try:
+                with urllib.request.urlopen(url, timeout=30) as resp:
+                    data, ctype = resp.read(MAX_IMAGE_BYTES + 1), resp.headers.get_content_type()
+                if len(data) > MAX_IMAGE_BYTES:
+                    raise ValueError(f"larger than {MAX_IMAGE_BYTES // 2**20} MiB")
+            except (OSError, ValueError) as e:
+                print(f"warning: signature image {url} not embedded ({e}); kept as a link",
+                      file=sys.stderr)
+                return m.group(0)
+            if not ctype.startswith("image/"):
+                print(f"warning: signature image {url} is {ctype}; kept as a link", file=sys.stderr)
+                return m.group(0)
+            # The sender's domain, not the default (the local host name), so the id leaks nothing.
+            domain = os.environ.get("OUTREACH_EMAIL", "").partition("@")[2] or "localhost"
+            cid = email.utils.make_msgid("signature", domain=domain)[1:-1]
+            images.append((cid, data, *ctype.split("/", 1)))
+            by_url[url] = cid
+        return f'{m.group(1)}{m.group(2)}cid:{by_url[url]}{m.group(2)}'
+
+    return IMG_SRC_RE.sub(replace, sig_html), images
+
+
+class _TextExtractor(html.parser.HTMLParser):
+    BLOCKS = {"br", "div", "p", "tr", "table", "li", "h1", "h2", "h3", "h4", "h5", "h6"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts, self.skip = [], 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("style", "script", "head"):
+            self.skip += 1
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+        elif tag == "td":
+            self.parts.append(" ")
+
+    def handle_endtag(self, tag):
+        if tag in ("style", "script", "head"):
+            self.skip = max(0, self.skip - 1)
+        elif tag in self.BLOCKS:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.parts.append(re.sub(r"\s+", " ", data))
+
+
+def html_to_text(source):
+    parser = _TextExtractor()
+    parser.feed(source)
+    lines = (re.sub(r"[ \xa0]+", " ", line).strip() for line in "".join(parser.parts).splitlines())
+    return "\n".join(line for line in lines if line)
+
+
+def with_signature(msg, sig):
+    """A copy of the text/plain message `msg` with the signature appended to its body."""
+    body = msg.get_content().rstrip("\n")
+    sep = "-- \n" if sig["separator"] else ""
+    out = email.message.EmailMessage(policy=email.policy.SMTP)
+    for key, value in msg.items():
+        if key.lower() not in ("mime-version", "content-type", "content-transfer-encoding"):
+            out[key] = value
+    out.set_content(f"{body}\n\n{sep}{sig['text']}\n", cte="8bit")
+    if sig["html"]:
+        paragraphs = "".join(f"<p>{html.escape(p).replace(chr(10), '<br>')}</p>\n"
+                             for p in re.split(r"\n\s*\n", body) if p.strip())
+        sep_html = "-- <br>\n" if sig["separator"] else ""
+        # Downloaded only now, so `config` never contacts the images' hosts.
+        sig_html, images = embed_images(sig["html"])
+        out.add_alternative(
+            "<!DOCTYPE html>\n<html><head><meta http-equiv=\"content-type\" "
+            "content=\"text/html; charset=UTF-8\"></head>\n<body>\n"
+            f"{paragraphs}<div class=\"moz-signature\">{sep_html}{sig_html}</div>\n"
+            "</body></html>\n", subtype="html", cte="8bit")
+        html_part = out.get_payload()[1]
+        for cid, data, maintype, subtype in images:
+            html_part.add_related(data, maintype=maintype, subtype=subtype, cid=f"<{cid}>",
+                                  disposition="inline", filename=f"signature.{subtype}")
+    return out
+
+
 def draft(path):
     with open(path, "rb") as f:
         msg = email.message_from_binary_file(f, policy=email.policy.SMTP)
@@ -229,6 +428,20 @@ def draft(path):
     sender = os.environ.get("OUTREACH_EMAIL", "")
     if not msg["From"]:
         msg["From"] = sender
+    # Without a Date, mail clients list the draft out of place (Thunderbird sorts it as undated).
+    # An empty header is replaced: these headers can appear only once.
+    if not msg["Date"]:
+        del msg["Date"]
+        msg["Date"] = email.utils.formatdate(localtime=True)
+    if not msg["Message-ID"]:
+        del msg["Message-ID"]
+        msg["Message-ID"] = email.utils.make_msgid(domain=sender.partition("@")[2] or None)
+    sig = signature()
+    if sig:
+        if msg.get_content_type() != "text/plain" or msg.is_multipart():
+            sys.exit(f"{path} is not a plain-text email: can't append the signature "
+                     "(set OUTREACH_THUNDERBIRD_PROFILE=none to store it without one)")
+        msg = with_signature(msg, sig)
     conn = connect()
     box = drafts_folder(conn)
     typ, data = conn.append(box, "(\\Draft \\Seen)", imaplib.Time2Internaldate(time.time()),
@@ -236,7 +449,8 @@ def draft(path):
     conn.logout()
     if typ != "OK":
         sys.exit(f"IMAP APPEND to {box} failed: {data}")
-    print(json.dumps({"folder": box.strip('"'), "from": str(msg["From"])}, ensure_ascii=False))
+    print(json.dumps({"folder": box.strip('"'), "from": str(msg["From"]),
+                      "signature": sig["source"] if sig else None}, ensure_ascii=False))
 
 
 def config():
@@ -249,21 +463,31 @@ def config():
         if not any(os.environ.get(key) for key in credentials):
             missing.append("OUTREACH_PASSWORD or OUTREACH_PASSWORD_COMMAND")
         if missing:
-            configured = any(os.environ.get(key) for key in required + credentials + ("OUTREACH_IMAP_PORT", "OUTREACH_DRAFTS_FOLDER", "OUTREACH_BW_SESSION"))
+            optional = ("OUTREACH_IMAP_PORT", "OUTREACH_DRAFTS_FOLDER",
+                        "OUTREACH_BW_SESSION", "OUTREACH_THUNDERBIRD_PROFILE")
+            configured = env_file is not None or any(
+                os.environ.get(key) for key in required + credentials + optional)
             print(json.dumps({"status": "partial" if configured else "unconfigured",
                               "missing": missing}))
             return 2
-        host, port, user, _ = settings()
-        conn = connect()
+        resolved = settings(include_source=True)
+        host, port, user, _, source = resolved
+        conn = connect(resolved[:4])
         try:
             box = drafts_folder(conn)
         finally:
             conn.logout()
+        sig = signature()
         print(json.dumps({"status": "ok", "env_file": env_file, "host": host,
                           "port": port, "email": user,
-                          "password_source": password()[1],
-                          "drafts_folder": box.strip('"'), "login": "ok"}))
+                          "password_source": source,
+                          "drafts_folder": box.strip('"'),
+                          "signature": sig["source"] if sig else None,
+                          "login": "ok"}, ensure_ascii=False))
         return 0
+    except MissingEnvFile as error:
+        print(json.dumps({"status": "error", "error": str(error)}))
+        return 1
     except (Exception, SystemExit):
         # Helpers/providers may include credentials in exception strings.
         print(json.dumps({"status": "error",

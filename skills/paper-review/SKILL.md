@@ -1,6 +1,6 @@
 ---
 name: paper-review
-description: Write a short review of one paper as a self-contained local HTML file. The paper is named by title (looked up in the goldener-research bibliography by a bundled script, else searched online) or drawn at random from the bibliography, optionally within a theme or section. Reads the full text and gives title, authors, link, the innovation in 1-2 sentences, the main figure cropped from the paper, then why it is data-centric AI, main innovations and limitations. Never published. Use when the user asks to review, summarize or digest a paper (e.g. "review <title>", "review a paper", "review a random labeling paper").
+description: Write a short review of one paper as a self-contained local HTML file. The paper is named by title (looked up in the goldener-research bibliography by a bundled script, else searched online) or drawn at random from the bibliography, optionally within a theme or section. Reads the full text and gives title, authors, link, the innovation in 1-2 sentences, the main figure cropped from the paper, then why it is data-centric AI, main innovations and limitations. Never published. Use when the user asks to review, summarize or digest a paper (e.g. "review title", "review a paper", "review a random labeling paper").
 ---
 
 # Review a paper from its title

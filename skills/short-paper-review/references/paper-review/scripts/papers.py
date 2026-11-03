@@ -1,0 +1,173 @@
+#!/usr/bin/env python3
+"""List the papers of the goldener-research bibliography, or find one by title.
+
+Usage:
+  papers.py list [--root DIR]
+      Print every paper of every BIBLIOGRAPHY.md as a JSON list.
+  papers.py find TITLE [--root DIR] [--top N]
+      Print the papers whose title best matches TITLE as a JSON list, best
+      first, each with a `score` (1.0 = same title once normalized). A score
+      of 0.9 or more is a match; lower scores are only candidates to check.
+      TITLE `-` reads the title from stdin, so it never goes through the shell.
+  papers.py random [--root DIR] [--within TEXT] [--exclude LINK ...]
+      Print one paper picked at random as a JSON object. --within keeps only
+      the papers whose file or section contains TEXT (case-insensitive), e.g.
+      a theme directory or a section heading. --within `-` reads TEXT from stdin.
+      --exclude (repeatable) leaves out the paper with that link, and any entry
+      with the same title under another link, e.g. papers already drawn whose
+      full text could not be read.
+
+Without --root, the repository root is the nearest directory holding
+`BIBLIOGRAPHY.md`, `README.md` and `skills/`, looked up from the current
+directory first, then from this script's location (the skill may be installed
+outside the repository). The script stops with an error when none is found.
+
+Each paper is {title, link, first_author, origin, file, section}; papers
+listed in several files are returned once (deduplicated by link), with the
+first matching file and section (--within is applied before deduplication).
+"""
+import argparse
+import difflib
+import html
+import json
+import re
+import secrets
+import sys
+import unicodedata
+from pathlib import Path
+
+# One entry is one <div>...</div> block; fields are looked up inside the block only, so
+# a malformed entry is skipped (or loses a field) without shifting the following ones.
+BLOCK_RE = re.compile(r"<div>(?P<body>.*?)</div>", re.S)
+LINK_TITLE_RE = re.compile(
+    r"^\s*<a href=\"(?P<link>[^\"]+)\">\s*<strong>(?P<title>.*?)</strong>\s*</a>", re.S)
+AUTHOR_RE = re.compile(r"First author:\s*(?P<v>[^<]*?)\s*</em>")
+ORIGIN_RE = re.compile(r"Origin:\s*(?P<v>[^<]*?)\s*</em>")
+HEADING_RE = re.compile(r"^#{2,3}\s+(.*)$", re.M)
+
+
+def is_root(path):
+    return (path / "BIBLIOGRAPHY.md").is_file() and (path / "README.md").is_file() \
+        and (path / "skills").is_dir()
+
+
+def find_root():
+    """Nearest goldener-research checkout above the current directory, else above this
+    script; None when neither is inside one. Topic folders hold no `skills/`, so the
+    lookup can't stop at one of them."""
+    for start in (Path.cwd(), Path(__file__).resolve().parent):
+        for d in (start, *start.parents):
+            if is_root(d):
+                return d
+    return None
+
+
+def normalize_link(link: str) -> str:
+    link = link.strip().rstrip("/")
+    return re.sub(r"arxiv\.org/(abs|pdf)/", "arxiv.org/abs/", link).removesuffix(".pdf")
+
+
+def normalize_title(title: str) -> str:
+    normalized = unicodedata.normalize("NFC", title.casefold())
+    # Keep Unicode letters, digits and combining marks; punctuation separates words.
+    return " ".join("".join(
+        char if char.isalnum() or unicodedata.category(char).startswith("M") else " "
+        for char in normalized).split())
+
+
+def list_papers(root: Path, within: str = ""):
+    """Papers of every BIBLIOGRAPHY.md, deduplicated by link. `within` keeps only the
+    entries whose file or section contains it, before deduplication, so a paper listed
+    under several themes can be found through any of them."""
+    needle = within.lower()
+    files = [root / "BIBLIOGRAPHY.md"] + sorted(
+        d / "BIBLIOGRAPHY.md" for d in root.iterdir()
+        if d.is_dir() and not d.name.startswith(".") and d.name != "skills")
+    papers, seen = [], set()
+    for f in (f for f in files if f.is_file()):
+        text = f.read_text(encoding="utf-8")
+        headings = [(m.start(), m.group(1).strip()) for m in HEADING_RE.finditer(text)]
+        for block in BLOCK_RE.finditer(text):
+            body = block.group("body")
+            m = LINK_TITLE_RE.match(body)
+            if not m:
+                continue
+            file = str(f.relative_to(root))
+            section = next((h for pos, h in reversed(headings) if pos < block.start()), "")
+            if needle and needle not in file.lower() and needle not in section.lower():
+                continue
+            key = normalize_link(m.group("link"))
+            if key in seen:
+                continue
+            seen.add(key)
+            author, origin = AUTHOR_RE.search(body), ORIGIN_RE.search(body)
+            papers.append({
+                "title": html.unescape(" ".join(m.group("title").split())),
+                "link": m.group("link").strip(),
+                "first_author": html.unescape(author.group("v")) if author else "",
+                "origin": html.unescape(origin.group("v")) if origin else "",
+                "file": file,
+                "section": section,
+            })
+    return papers
+
+
+def find(papers, title: str, top: int):
+    query = normalize_title(title)
+    scored = [{**p, "score": round(difflib.SequenceMatcher(None, query, normalize_title(p["title"])).ratio(), 3)}
+              for p in papers]
+    return sorted(scored, key=lambda p: -p["score"])[:top]
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("cmd", choices=["list", "find", "random"])
+    ap.add_argument("title", nargs="?", help="title to look for (find); - reads it from stdin")
+    ap.add_argument("--root", type=Path,
+                    help="repository root (default: found from the current directory, "
+                         "then from this script)")
+    ap.add_argument("--top", type=int, default=3)
+    ap.add_argument("--within", help="random: only papers whose file or section contains this text")
+    ap.add_argument("--exclude", action="append", default=[], metavar="LINK",
+                    help="random: leave out the paper with this link, or its title (repeatable)")
+    a = ap.parse_args()
+    if a.top < 1:
+        ap.error("--top must be 1 or more")
+    a.root = a.root or find_root()
+    if a.root is None:
+        sys.exit("goldener-research repository not found: run from inside a checkout "
+                 "or pass --root")
+    if not is_root(a.root):
+        sys.exit(f"{a.root} is not the repository root: --root must hold "
+                 "BIBLIOGRAPHY.md, README.md and skills/")
+
+    if a.cmd == "list":
+        print(json.dumps(list_papers(a.root), indent=1, ensure_ascii=False))
+    elif a.cmd == "random":
+        if a.title:
+            ap.error("random takes no TITLE; pass a theme or section with --within")
+        if a.within == "-":
+            a.within = sys.stdin.read().strip()
+            if not a.within:
+                sys.exit("no theme or section text on stdin for --within -")
+        excluded = {normalize_link(link) for link in a.exclude}
+        # The same article can be listed under another link elsewhere: leave out its title too.
+        excluded_titles = {normalize_title(p["title"]) for p in list_papers(a.root)
+                           if normalize_link(p["link"]) in excluded}
+        papers = [p for p in list_papers(a.root, a.within or "")
+                  if normalize_link(p["link"]) not in excluded
+                  and normalize_title(p["title"]) not in excluded_titles]
+        if not papers:
+            sys.exit("no paper found" + (f" within {a.within!r}" if a.within else "")
+                     + (" outside the excluded links" if excluded else ""))
+        print(json.dumps(secrets.choice(papers), indent=1, ensure_ascii=False))
+    else:
+        if a.title == "-":
+            a.title = sys.stdin.read()
+        if not a.title or not normalize_title(a.title):
+            ap.error("find needs a TITLE with at least one letter or digit")
+        print(json.dumps(find(list_papers(a.root), a.title, a.top), indent=1, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

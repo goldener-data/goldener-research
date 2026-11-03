@@ -33,6 +33,7 @@ import json
 import re
 import secrets
 import sys
+import unicodedata
 from pathlib import Path
 
 # One entry is one <div>...</div> block; fields are looked up inside the block only, so
@@ -45,14 +46,18 @@ ORIGIN_RE = re.compile(r"Origin:\s*(?P<v>[^<]*?)\s*</em>")
 HEADING_RE = re.compile(r"^#{2,3}\s+(.*)$", re.M)
 
 
+def is_root(path):
+    return (path / "BIBLIOGRAPHY.md").is_file() and (path / "README.md").is_file() \
+        and (path / "skills").is_dir()
+
+
 def find_root():
     """Nearest goldener-research checkout above the current directory, else above this
     script; None when neither is inside one. Topic folders hold no `skills/`, so the
     lookup can't stop at one of them."""
     for start in (Path.cwd(), Path(__file__).resolve().parent):
         for d in (start, *start.parents):
-            if (d / "BIBLIOGRAPHY.md").is_file() and (d / "README.md").is_file() \
-                    and (d / "skills").is_dir():
+            if is_root(d):
                 return d
     return None
 
@@ -63,7 +68,11 @@ def normalize_link(link: str) -> str:
 
 
 def normalize_title(title: str) -> str:
-    return " ".join(re.findall(r"[a-z0-9]+", title.lower()))
+    normalized = unicodedata.normalize("NFC", title.casefold())
+    # Keep Unicode letters, digits and combining marks; punctuation separates words.
+    return " ".join("".join(
+        char if char.isalnum() or unicodedata.category(char).startswith("M") else " "
+        for char in normalized).split())
 
 
 def list_papers(root: Path, within: str = ""):
@@ -128,8 +137,9 @@ def main():
     if a.root is None:
         sys.exit("goldener-research repository not found: run from inside a checkout "
                  "or pass --root")
-    if not (a.root / "BIBLIOGRAPHY.md").is_file():
-        sys.exit(f"no BIBLIOGRAPHY.md in {a.root}: --root must be the repository root")
+    if not is_root(a.root):
+        sys.exit(f"{a.root} is not the repository root: --root must hold "
+                 "BIBLIOGRAPHY.md, README.md and skills/")
 
     if a.cmd == "list":
         print(json.dumps(list_papers(a.root), indent=1, ensure_ascii=False))
