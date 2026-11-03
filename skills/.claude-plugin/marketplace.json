@@ -8,72 +8,92 @@
     {
       "name": "sync-idea-issues",
       "source": "./sync-idea-issues",
-      "description": "Sync GitHub issues labeled \"idea\" into the matching topic IDEAS.md file, then branch, commit, push, open a PR, and close the source issues.",
+      "description": "Import GitHub issues labeled \"idea\" from goldener-data/goldener-research into the matching topic IDEAS.md files, keeping each source question and context, deduplicating against existing ideas, then delivering through a PR and closing the source issues (or as a local diff when asked). No co-author or paper research. Use when the user asks to sync/import/migrate idea issues, or \"turn the idea issues into IDEAS.md entries\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "sync-researcher-issues",
       "source": "./sync-researcher-issues",
-      "description": "Research GitHub issues labeled \"researcher\" (or researchers named directly, e.g. \"add NAME to goldener research\"), find relevant papers, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding everyone found to the matching topic RESEARCHERS.md file(s) (with BIBLIOGRAPHY.md entries), and close any source issues.",
+      "description": "Add researchers to goldener-research, named directly or from GitHub issues labeled \"researcher\". Asks only when genuine namesake ambiguity remains after evidence checks. Verifies identity and affiliation (mainly from Google Scholar/DBLP), adds their abstract-confirmed relevant papers to BIBLIOGRAPHY.md and an entry to RESEARCHERS.md, recursively checks co-authors (3+ relevant papers, up to 2 levels, within overridable budgets), opens a PR and closes fully handled issues. Use when the user asks to sync researcher issues, or \"add Name to goldener research\", \"add Name as a researcher\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "sync-paper-issues",
       "source": "./sync-paper-issues",
-      "description": "Research GitHub issues labeled \"paper\" (or papers named directly by title/link), confirm relevance, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep (adding them as researchers when they qualify), then branch, commit, push, open a PR adding every paper found to the matching topic BIBLIOGRAPHY.md file(s) and every qualifying researcher to the matching topic RESEARCHERS.md file(s), and close any source issues.",
+      "description": "Add papers to the goldener-research bibliography, named directly (title, link, or both) or listed in GitHub issues labeled \"paper\" (one issue can hold several). Confirms relevance from abstracts, places each paper in the matching topic BIBLIOGRAPHY.md, recursively checks co-authors (3+ relevant papers to become a researcher, up to 2 levels, within overridable budgets), opens a PR and closes fully handled issues. Use when the user asks to sync paper issues, or \"add title or arXiv/DOI/OpenReview link to the bibliography / to goldener research\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "sync-lab-issues",
       "source": "./sync-lab-issues",
-      "description": "Research GitHub issues labeled \"lab\" (or labs named/linked directly), resolve the lab's website and publication list, confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when the lab's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "description": "Screen a lab or research group (named, linked, or from GitHub issues labeled \"lab\") for papers relevant to goldener-research. Resolves the lab website and publication list, confirms relevance from abstracts, tracks authors reaching 3+ relevant papers as researchers (checking their wider record and co-authors up to 2 levels, within overridable budgets), uses an eight-calendar-year window for large unscoped lists (explicit ranges override it), reports coverage, opens a PR updating BIBLIOGRAPHY.md/RESEARCHERS.md and closes fully handled issues. Use when the user asks to sync lab issues, or \"add lab to goldener research\", \"look at lab website\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "sync-conference-issues",
       "source": "./sync-conference-issues",
-      "description": "Research GitHub issues labeled \"conference\" (or conferences named/linked directly, with an optional year), resolve the requested edition (proposing the closest edition(s) or stopping when the given year has no published program, or using the latest one when no year is given), fetch its accepted-paper program across every format (orals, posters, keynotes, and co-located workshops, deduplicating a paper accepted under more than one), confirm which papers are relevant, and track authors reaching 3+ relevant papers as researchers (checking an author's own broader record when this edition's output alone falls short, and recursing into co-authors up to 2 levels deep), then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "description": "Screen a conference edition (named with an optional year, or from GitHub issues labeled \"conference\") for papers relevant to goldener-research, across orals, posters, keynotes and co-located workshops. Resolves the edition (latest published program by default, asks only when a requested year is ambiguous), tracks authors with 3+ relevant papers as researchers (co-authors up to 2 levels, within overridable budgets), reports coverage, opens a PR and closes fully handled issues. Use when the user asks to sync conference issues, or \"add NeurIPS 2024 to goldener research\", \"look at ICML\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "sync-theme-issues",
       "source": "./sync-theme-issues",
-      "description": "Research GitHub issues labeled \"theme\" (or ML themes named directly, e.g. AutoML or curriculum learning), run a bibliography search ranked by citation count and keep at most 20 of the most cited papers confirmed relevant to Goldener, recursively check each paper's co-authors, requiring 3+ relevant papers (the shared one included) for new researchers and recursing up to 2 levels deep, then branch, commit, push, open a PR adding papers to BIBLIOGRAPHY.md and qualifying researchers to RESEARCHERS.md, and close any source issues.",
+      "description": "Build a goldener-research bibliography for a machine-learning theme (named directly or from GitHub issues labeled \"theme\", e.g. AutoML, curriculum learning). Searches, ranks candidates by citation count and keeps the most cited abstract-confirmed relevant papers (20 per theme by default, overridable), checks co-authors for 3+ relevant papers (up to 2 levels), opens a PR updating BIBLIOGRAPHY.md/RESEARCHERS.md and closes fully handled issues. Use when the user asks to sync theme issues, or \"add theme to goldener research\", \"find papers and researchers on theme\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "paper-review",
       "source": "./paper-review",
-      "description": "Review one paper given by its title (or picked at random from the bibliography when none is named, optionally within a theme): look it up in the goldener-research bibliography (bundled script searches every BIBLIOGRAPHY.md) or online when it is not there, read its full text and save a short self-contained HTML review: title, authors, link, innovation in 1-2 sentences, the paper's main figure, then why it is data-centric AI, main innovations, and limitations.",
+      "description": "Write a short review of one paper as a self-contained local HTML file. The paper is named by title (looked up in the goldener-research bibliography by a bundled script, else searched online) or drawn at random from the bibliography, optionally within a theme or section. Reads the full text and gives title, authors, link, the innovation in 1-2 sentences, the main figure cropped from the paper, then why it is data-centric AI, main innovations and limitations. Never published. Use when the user asks to review, summarize or digest a paper (e.g. \"review title\", \"review a paper\", \"review a random labeling paper\").",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "short-paper-review",
       "source": "./short-paper-review",
-      "description": "Write a smaller summary of one paper review: the paper with its link, its main innovative idea, and its role as a data-centric building block within the AI lifecycle, formatted for a publishing target (plain text by default, LinkedIn, X, Bluesky, Mastodon, newsletter, Slack, ...) with its social-media elements (hashtags, mentions, length limits, threads), always marked as AI generated, and adapted to the context given (angle, audience, length, language, the user's own take, Goldener mention, external text and links). Written from a paper-review review, an existing one or one created by calling the paper-review skill (kept or temporary), and saved as a text file, never published.",
+      "description": "Condense a paper review into a short local text draft for a publishing target (plain text by default, LinkedIn, X, Bluesky, Mastodon, newsletter, Slack, ...) - the paper and its link, its main idea and its role as a data-centric building block of the AI lifecycle, marked as AI generated by default (user-overridable), adapted to the requested angle, audience, length and language. Uses an existing review or creates one with the bundled paper-review workflow. Never published or sent. Use when the user asks for a short summary, post or thread about a paper (e.g. \"write a LinkedIn post about title\").",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "propose-goldener-features",
       "source": "./propose-goldener-features",
-      "description": "Propose the top 3 next features for Goldener: read Goldener's main branch and its existing issues, read every idea (IDEAS.md) and paper (BIBLIOGRAPHY.md) of this repo, rank grounded candidate features and write an implementation plan for the best 3, then present them one by one and ask the user whether to create an issue for each in goldener-data/goldener.",
+      "description": "Propose the top next features for Goldener (3 by default), grounded in the ideas (IDEAS.md) and papers (BIBLIOGRAPHY.md) of goldener-research and in Goldener's current main branch and existing issues (no duplicates), each with a concrete implementation plan. Proposals are presented one by one and an issue is created in goldener-data/goldener only after an explicit yes. Use when the user asks for the next features to build in Goldener, a feature roadmap, or \"what should we build next in Goldener\".",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "contact-researchers",
       "source": "./contact-researchers",
-      "description": "Draft personalized outreach emails introducing Goldener to researchers listed in the RESEARCHERS.md files (chosen by name, by theme, or as the ones a pull request adds): find each researcher's published email address by web search, check no email was ever exchanged with that address, then write a casual, non-sales email citing up to three of their papers in the repository and why they matter for Goldener, asking for a short discussion and to try Goldener. Stored as drafts (Gmail, an IMAP mailbox set through OUTREACH_* environment variables, or local .eml files), never sent.",
+      "description": "Draft personalized outreach emails introducing Goldener, a non-profit open-source project, to researchers listed in goldener-research RESEARCHERS.md files, chosen by name, by theme, or as those a pull request adds. Finds an address the researcher or institution publishes, checks no email was already exchanged with it, cites up to three of their repository papers and why they matter for Goldener, and saves Gmail, IMAP (OUTREACH_* settings) or local .eml drafts, preserving the matching Thunderbird signature for IMAP. Never sends. Use when the user asks to contact or email researchers (e.g. \"draft an email to Name\", \"contact the drift researchers\", \"write to the researchers added in PR link\").",
       "strict": false,
-      "skills": ["./"]
+      "skills": [
+        "./"
+      ]
     }
   ]
 }

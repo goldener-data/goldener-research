@@ -17,6 +17,11 @@ Usage:
       with the same title under another link, e.g. papers already drawn whose
       full text could not be read.
 
+Without --root, the repository root is the nearest directory holding
+`BIBLIOGRAPHY.md`, `README.md` and `skills/`, looked up from the current
+directory first, then from this script's location (the skill may be installed
+outside the repository). The script stops with an error when none is found.
+
 Each paper is {title, link, first_author, origin, file, section}; papers
 listed in several files are returned once (deduplicated by link), with the
 first matching file and section (--within is applied before deduplication).
@@ -28,6 +33,7 @@ import json
 import re
 import secrets
 import sys
+import unicodedata
 from pathlib import Path
 
 # One entry is one <div>...</div> block; fields are looked up inside the block only, so
@@ -40,13 +46,33 @@ ORIGIN_RE = re.compile(r"Origin:\s*(?P<v>[^<]*?)\s*</em>")
 HEADING_RE = re.compile(r"^#{2,3}\s+(.*)$", re.M)
 
 
+def is_root(path):
+    return (path / "BIBLIOGRAPHY.md").is_file() and (path / "README.md").is_file() \
+        and (path / "skills").is_dir()
+
+
+def find_root():
+    """Nearest goldener-research checkout above the current directory, else above this
+    script; None when neither is inside one. Topic folders hold no `skills/`, so the
+    lookup can't stop at one of them."""
+    for start in (Path.cwd(), Path(__file__).resolve().parent):
+        for d in (start, *start.parents):
+            if is_root(d):
+                return d
+    return None
+
+
 def normalize_link(link: str) -> str:
     link = link.strip().rstrip("/")
     return re.sub(r"arxiv\.org/(abs|pdf)/", "arxiv.org/abs/", link).removesuffix(".pdf")
 
 
 def normalize_title(title: str) -> str:
-    return " ".join(re.findall(r"[a-z0-9]+", title.lower()))
+    normalized = unicodedata.normalize("NFC", title.casefold())
+    # Keep Unicode letters, digits and combining marks; punctuation separates words.
+    return " ".join("".join(
+        char if char.isalnum() or unicodedata.category(char).startswith("M") else " "
+        for char in normalized).split())
 
 
 def list_papers(root: Path, within: str = ""):
@@ -97,8 +123,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cmd", choices=["list", "find", "random"])
     ap.add_argument("title", nargs="?", help="title to look for (find); - reads it from stdin")
-    ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
-                    help="repository root (default: the repo holding this script)")
+    ap.add_argument("--root", type=Path,
+                    help="repository root (default: found from the current directory, "
+                         "then from this script)")
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--within", help="random: only papers whose file or section contains this text")
     ap.add_argument("--exclude", action="append", default=[], metavar="LINK",
@@ -106,6 +133,13 @@ def main():
     a = ap.parse_args()
     if a.top < 1:
         ap.error("--top must be 1 or more")
+    a.root = a.root or find_root()
+    if a.root is None:
+        sys.exit("goldener-research repository not found: run from inside a checkout "
+                 "or pass --root")
+    if not is_root(a.root):
+        sys.exit(f"{a.root} is not the repository root: --root must hold "
+                 "BIBLIOGRAPHY.md, README.md and skills/")
 
     if a.cmd == "list":
         print(json.dumps(list_papers(a.root), indent=1, ensure_ascii=False))

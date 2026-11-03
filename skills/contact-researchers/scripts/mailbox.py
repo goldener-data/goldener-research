@@ -36,8 +36,10 @@ readable by its owner only (chmod 600): a warning is printed otherwise.
 
 Usage:
   mailbox.py config
-      Print the settings in use (the password is shown only as set / not set), the
-      Thunderbird signature found for OUTREACH_EMAIL (or null), and test the login.
+      Print JSON status: ok (exit 0), unconfigured/partial (exit 2), or error
+      (exit 1). Test login only when required settings exist. Never print
+      credential values or raw vault/provider errors. Include the matching
+      Thunderbird signature source (or null), without downloading its images.
   mailbox.py check ADDRESS
       Search every folder, read-only, for messages to, from, cc or bcc ADDRESS, and
       stop with an error if any folder can't be searched. Print {address, total,
@@ -83,12 +85,16 @@ ENV_LINE_RE = re.compile(r"^\s*(?:export\s+)?(?P<key>OUTREACH_[A-Z_]+)\s*=\s*(?P
 LIST_RE = re.compile(r'\((?P<flags>[^)]*)\) (?:"[^"]*"|NIL) (?P<name>.+)$')
 
 
+class MissingEnvFile(SystemExit):
+    """A configuration-path error safe to include in status output."""
+
+
 def load_env_file():
     """Set the OUTREACH_* variables of the env file that aren't already in the environment."""
     path = os.path.expanduser(os.environ.get("OUTREACH_ENV_FILE") or DEFAULT_ENV_FILE)
     if not os.path.isfile(path):
         if os.environ.get("OUTREACH_ENV_FILE"):
-            sys.exit(f"OUTREACH_ENV_FILE points to a missing file: {path}")
+            raise MissingEnvFile(f"OUTREACH_ENV_FILE points to a missing file: {path}")
         return None
     if os.stat(path).st_mode & 0o077:
         print(f"warning: {path} is readable by other users; run chmod 600 on it", file=sys.stderr)
@@ -121,12 +127,12 @@ def password():
         out = subprocess.run(shlex.split(command), capture_output=True, text=True,
                              stdin=subprocess.DEVNULL, env=env, timeout=60)
     except (OSError, ValueError, subprocess.TimeoutExpired) as e:
-        sys.exit(f"OUTREACH_PASSWORD_COMMAND failed to run: {type(e).__name__}: {e}")
-    # Never show the command's output: only its exit status and error stream.
+        sys.exit(f"OUTREACH_PASSWORD_COMMAND failed to run ({type(e).__name__}); "
+                 "check the configured command and unlock the vault")
+    # Neither output stream nor exception text is safe: vaults can echo secrets.
     if out.returncode != 0:
         sys.exit(f"OUTREACH_PASSWORD_COMMAND exited with {out.returncode}: "
-                 + (out.stderr.strip().splitlines() or [""])[-1][:300]
-                 + " (is the vault unlocked? `bw` needs OUTREACH_BW_SESSION or BW_SESSION)")
+                 "check the configured command and unlock the vault")
     pwd = (out.stdout.splitlines() or [""])[0].strip()
     if not pwd:
         sys.exit("OUTREACH_PASSWORD_COMMAND printed no password (is the vault unlocked? "
@@ -134,12 +140,12 @@ def password():
     return pwd, "command"
 
 
-def settings():
+def settings(include_source=False):
     host, user = (os.environ.get(k, "") for k in ("OUTREACH_IMAP_HOST", "OUTREACH_EMAIL"))
     missing = [k for k, v in (("OUTREACH_IMAP_HOST", host), ("OUTREACH_EMAIL", user)) if not v]
-    pwd = ""
+    pwd, source = "", ""
     if not missing:
-        pwd, _ = password()
+        pwd, source = password()
         if not pwd:
             missing.append("OUTREACH_PASSWORD or OUTREACH_PASSWORD_COMMAND")
     if missing:
@@ -147,11 +153,12 @@ def settings():
         sys.exit("missing variable(s): " + ", ".join(missing)
                  + f" (set them in {where} or in the environment)")
     port = int(os.environ.get("OUTREACH_IMAP_PORT") or 993)
-    return host, port, user, pwd
+    result = (host, port, user, pwd)
+    return result + (source,) if include_source else result
 
 
-def connect():
-    host, port, user, pwd = settings()
+def connect(resolved_settings=None):
+    host, port, user, pwd = resolved_settings if resolved_settings is not None else settings()
     try:
         if port == 143:
             conn = imaplib.IMAP4(host, port)
@@ -159,8 +166,8 @@ def connect():
         else:
             conn = imaplib.IMAP4_SSL(host, port)
         conn.login(user, pwd)
-    except (imaplib.IMAP4.error, OSError) as e:
-        sys.exit(f"IMAP connection to {host}:{port} as {user} failed: {e}")
+    except (imaplib.IMAP4.error, OSError):
+        sys.exit(f"IMAP connection to {host}:{port} as {user} failed; verify the configuration and account access")
     return conn
 
 
@@ -446,23 +453,57 @@ def draft(path):
                       "signature": sig["source"] if sig else None}, ensure_ascii=False))
 
 
+def config():
+    """Report configuration state without exposing credential or provider errors."""
+    try:
+        env_file = load_env_file()
+        required = ("OUTREACH_IMAP_HOST", "OUTREACH_EMAIL")
+        credentials = ("OUTREACH_PASSWORD", "OUTREACH_PASSWORD_COMMAND")
+        missing = [key for key in required if not os.environ.get(key)]
+        if not any(os.environ.get(key) for key in credentials):
+            missing.append("OUTREACH_PASSWORD or OUTREACH_PASSWORD_COMMAND")
+        if missing:
+            optional = ("OUTREACH_IMAP_PORT", "OUTREACH_DRAFTS_FOLDER",
+                        "OUTREACH_BW_SESSION", "OUTREACH_THUNDERBIRD_PROFILE")
+            configured = env_file is not None or any(
+                os.environ.get(key) for key in required + credentials + optional)
+            print(json.dumps({"status": "partial" if configured else "unconfigured",
+                              "missing": missing}))
+            return 2
+        resolved = settings(include_source=True)
+        host, port, user, _, source = resolved
+        conn = connect(resolved[:4])
+        try:
+            box = drafts_folder(conn)
+        finally:
+            conn.logout()
+        sig = signature()
+        print(json.dumps({"status": "ok", "env_file": env_file, "host": host,
+                          "port": port, "email": user,
+                          "password_source": source,
+                          "drafts_folder": box.strip('"'),
+                          "signature": sig["source"] if sig else None,
+                          "login": "ok"}, ensure_ascii=False))
+        return 0
+    except MissingEnvFile as error:
+        print(json.dumps({"status": "error", "error": str(error)}))
+        return 1
+    except (Exception, SystemExit):
+        # Helpers/providers may include credentials in exception strings.
+        print(json.dumps({"status": "error",
+                          "error": "Mailbox configuration check failed; verify settings, "
+                                   "network access and vault/account authentication."}))
+        return 1
+
+
 def main():
-    env_file = load_env_file()
     if len(sys.argv) < 2 or sys.argv[1] not in ("config", "check", "draft") \
             or (sys.argv[1] != "config" and len(sys.argv) != 3):
         sys.exit(__doc__)
     if sys.argv[1] == "config":
-        host, port, user, _ = settings()
-        conn = connect()
-        box = drafts_folder(conn)
-        conn.logout()
-        print(json.dumps({"env_file": env_file, "host": host, "port": port, "email": user,
-                          "password": "from OUTREACH_PASSWORD" if password()[1] == "variable"
-                          else "from OUTREACH_PASSWORD_COMMAND",
-                          "drafts_folder": box.strip('"'),
-                          "signature": signature()["source"] if signature() else None,
-                          "login": "ok"}, ensure_ascii=False))
-    elif sys.argv[1] == "check":
+        return config()
+    load_env_file()
+    if sys.argv[1] == "check":
         # `-` reads the address from stdin, so it never goes through a shell command line.
         address = sys.stdin.readline() if sys.argv[2] == "-" else sys.argv[2]
         check(address.strip().lower())
@@ -471,4 +512,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

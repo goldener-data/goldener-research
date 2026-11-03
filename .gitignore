@@ -17,6 +17,7 @@ copilot-*.log
 .continue/
 .roo/
 .llm/
+.idea
 
 # python
 __pycache__/
