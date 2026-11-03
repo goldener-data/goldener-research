@@ -141,7 +141,7 @@ def connect():
             conn = imaplib.IMAP4_SSL(host, port)
         conn.login(user, pwd)
     except (imaplib.IMAP4.error, OSError):
-        sys.exit("IMAP connection or login failed; verify the configuration and account access")
+        sys.exit(f"IMAP connection to {host}:{port} as {user} failed; verify the configuration and account access")
     return conn
 
 
@@ -249,7 +249,7 @@ def config():
         if not any(os.environ.get(key) for key in credentials):
             missing.append("OUTREACH_PASSWORD or OUTREACH_PASSWORD_COMMAND")
         if missing:
-            configured = any(os.environ.get(key) for key in required + credentials)
+            configured = any(os.environ.get(key) for key in required + credentials + ("OUTREACH_IMAP_PORT", "OUTREACH_DRAFTS_FOLDER", "OUTREACH_BW_SESSION"))
             print(json.dumps({"status": "partial" if configured else "unconfigured",
                               "missing": missing}))
             return 2

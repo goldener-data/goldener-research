@@ -17,7 +17,7 @@
     {
       "name": "sync-researcher-issues",
       "source": "./sync-researcher-issues",
-      "description": "Research named people or GitHub researcher issues, add their relevant papers and researcher entries to Goldener research, and discover qualifying co-authors. Use for researcher imports and publication research.",
+      "description": "Research named people or GitHub researcher issues, add their relevant papers and researcher entries to Goldener research, and discover qualifying co-authors (3+ relevant papers, up to 2 levels). Use for researcher imports and publication research.",
       "strict": false,
       "skills": [
         "./"
