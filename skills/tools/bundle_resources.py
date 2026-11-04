@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bundle standalone skill resources and generate catalog descriptions from SKILL.md.
+"""Bundle workflow references and templates; generate catalog descriptions from SKILL.md.
 
 Run from any directory; --check verifies generated files without writing them.
 SKILL.md frontmatter is the source of truth for each catalog description.
@@ -17,7 +17,7 @@ def resources(root):
             yield root / '_shared/sync-workflow.md', skill / 'references/sync-workflow.md'
     source = root / 'paper-review'
     destination = root / 'short-paper-review/references/paper-review'
-    for relative in ('SKILL.md', 'template.html', 'scripts/papers.py'):
+    for relative in ('SKILL.md', 'template.html'):
         yield source / relative, destination / relative
 
 
