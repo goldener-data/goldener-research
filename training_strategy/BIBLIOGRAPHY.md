@@ -175,6 +175,15 @@
 ## Curriculum learning
 
 <div>
+  <a href="https://arxiv.org/abs/2508.15475">
+    <strong>Influence-driven Curriculum Learning for Pre-training on Limited Data</strong>
+  </a><br>
+  <small><em>👤 First author: Loris Schoenegger</em></small><br>
+  <small><em>📍 Origin: BabyLM Workshop (2025)</em></small><br>
+  📝 Note: orders pretraining examples using estimated training-data influence as a model-based difficulty signal.
+</div>
+<br>
+<div>
   <a href="https://openreview.net/forum?id=mmSmQ0gNyZ">
     <strong>Contrastive post-training large language models on data curriculum</strong>
   </a><br>
@@ -242,6 +251,24 @@
 
 ## Data mixtures and online discovery
 <div>
+  <a href="https://arxiv.org/abs/2411.12986">
+    <strong>Training Bilingual LMs with Data Constraints in the Targeted Language</strong>
+  </a><br>
+  <small><em>👤 First author: Skyler Seto</em></small><br>
+  <small><em>📍 Origin: arXiv (2024)</em></small><br>
+  📝 Note: studies auxiliary-language data quality and upsampling strategies for language-model training with limited target-language data.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2406.01462">
+    <strong>The Importance of Online Data: Understanding Preference Fine-tuning via Coverage</strong>
+  </a><br>
+  <small><em>👤 First author: Yuda Song</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2024)</em></small><br>
+  📝 Note: analyzes preference-data coverage and combines offline preferences with online samples in hybrid preference optimization.
+</div>
+<br>
+<div>
   <a href="https://arxiv.org/abs/2610.40564">
     <strong>Training Foundation Models with a Single Algorithm</strong>
   </a><br>
@@ -257,4 +284,33 @@
   <small><em>👤 First author: Peyman Gholami</em></small><br>
   <small><em>📍 Origin: NeurIPS (2026)</em></small><br>
   📝 Note: transfers sparse rollout feedback through semantic neighborhoods to select informative prompts and adapt replay under an annotation budget.
+</div>
+
+## Data-driven self-training
+<div>
+  <a href="https://arxiv.org/abs/2412.02674">
+    <strong>Mind the Gap: Examining the Self-Improvement Capabilities of Large Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Yuda Song</em></small><br>
+  <small><em>📍 Origin: ICLR (2025)</em></small><br>
+  📝 Note: studies self-verification, filtering and reweighting of generated training data through the generation-verification gap.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2012.11460">
+    <strong>SENTRY: Selective Entropy Optimization via Committee Consistency for Unsupervised Domain Adaptation</strong>
+  </a><br>
+  <small><em>👤 First author: Viraj Prabhu</em></small><br>
+  <small><em>📍 Origin: ICCV (2021)</em></small><br>
+  📝 Note: uses consistency across image transformations to identify reliable target examples for selective entropy optimization.
+</div>
+
+## Data influence over training
+<div>
+  <a href="https://arxiv.org/abs/2412.09538">
+    <strong>Capturing the Temporal Dependence of Training Data Influence</strong>
+  </a><br>
+  <small><em>👤 First author: Jiachen T. Wang</em></small><br>
+  <small><em>📍 Origin: ICLR (2025)</em></small><br>
+  📝 Note: embeds trajectory-specific training-data influence to account for example ordering and identify influential training phases.
 </div>
