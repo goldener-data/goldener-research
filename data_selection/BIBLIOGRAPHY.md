@@ -109,6 +109,60 @@
 
 ### Smarter selection
 <div>
+  <a href="https://www.llamaindex.ai/ocria/ocria-1-technical-report.pdf">
+    <strong>OCRia-1 Technical Report</strong>
+  </a><br>
+  <small><em>👤 First author: Aman Rangapur</em></small><br>
+  <small><em>📍 Origin: LlamaIndex technical report (2026)</em></small><br>
+  📝 Note: describes quality- and diversity-focused document curation, synthetic pages with exact ground truth and PDF-grounded real-page transcription.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2603.05819">
+    <strong>Which Data Matter? Embedding-Based Data Selection for Speech Recognition</strong>
+  </a><br>
+  <small><em>👤 First author: Zakaria Aldeneh</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: balances target relevance and diversity using speaker, phonetic and semantic embeddings to select speech training subsets.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2609.33010">
+    <strong>Model-Aware Data Selection from In-and-Out Information Interplay</strong>
+  </a><br>
+  <small><em>👤 First author: Yifan Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: selects post-training data using early- and late-layer representation discrepancies between generated and reference responses.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.00779">
+    <strong>Effective Synthetic Data Curation Requires Group-Level Signals</strong>
+  </a><br>
+  <small><em>👤 First author: Cathy Jiao</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: studies interactions among synthetic samples and uses group-level utility signals to guide compute-efficient curation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.39608">
+    <strong>From Intent to Improvement: Agentic Dataset Search for Better Model Training</strong>
+  </a><br>
+  <small><em>👤 First author: Qiaosheng Chen</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: retrieves training datasets through typed search plans, hybrid retrieval and provenance-grounded constraint verification.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.36983">
+    <strong>Advancement or Acceleration? How Data Curation Improves LLM Training</strong>
+  </a><br>
+  <small><em>👤 First author: Jiaxing Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: distinguishes faster learning from improved attainable performance and proposes a train-target loss gap diagnostic for data curation.
+</div>
+<br>
+<div>
   <a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/7b75da9b61eda40fa35453ee5d077df6-Abstract-Conference.html">
     <strong>Beyond neural scaling laws: beating power law scaling via data pruning</strong>
   </a><br>
@@ -860,4 +914,32 @@
   <small><em>👤 First author: Zhaoyang Wang</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: fuses prototype-based image-level and box-level uncertainties with fuzzy inference to pick samples from industrial defect-detection streams for annotation.
+</div>
+
+## Slice discovery and training-data attribution
+<div>
+  <a href="https://arxiv.org/abs/2601.16651">
+    <strong>Select or Project? Evaluating Lower-dimensional Vectors for LLM Training Data Explanations</strong>
+  </a><br>
+  <small><em>👤 First author: Lukas Hinterleitner</em></small><br>
+  <small><em>📍 Origin: KONVENS (2026)</em></small><br>
+  📝 Note: compares component selection with random gradient projection for efficient retrieval of influential training examples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2203.14960">
+    <strong>Domino: Discovering Systematic Errors with Cross-Modal Embeddings</strong>
+  </a><br>
+  <small><em>👤 First author: Sabri Eyuboglu</em></small><br>
+  <small><em>📍 Origin: ICLR (2022)</em></small><br>
+  📝 Note: combines cross-modal embeddings with error-aware mixture modeling to discover and describe coherent underperforming data slices.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2309.17430">
+    <strong>FACTS: First Amplify Correlations and Then Slice to Discover Bias</strong>
+  </a><br>
+  <small><em>👤 First author: Sriram Yenamandra</em></small><br>
+  <small><em>📍 Origin: ICCV (2023)</em></small><br>
+  📝 Note: discovers underperforming evaluation slices by amplifying spurious correlations and fitting mixtures in bias-aligned feature space.
 </div>

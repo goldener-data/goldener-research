@@ -239,3 +239,22 @@
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: guides the early layers of an LLM during early training steps using representations from the late layers of an existing pretrained model, speeding up convergence and improving downstream accuracy.
 </div>
+
+## Data mixtures and online discovery
+<div>
+  <a href="https://arxiv.org/abs/2610.40564">
+    <strong>Training Foundation Models with a Single Algorithm</strong>
+  </a><br>
+  <small><em>👤 First author: Yuda Song</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: unifies training stages through likelihood fitting and mixes static examples with generated reinforcement-learning data.
+</div>
+<br>
+<div>
+  <a href="https://peymoon.github.io/discover/static/pdf/DISCOVER.pdf">
+    <strong>DISCOVER: Online Variance-Guided Data Discovery for Budgeted Multimodal GRPO</strong>
+  </a><br>
+  <small><em>👤 First author: Peyman Gholami</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2026)</em></small><br>
+  📝 Note: transfers sparse rollout feedback through semantic neighborhoods to select informative prompts and adapt replay under an annotation budget.
+</div>
