@@ -8,7 +8,6 @@ copilot-debug.log
 copilot-*.log
 
 # Common AI agent/editor local artifacts
-.agents/
 .claude/
 .claude-code/
 .codex/
@@ -18,6 +17,7 @@ copilot-*.log
 .continue/
 .roo/
 .llm/
+.agents/
 .idea
 
 # python
