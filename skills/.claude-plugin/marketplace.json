@@ -7,92 +7,92 @@
   "plugins": [
     {
       "name": "sync-idea-issues",
-      "source": "./sync-idea-issues",
+      "source": "./",
       "description": "Import GitHub issues labeled \"idea\" from goldener-data/goldener-research into the matching topic IDEAS.md files, keeping each source question and context, deduplicating against existing ideas, then delivering through a PR and closing the source issues (or as a local diff when asked). No co-author or paper research. Use when the user asks to sync/import/migrate idea issues, or \"turn the idea issues into IDEAS.md entries\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-idea-issues"
       ]
     },
     {
       "name": "sync-researcher-issues",
-      "source": "./sync-researcher-issues",
+      "source": "./",
       "description": "Add researchers to goldener-research, named directly or from GitHub issues labeled \"researcher\". Asks only when genuine namesake ambiguity remains after evidence checks. Verifies identity and affiliation (mainly from Google Scholar/DBLP), adds their abstract-confirmed relevant papers to BIBLIOGRAPHY.md and an entry to RESEARCHERS.md, recursively checks co-authors (3+ relevant papers, up to 2 levels, within overridable budgets), opens a PR and closes fully handled issues. Use when the user asks to sync researcher issues, or \"add Name to goldener research\", \"add Name as a researcher\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-researcher-issues"
       ]
     },
     {
       "name": "sync-paper-issues",
-      "source": "./sync-paper-issues",
+      "source": "./",
       "description": "Add papers to the goldener-research bibliography, named directly (title, link, or both) or listed in GitHub issues labeled \"paper\" (one issue can hold several). Confirms relevance from abstracts, places each paper in the matching topic BIBLIOGRAPHY.md, recursively checks co-authors (3+ relevant papers to become a researcher, up to 2 levels, within overridable budgets), opens a PR and closes fully handled issues. Use when the user asks to sync paper issues, or \"add title or arXiv/DOI/OpenReview link to the bibliography / to goldener research\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-paper-issues"
       ]
     },
     {
       "name": "sync-lab-issues",
-      "source": "./sync-lab-issues",
+      "source": "./",
       "description": "Screen a lab or research group (named, linked, or from GitHub issues labeled \"lab\") for papers relevant to goldener-research. Resolves the lab website and publication list, confirms relevance from abstracts, tracks authors reaching 3+ relevant papers as researchers (checking their wider record and co-authors up to 2 levels, within overridable budgets), uses an eight-calendar-year window for large unscoped lists (explicit ranges override it), reports coverage, opens a PR updating BIBLIOGRAPHY.md/RESEARCHERS.md and closes fully handled issues. Use when the user asks to sync lab issues, or \"add lab to goldener research\", \"look at lab website\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-lab-issues"
       ]
     },
     {
       "name": "sync-conference-issues",
-      "source": "./sync-conference-issues",
+      "source": "./",
       "description": "Screen a conference edition (named with an optional year, or from GitHub issues labeled \"conference\") for papers relevant to goldener-research, across orals, posters, keynotes and co-located workshops. Resolves the edition (latest published program by default, asks only when a requested year is ambiguous), tracks authors with 3+ relevant papers as researchers (co-authors up to 2 levels, within overridable budgets), reports coverage, opens a PR and closes fully handled issues. Use when the user asks to sync conference issues, or \"add NeurIPS 2024 to goldener research\", \"look at ICML\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-conference-issues"
       ]
     },
     {
       "name": "sync-theme-issues",
-      "source": "./sync-theme-issues",
+      "source": "./",
       "description": "Build a goldener-research bibliography for a machine-learning theme (named directly or from GitHub issues labeled \"theme\", e.g. AutoML, curriculum learning). Searches, ranks candidates by citation count and keeps the most cited abstract-confirmed relevant papers (20 per theme by default, overridable), checks co-authors for 3+ relevant papers (up to 2 levels), opens a PR updating BIBLIOGRAPHY.md/RESEARCHERS.md and closes fully handled issues. Use when the user asks to sync theme issues, or \"add theme to goldener research\", \"find papers and researchers on theme\".",
       "strict": false,
       "skills": [
-        "./"
+        "./sync-theme-issues"
       ]
     },
     {
       "name": "paper-review",
-      "source": "./paper-review",
+      "source": "./",
       "description": "Write a short review of one paper as a self-contained local HTML file. The paper is named by title (looked up in the goldener-research bibliography by a shared repository script, else searched online) or drawn at random from the bibliography, optionally within a theme or section. Reads the full text and gives title, authors, link, the innovation in 1-2 sentences, the main figure cropped from the paper, then why it is data-centric AI, main innovations and limitations. Never published. Use when the user asks to review, summarize or digest a paper (e.g. \"review title\", \"review a paper\", \"review a random labeling paper\").",
       "strict": false,
       "skills": [
-        "./"
+        "./paper-review"
       ]
     },
     {
       "name": "short-paper-review",
-      "source": "./short-paper-review",
+      "source": "./",
       "description": "Condense a paper review into a short local text draft for a publishing target (plain text by default, LinkedIn, X, Bluesky, Mastodon, newsletter, Slack, ...) - the paper and its link, its main idea and its role as a data-centric building block of the AI lifecycle, marked as AI generated by default (user-overridable), adapted to the requested angle, audience, length and language. Uses an existing review or creates one with the bundled paper-review workflow. Never published or sent. Use when the user asks for a short summary, post or thread about a paper (e.g. \"write a LinkedIn post about title\").",
       "strict": false,
       "skills": [
-        "./"
+        "./short-paper-review"
       ]
     },
     {
       "name": "propose-goldener-features",
-      "source": "./propose-goldener-features",
+      "source": "./",
       "description": "Propose the top next features for Goldener (3 by default), grounded in the ideas (IDEAS.md) and papers (BIBLIOGRAPHY.md) of goldener-research and in Goldener's current main branch and existing issues (no duplicates), each with a concrete implementation plan. Proposals are presented one by one and an issue is created in goldener-data/goldener only after an explicit yes. Use when the user asks for the next features to build in Goldener, a feature roadmap, or \"what should we build next in Goldener\".",
       "strict": false,
       "skills": [
-        "./"
+        "./propose-goldener-features"
       ]
     },
     {
       "name": "contact-researchers",
-      "source": "./contact-researchers",
+      "source": "./",
       "description": "Draft personalized outreach emails introducing Goldener, a non-profit open-source project, to researchers listed in goldener-research RESEARCHERS.md files, chosen by name, by theme, or as those a pull request adds. Finds an address the researcher or institution publishes, checks no email was already exchanged with it, cites up to three of their repository papers and why they matter for Goldener, and saves Gmail, IMAP (OUTREACH_* settings) or local .eml drafts, preserving the matching Thunderbird signature for IMAP. Never sends. Use when the user asks to contact or email researchers (e.g. \"draft an email to Name\", \"contact the drift researchers\", \"write to the researchers added in PR link\").",
       "strict": false,
       "skills": [
-        "./"
+        "./contact-researchers"
       ]
     }
   ]

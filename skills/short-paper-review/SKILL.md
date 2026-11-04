@@ -10,8 +10,19 @@ role as a data-centric building block in the AI lifecycle. The source review
 supplies paper facts; the user's commentary is labeled separately. Save local
 text drafts, never publish, send, or change research repository documents.
 
-Resolve `<tools-dir>` to the absolute `skills/tools` directory in the local
-goldener-research checkout, including when this skill is installed elsewhere.
+Resolve `<tools-dir>` before running any helper. First check the current
+working directory and its ancestors for a goldener-research checkout with
+`README.md`, `BIBLIOGRAPHY.md` and `skills/tools/`; use that absolute
+`skills/tools` path. Otherwise, check the loaded skill's directory and its
+ancestors for the installed plugin's shared `tools/` directory. Check for
+`papers.py` and `unicode_bold.py` there. If neither location has the helpers,
+stop and ask the user for the goldener-research checkout path before running
+any helper.
+
+The installed plugin supplies helpers, not the research documents. Locate
+those in the working directory's enclosing goldener-research checkout, or
+ask the user for its path; run bibliography helpers from that checkout or
+pass its absolute path with `--root`.
 
 ## Inputs and defaults
 
@@ -42,7 +53,7 @@ goldener-research checkout, including when this skill is installed elsewhere.
    [paper-review workflow](references/paper-review/SKILL.md), or use an available
    equivalent skill-invocation capability. No special invocation API is
    required. Its template is bundled beside those instructions;
-   its helper is `<tools-dir>/papers.py` in the checkout. For random selection,
+   its helper is `<tools-dir>/papers.py`. For random selection,
    follow its bibliography draw and retry rules rather than choosing manually.
 4. Stop and relay identification/full-text failures for the requested paper.
    An abstract alone does not replace the full review workflow.

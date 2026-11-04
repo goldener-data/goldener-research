@@ -35,7 +35,7 @@ def catalog(root):
     path = root / '.claude-plugin/marketplace.json'
     data = json.loads(path.read_text(encoding='utf-8'))
     for plugin in data['plugins']:
-        plugin['description'] = description(root / plugin['source'])
+        plugin['description'] = description(root / plugin['source'] / plugin['skills'][0])
     return path, json.dumps(data, indent=2, ensure_ascii=False) + '\n'
 
 

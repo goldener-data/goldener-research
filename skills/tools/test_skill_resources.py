@@ -153,6 +153,37 @@ class MailboxConfigurationTests(unittest.TestCase):
 
 
 class PackagingTests(unittest.TestCase):
+    def test_marketplace_installs_include_shared_helpers(self):
+        claude = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text())
+        codex = json.loads((ROOT.parent / '.agents/plugins/marketplace.json').read_text())
+        installs = [(plugin['name'], ROOT / plugin['source'], plugin['skills'])
+                    for plugin in claude['plugins']]
+        for plugin in codex['plugins']:
+            source = ROOT.parent / plugin['source']['path']
+            manifest = json.loads((source / '.codex-plugin/plugin.json').read_text())
+            installs.append(('codex-' + plugin['name'], source, [manifest['skills']]))
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / 'research'
+            (fixture / 'skills').mkdir(parents=True)
+            (fixture / 'README.md').write_text('# Research\n', encoding='utf-8')
+            (fixture / 'BIBLIOGRAPHY.md').write_text(
+                '<div><a href="https://example.test/paper"><strong>Example Paper</strong></a></div>',
+                encoding='utf-8')
+            for name, source, skills in installs:
+                with self.subTest(plugin=name):
+                    installed = Path(tmp) / name
+                    # Copy only what the marketplace actually installs.
+                    shutil.copytree(source, installed, ignore=shutil.ignore_patterns('__pycache__'))
+                    for skill in skills:
+                        self.assertTrue(list((installed / skill).rglob('SKILL.md')))
+                    for helper in ('papers.py', 'researchers.py', 'extract_snapshot.py',
+                                   'mailbox.py', 'unicode_bold.py'):
+                        self.assertTrue((installed / 'tools' / helper).is_file())
+                    result = subprocess.run(
+                        ['python3', '-I', str(installed / 'tools/papers.py'), 'list'],
+                        cwd=fixture, capture_output=True, text=True, check=True)
+                    self.assertEqual(json.loads(result.stdout)[0]['title'], 'Example Paper')
+
     def test_bundled_workflows_and_shared_tools(self):
         bundler = load_module('skill_bundler', ROOT / 'tools/bundle_resources.py')
         for source, destination in bundler.resources(ROOT):

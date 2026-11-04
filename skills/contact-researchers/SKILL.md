@@ -17,8 +17,19 @@ only outputs are drafts. **Never send an email**, never call a send, reply or
 forward tool, and never schedule one: the user reviews and sends each draft
 themselves.
 
-Resolve `<tools-dir>` to the absolute `skills/tools` directory in the local
-goldener-research checkout, including when this skill is installed elsewhere.
+Resolve `<tools-dir>` before running any helper. First check the current
+working directory and its ancestors for a goldener-research checkout with
+`README.md`, `BIBLIOGRAPHY.md` and `skills/tools/`; use that absolute
+`skills/tools` path. Otherwise, check the loaded skill's directory and its
+ancestors for the installed plugin's shared `tools/` directory. Check for
+`papers.py`, `researchers.py`, `extract_snapshot.py` and `mailbox.py` there.
+If neither location has the helpers, stop and ask the user for the
+goldener-research checkout path before running any helper.
+
+The installed plugin supplies helpers, not the research documents. Locate
+those in the working directory's enclosing goldener-research checkout, or
+ask the user for its path; run bibliography helpers from that checkout or
+pass its absolute path with `--root`.
 
 ## Inputs
 
