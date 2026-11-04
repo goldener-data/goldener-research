@@ -24,10 +24,11 @@ Optional resources/disclosure can go in the last post; count them too.
 
 Unicode mathematical alphabets are not semantic bold and can impair reading,
 search and accessibility. Use them only when requested. Mark short spans with
-`**...**`, then run the bundled helper on a safely written draft file:
+`**...**`, then run the shared helper on a safely written draft file.
+`<tools-dir>` is the checkout's `skills/tools` directory:
 
 ```bash
-python3 -I <skill-dir>/scripts/unicode_bold.py draft.txt > final.txt
+python3 -I <tools-dir>/unicode_bold.py draft.txt > final.txt
 ```
 
 The helper transforms ASCII letters/digits; accented letters remain unchanged.

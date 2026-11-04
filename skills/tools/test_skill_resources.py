@@ -28,7 +28,7 @@ def load_module(name, path):
 
 class MailboxConfigurationTests(unittest.TestCase):
     def setUp(self):
-        self.mailbox = load_module('outreach_mailbox', ROOT / 'contact-researchers/scripts/mailbox.py')
+        self.mailbox = load_module('outreach_mailbox', ROOT / 'tools/mailbox.py')
 
     def config(self, environment, connection=None, signature=None):
         output = io.StringIO()
@@ -153,7 +153,35 @@ class MailboxConfigurationTests(unittest.TestCase):
 
 
 class PackagingTests(unittest.TestCase):
-    def test_independent_sync_bundles(self):
+    def test_plugin_installs_include_shared_helpers(self):
+        claude = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text())
+        installs = [(plugin['name'], ROOT / plugin['source'], plugin['skills'])
+                    for plugin in claude['plugins']]
+        codex = json.loads((ROOT / '.codex-plugin/plugin.json').read_text())
+        installs.append(('codex-' + codex['name'], ROOT, [codex['skills']]))
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / 'research'
+            (fixture / 'skills').mkdir(parents=True)
+            (fixture / 'README.md').write_text('# Research\n', encoding='utf-8')
+            (fixture / 'BIBLIOGRAPHY.md').write_text(
+                '<div><a href="https://example.test/paper"><strong>Example Paper</strong></a></div>',
+                encoding='utf-8')
+            for name, source, skills in installs:
+                with self.subTest(plugin=name):
+                    installed = Path(tmp) / name
+                    # Copy only the plugin's install surface.
+                    shutil.copytree(source, installed, ignore=shutil.ignore_patterns('__pycache__'))
+                    for skill in skills:
+                        self.assertTrue(list((installed / skill).rglob('SKILL.md')))
+                    for helper in ('papers.py', 'researchers.py', 'extract_snapshot.py',
+                                   'mailbox.py', 'unicode_bold.py'):
+                        self.assertTrue((installed / 'tools' / helper).is_file())
+                    result = subprocess.run(
+                        ['python3', '-I', str(installed / 'tools/papers.py'), 'list'],
+                        cwd=fixture, capture_output=True, text=True, check=True)
+                    self.assertEqual(json.loads(result.stdout)[0]['title'], 'Example Paper')
+
+    def test_bundled_workflows_and_shared_tools(self):
         bundler = load_module('skill_bundler', ROOT / 'tools/bundle_resources.py')
         for source, destination in bundler.resources(ROOT):
             with self.subTest(resource=destination):
@@ -174,7 +202,9 @@ class PackagingTests(unittest.TestCase):
             (fixture / 'BIBLIOGRAPHY.md').write_text(
                 '<div><a href="https://example.test/paper"><strong>Example Paper</strong></a></div>',
                 encoding='utf-8')
-            helper = str(dependency / 'scripts/papers.py')
+            tools = Path(tmp) / 'tools'
+            shutil.copytree(ROOT / 'tools', tools)
+            helper = str(tools / 'papers.py')
             result = subprocess.run(['python3', helper, 'list', '--root', str(fixture)],
                                     capture_output=True, text=True, check=True)
             self.assertEqual(json.loads(result.stdout)[0]['title'], 'Example Paper')
@@ -193,19 +223,18 @@ class PackagingTests(unittest.TestCase):
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('--root', result.stderr)
 
-    def test_helper_copies_find_source_repository(self):
-        # Both copies live in this checkout, so both must list its bibliography.
-        for helper in (ROOT / 'paper-review/scripts/papers.py',
-                       ROOT / 'short-paper-review/references/paper-review/scripts/papers.py'):
+    def test_shared_helpers_find_source_repository(self):
+        for name in ('papers.py', 'researchers.py'):
+            helper = ROOT / 'tools' / name
             with self.subTest(helper=helper), tempfile.TemporaryDirectory() as tmp:
-                result = subprocess.run(['python3', str(helper), 'list'], cwd=tmp,
+                result = subprocess.run(['python3', '-I', str(helper), 'list'], cwd=tmp,
                                         capture_output=True, text=True, check=True)
                 self.assertTrue(json.loads(result.stdout))
 
 
 class PaperLookupTests(unittest.TestCase):
     def setUp(self):
-        self.papers = load_module('paper_lookup', ROOT / 'paper-review/scripts/papers.py')
+        self.papers = load_module('paper_lookup', ROOT / 'tools/papers.py')
 
     def test_unicode_titles_preserve_identity(self):
         for title in ('数据选择', 'Обучение модели', 'नमस्ते शोध', 'Café learning'):
@@ -224,19 +253,17 @@ class PaperLookupTests(unittest.TestCase):
             topic.mkdir()
             (topic / 'BIBLIOGRAPHY.md').write_text('# Bibliography\n', encoding='utf-8')
             (topic / 'README.md').write_text('# Labeling\n', encoding='utf-8')
-            for helper in (ROOT / 'paper-review/scripts/papers.py',
-                           ROOT / 'short-paper-review/references/paper-review/scripts/papers.py'):
-                with self.subTest(helper=helper):
-                    result = subprocess.run(['python3', str(helper), 'list', '--root', str(topic)],
-                                            capture_output=True, text=True)
-                    self.assertNotEqual(result.returncode, 0)
-                    self.assertIn('repository root', result.stderr)
+            helper = ROOT / 'tools/papers.py'
+            result = subprocess.run(['python3', str(helper), 'list', '--root', str(topic)],
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('repository root', result.stderr)
 
 
 class SnapshotTests(unittest.TestCase):
     def setUp(self):
         self.extractor = load_module('snapshot_extractor',
-                                    ROOT / 'contact-researchers/scripts/extract_snapshot.py')
+                                    ROOT / 'tools/extract_snapshot.py')
 
     def snapshot_fixture(self, directory, symlink=False):
         repo = directory / 'repo'

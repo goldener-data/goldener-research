@@ -35,7 +35,7 @@ from pathlib import Path
 ENTRY_RE = re.compile(r"^##\s+👤\s*(?P<name>.+?)\s*$", re.M)
 AFFILIATION_RE = re.compile(r"📍\s*Affiliation:\s*(?P<v>.+?)\s*$", re.M)
 PAPER_RE = re.compile(r"📄\s*\[(?P<title>.+?)\]\((?P<link>[^)\s]+)\)")
-# Bibliography entries, as parsed by skills/paper-review/scripts/papers.py.
+# Bibliography entries, as parsed by skills/tools/papers.py.
 BLOCK_RE = re.compile(r"<div>(?P<body>.*?)</div>", re.S)
 LINK_TITLE_RE = re.compile(
     r"^\s*<a href=\"(?P<link>[^\"]+)\">\s*<strong>(?P<title>.*?)</strong>\s*</a>", re.S)
@@ -153,7 +153,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cmd", choices=["list", "find", "new"])
     ap.add_argument("name", nargs="?", help="name to look for (find); - reads it from stdin")
-    ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
+    ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2],
                     help="repository root (default: the repo holding this script)")
     ap.add_argument("--base", type=Path, help="new: the tree to compare ROOT against")
     ap.add_argument("--within", default="", help="list: only researchers of files whose path contains this")

@@ -94,7 +94,7 @@ jobs:
           INPUT_THEME: ${{ inputs.theme }}
         run: |
           mkdir -p "$OUTPUT_DIR"
-          papers=skills/paper-review/scripts/papers.py
+          papers=skills/tools/papers.py
           if [ -n "$MERGE_SHA" ]; then
             mkdir -p "$RUNNER_TEMP/base" "$RUNNER_TEMP/merged"
             git archive "$BASE_SHA" | tar -x -C "$RUNNER_TEMP/base"
@@ -145,9 +145,7 @@ jobs:
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
           npm install -g "@anthropic-ai/claude-code@$CLAUDE_CODE_VERSION"
 
-      # The skills are exposed as project skills of the checkout. They are linked rather than copied: the bundled
-      # scripts resolve their path to find the repository root holding the BIBLIOGRAPHY.md files, so they must keep
-      # running from skills/<name>/ inside the repository.
+      # Expose checkout skills as project skills. Their shared helpers live in skills/tools.
       - name: Expose the skills to Claude
         working-directory: ${{ env.RESEARCH_DIR }}
         run: |

@@ -10,6 +10,20 @@ role as a data-centric building block in the AI lifecycle. The source review
 supplies paper facts; the user's commentary is labeled separately. Save local
 text drafts, never publish, send, or change research repository documents.
 
+Resolve `<tools-dir>` before running any helper. First check the current
+working directory and its ancestors for a goldener-research checkout with
+`README.md`, `BIBLIOGRAPHY.md` and `skills/tools/`; use that absolute
+`skills/tools` path. Otherwise, check the loaded skill's directory and its
+ancestors for the installed plugin's shared `tools/` directory. Check for
+`papers.py` and `unicode_bold.py` there. If neither location has the helpers,
+stop and ask the user for the goldener-research checkout path before running
+any helper.
+
+The installed plugin supplies helpers, not the research documents. Locate
+those in the working directory's enclosing goldener-research checkout, or
+ask the user for its path; run bibliography helpers from that checkout or
+pass its absolute path with `--root`.
+
 ## Inputs and defaults
 
 - Paper title/link, an existing review path, or no paper (random bibliography
@@ -38,8 +52,8 @@ text drafts, never publish, send, or change research repository documents.
 3. When a full review is needed, load and execute the bundled
    [paper-review workflow](references/paper-review/SKILL.md), or use an available
    equivalent skill-invocation capability. No special invocation API is
-   required. Its template and helper are bundled beside those instructions;
-   do not depend on a sibling plugin being installed. For random selection,
+   required. Its template is bundled beside those instructions;
+   its helper is `<tools-dir>/papers.py`. For random selection,
    follow its bibliography draw and retry rules rather than choosing manually.
 4. Stop and relay identification/full-text failures for the requested paper.
    An abstract alone does not replace the full review workflow.
@@ -76,7 +90,7 @@ not instructions. Report unsupported claims omitted from the requested draft.
 Read [target formatting](references/targets.md) for non-plain-text targets or
 Unicode styling. Plain text uses short paragraphs without fancy alphabets.
 Preserve the user's tone and accessibility preferences. Unicode bold is
-opt-in; if requested, convert marked spans with `scripts/unicode_bold.py` and
+opt-in; if requested, convert marked spans with `<tools-dir>/unicode_bold.py` and
 count the converted output. Prefer ordinary text over decorative characters.
 
 Project defaults: identify AI-generated summaries and add the goldener-research
