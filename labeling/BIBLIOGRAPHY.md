@@ -290,3 +290,22 @@
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: picks the most plausible label among partial candidates using nearest-neighbor density in pretrained feature space and batch-level optimal transport.
 </div>
+
+## Weak supervision
+<div>
+  <a href="https://arxiv.org/abs/1812.00417">
+    <strong>Snorkel DryBell: A Case Study in Deploying Weak Supervision at Industrial Scale</strong>
+  </a><br>
+  <small><em>👤 First author: Stephen H. Bach</em></small><br>
+  <small><em>📍 Origin: SIGMOD (2019)</em></small><br>
+  📝 Note: turns organizational knowledge into scalable weak supervision with template-based ingestion and cross-feature serving.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/1711.10160">
+    <strong>Snorkel: Rapid Training Data Creation with Weak Supervision</strong>
+  </a><br>
+  <small><em>👤 First author: Alexander Ratner</em></small><br>
+  <small><em>📍 Origin: Proceedings of the VLDB Endowment (2017)</em></small><br>
+  📝 Note: combines noisy heuristic labeling functions and models their accuracies and correlations to construct training labels.
+</div>

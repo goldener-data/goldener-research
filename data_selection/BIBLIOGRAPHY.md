@@ -109,6 +109,123 @@
 
 ### Smarter selection
 <div>
+  <a href="https://arxiv.org/abs/2109.10274">
+    <strong>The Trade-offs of Domain Adaptation for Neural Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: David Grangier</em></small><br>
+  <small><em>📍 Origin: ACL (2022)</em></small><br>
+  📝 Note: connects domain adaptation, importance sampling and influence-based data selection through distributional trade-offs.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2109.07591">
+    <strong>On the Complementarity of Data Selection and Fine Tuning for Domain Adaptation</strong>
+  </a><br>
+  <small><em>👤 First author: Dan Iter</em></small><br>
+  <small><em>📍 Origin: arXiv (2021)</em></small><br>
+  📝 Note: studies how domain-targeted data selection complements fine-tuning and how subset size affects adaptation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2506.12966">
+    <strong>Assessing the Role of Data Quality in Training Bilingual Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Skyler Seto</em></small><br>
+  <small><em>📍 Origin: Findings of EMNLP (2025)</em></small><br>
+  📝 Note: filters bilingual training corpora using a high-quality English reference to reduce cross-language quality imbalance.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2405.03875">
+    <strong>Rethinking Data Shapley for Data Selection Tasks: Misleads and Merits</strong>
+  </a><br>
+  <small><em>👤 First author: Jiachen T. Wang</em></small><br>
+  <small><em>📍 Origin: ICML (2024)</em></small><br>
+  📝 Note: characterizes when Data Shapley can select useful subsets and when its rankings offer no advantage over random selection.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2606.04401">
+    <strong>TANDEM: Bi-Level Data Mixture Optimization with Twin Networks</strong>
+  </a><br>
+  <small><em>👤 First author: Jiaxing Wang</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
+  📝 Note: optimizes domain mixture ratios by comparing proxy and dynamically updated reference networks.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2606.18650">
+    <strong>BLADE: Scalable Bi-level Adaptive Data Selection for LLM Training</strong>
+  </a><br>
+  <small><em>👤 First author: Jiaxing Wang</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2026)</em></small><br>
+  📝 Note: uses a Hessian-free bilevel formulation and a dynamic reference model for adaptive online training-data selection.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2406.06046">
+    <strong>MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models</strong>
+  </a><br>
+  <small><em>👤 First author: Zichun Yu</em></small><br>
+  <small><em>📍 Origin: arXiv (2024)</em></small><br>
+  📝 Note: continually updates a data influence model to select examples suited to the current pretraining stage.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2502.14709">
+    <strong>Group-Level Data Selection for Efficient Pretraining</strong>
+  </a><br>
+  <small><em>👤 First author: Zichun Yu</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
+  📝 Note: models relationships among examples to approximate group-level influence and select useful pretraining data.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2502.00198">
+    <strong>Fairshare Data Pricing via Data Valuation for Large Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Luyang Zhang</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
+  📝 Note: uses data valuation to price training examples and align data purchasing with downstream model utility.
+</div>
+<br>
+<div>
+  <a href="https://www.llamaindex.ai/ocria/ocria-1-technical-report.pdf">
+    <strong>OCRia-1 Technical Report</strong>
+  </a><br>
+  <small><em>👤 First author: Aman Rangapur</em></small><br>
+  <small><em>📍 Origin: LlamaIndex technical report (2026)</em></small><br>
+  📝 Note: describes quality- and diversity-focused document curation, synthetic pages with exact ground truth and PDF-grounded real-page transcription.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.00779">
+    <strong>Effective Synthetic Data Curation Requires Group-Level Signals</strong>
+  </a><br>
+  <small><em>👤 First author: Cathy Jiao</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: studies interactions among synthetic samples and uses group-level utility signals to guide compute-efficient curation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.39608">
+    <strong>From Intent to Improvement: Agentic Dataset Search for Better Model Training</strong>
+  </a><br>
+  <small><em>👤 First author: Qiaosheng Chen</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: retrieves training datasets through typed search plans, hybrid retrieval and provenance-grounded constraint verification.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.36983">
+    <strong>Advancement or Acceleration? How Data Curation Improves LLM Training</strong>
+  </a><br>
+  <small><em>👤 First author: Jiaxing Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: distinguishes faster learning from improved attainable performance and proposes a train-target loss gap diagnostic for data curation.
+</div>
+<br>
+<div>
   <a href="https://proceedings.neurips.cc/paper_files/paper/2022/hash/7b75da9b61eda40fa35453ee5d077df6-Abstract-Conference.html">
     <strong>Beyond neural scaling laws: beating power law scaling via data pruning</strong>
   </a><br>
@@ -257,6 +374,24 @@
 ## Leverage embeddings
 
 ### Smarter selection
+<div>
+  <a href="https://arxiv.org/abs/2603.05819">
+    <strong>Which Data Matter? Embedding-Based Data Selection for Speech Recognition</strong>
+  </a><br>
+  <small><em>👤 First author: Zakaria Aldeneh</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: balances target relevance and diversity using speaker, phonetic and semantic embeddings to select speech training subsets.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2609.33010">
+    <strong>Model-Aware Data Selection from In-and-Out Information Interplay</strong>
+  </a><br>
+  <small><em>👤 First author: Yifan Wang</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: selects post-training data using early- and late-layer representation discrepancies between generated and reference responses.
+</div>
+<br>
 <div>
   <a href="https://arxiv.org/abs/2606.07086">
     <strong>An Adaptive Data cleaning Framework for Noisy Label Detection</strong>
@@ -836,6 +971,15 @@
 
 ### Active learning:
 <div>
+  <a href="https://arxiv.org/abs/2010.08666">
+    <strong>Active Domain Adaptation via Clustering Uncertainty-weighted Embeddings</strong>
+  </a><br>
+  <small><em>👤 First author: Viraj Prabhu</em></small><br>
+  <small><em>📍 Origin: ICCV (2021)</em></small><br>
+  📝 Note: clusters uncertainty-weighted embeddings to acquire informative and diverse labels under domain shift.
+</div>
+<br>
+<div>
   <a href="https://arxiv.org/abs/2606.07630">
     <strong>Active Learning with Foundation Model Priors: Efficient Learning under Class Imbalance</strong>
   </a><br>
@@ -860,4 +1004,50 @@
   <small><em>👤 First author: Zhaoyang Wang</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: fuses prototype-based image-level and box-level uncertainties with fuzzy inference to pick samples from industrial defect-detection streams for annotation.
+</div>
+
+## Slice discovery and training-data attribution
+<div>
+  <a href="https://arxiv.org/abs/2601.03786">
+    <strong>Compact Example-Based Explanations for Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Loris Schoenegger</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: evaluates compact sets of influential training documents with a retraining-free relevance score validated by fine-tuning.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2507.09424">
+    <strong>DATE-LM: Benchmarking Data Attribution Evaluation for Large Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Cathy Jiao</em></small><br>
+  <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
+  📝 Note: benchmarks training-data attribution through selection, toxicity and bias filtering, and factual attribution tasks.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2601.16651">
+    <strong>Select or Project? Evaluating Lower-dimensional Vectors for LLM Training Data Explanations</strong>
+  </a><br>
+  <small><em>👤 First author: Lukas Hinterleitner</em></small><br>
+  <small><em>📍 Origin: KONVENS (2026)</em></small><br>
+  📝 Note: compares component selection with random gradient projection for efficient retrieval of influential training examples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2203.14960">
+    <strong>Domino: Discovering Systematic Errors with Cross-Modal Embeddings</strong>
+  </a><br>
+  <small><em>👤 First author: Sabri Eyuboglu</em></small><br>
+  <small><em>📍 Origin: ICLR (2022)</em></small><br>
+  📝 Note: combines cross-modal embeddings with error-aware mixture modeling to discover and describe coherent underperforming data slices.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2309.17430">
+    <strong>FACTS: First Amplify Correlations and Then Slice to Discover Bias</strong>
+  </a><br>
+  <small><em>👤 First author: Sriram Yenamandra</em></small><br>
+  <small><em>📍 Origin: ICCV (2023)</em></small><br>
+  📝 Note: discovers underperforming evaluation slices by amplifying spurious correlations and fitting mixtures in bias-aligned feature space.
 </div>
