@@ -231,3 +231,17 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Analyzing similarity metrics for data selection for language model pretraining](https://proceedings.neurips.cc/paper_files/paper/2025/hash/c6b508249ffd707720885d7a5bba5cb5-Abstract-Conference.html)
 <br>
+
+## 👤 Chenyan Xiong
+📍 Affiliation: Carnegie Mellon University
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Effective Synthetic Data Curation Requires Group-Level Signals](https://arxiv.org/abs/2610.00779)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [DATE-LM: Benchmarking Data Attribution Evaluation for Large Language Models](https://arxiv.org/abs/2507.09424)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Group-Level Data Selection for Efficient Pretraining](https://arxiv.org/abs/2502.14709)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models](https://proceedings.neurips.cc/paper_files/paper/2024/hash/c4bec0d2fd217e6c2c3eafeced432582-Abstract-Conference.html)
+<br>

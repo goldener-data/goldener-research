@@ -155,8 +155,6 @@
   📝 Note: an embodied variant of batch active learning where a robot's limited navigation and annotation budgets are spent on trajectories and images picked via spatial-consistency conflicts, improving detector accuracy over baselines.
 </div>
 
-
-
 ---
 
 ## Continual learning
@@ -175,6 +173,15 @@
 ## Curriculum learning
 
 <div>
+  <a href="https://arxiv.org/abs/2508.15475">
+    <strong>Influence-driven Curriculum Learning for Pre-training on Limited Data</strong>
+  </a><br>
+  <small><em>👤 First author: Loris Schoenegger</em></small><br>
+  <small><em>📍 Origin: BabyLM Workshop (2025)</em></small><br>
+  📝 Note: orders pretraining examples using estimated training-data influence as a model-based difficulty signal.
+</div>
+<br>
+<div>
   <a href="https://openreview.net/forum?id=mmSmQ0gNyZ">
     <strong>Contrastive post-training large language models on data curriculum</strong>
   </a><br>
@@ -190,6 +197,24 @@
   <small><em>👤 First author: Gayoung KIM</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: schedules training samples with an RL agent driven by a feature- and loss-based difficulty measure, reaching higher accuracy with 58-82% of the data.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.40564">
+    <strong>Training Foundation Models with a Single Algorithm</strong>
+  </a><br>
+  <small><em>👤 First author: Yuda Song</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: studies how data mixture proportions, reuse and scheduling across pretraining and reinforcement learning affect accuracy, compute efficiency and retention.
+</div>
+<br>
+<div>
+  <a href="https://peymoon.github.io/discover/static/pdf/DISCOVER.pdf">
+    <strong>DISCOVER: Online Variance-Guided Data Discovery for Budgeted Multimodal GRPO</strong>
+  </a><br>
+  <small><em>👤 First author: Peyman Gholami</em></small><br>
+  <small><em>📍 Origin: Preprint (2026)</em></small><br>
+  📝 Note: transfers sparse rollout feedback through semantic neighborhoods to select informative prompts and adapt replay under an annotation budget.
 </div>
 
 ---
