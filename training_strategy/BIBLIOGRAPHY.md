@@ -155,8 +155,6 @@
   📝 Note: an embodied variant of batch active learning where a robot's limited navigation and annotation budgets are spent on trajectories and images picked via spatial-consistency conflicts, improving detector accuracy over baselines.
 </div>
 
-
-
 ---
 
 ## Continual learning
@@ -199,6 +197,24 @@
   <small><em>👤 First author: Gayoung KIM</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: schedules training samples with an RL agent driven by a feature- and loss-based difficulty measure, reaching higher accuracy with 58-82% of the data.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2610.40564">
+    <strong>Training Foundation Models with a Single Algorithm</strong>
+  </a><br>
+  <small><em>👤 First author: Yuda Song</em></small><br>
+  <small><em>📍 Origin: arXiv (2026)</em></small><br>
+  📝 Note: studies how data mixture proportions, reuse and scheduling across pretraining and reinforcement learning affect accuracy, compute efficiency and retention.
+</div>
+<br>
+<div>
+  <a href="https://peymoon.github.io/discover/static/pdf/DISCOVER.pdf">
+    <strong>DISCOVER: Online Variance-Guided Data Discovery for Budgeted Multimodal GRPO</strong>
+  </a><br>
+  <small><em>👤 First author: Peyman Gholami</em></small><br>
+  <small><em>📍 Origin: Preprint (2026)</em></small><br>
+  📝 Note: transfers sparse rollout feedback through semantic neighborhoods to select informative prompts and adapt replay under an annotation budget.
 </div>
 
 ---
@@ -247,70 +263,4 @@
   <small><em>👤 First author: Ji Zhao</em></small><br>
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
   📝 Note: guides the early layers of an LLM during early training steps using representations from the late layers of an existing pretrained model, speeding up convergence and improving downstream accuracy.
-</div>
-
-## Data mixtures and online discovery
-<div>
-  <a href="https://arxiv.org/abs/2411.12986">
-    <strong>Training Bilingual LMs with Data Constraints in the Targeted Language</strong>
-  </a><br>
-  <small><em>👤 First author: Skyler Seto</em></small><br>
-  <small><em>📍 Origin: arXiv (2024)</em></small><br>
-  📝 Note: studies auxiliary-language data quality and upsampling strategies for language-model training with limited target-language data.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2406.01462">
-    <strong>The Importance of Online Data: Understanding Preference Fine-tuning via Coverage</strong>
-  </a><br>
-  <small><em>👤 First author: Yuda Song</em></small><br>
-  <small><em>📍 Origin: NeurIPS (2024)</em></small><br>
-  📝 Note: analyzes preference-data coverage and combines offline preferences with online samples in hybrid preference optimization.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2610.40564">
-    <strong>Training Foundation Models with a Single Algorithm</strong>
-  </a><br>
-  <small><em>👤 First author: Yuda Song</em></small><br>
-  <small><em>📍 Origin: arXiv (2026)</em></small><br>
-  📝 Note: unifies training stages through likelihood fitting and mixes static examples with generated reinforcement-learning data.
-</div>
-<br>
-<div>
-  <a href="https://peymoon.github.io/discover/static/pdf/DISCOVER.pdf">
-    <strong>DISCOVER: Online Variance-Guided Data Discovery for Budgeted Multimodal GRPO</strong>
-  </a><br>
-  <small><em>👤 First author: Peyman Gholami</em></small><br>
-  <small><em>📍 Origin: NeurIPS (2026)</em></small><br>
-  📝 Note: transfers sparse rollout feedback through semantic neighborhoods to select informative prompts and adapt replay under an annotation budget.
-</div>
-
-## Data-driven self-training
-<div>
-  <a href="https://arxiv.org/abs/2412.02674">
-    <strong>Mind the Gap: Examining the Self-Improvement Capabilities of Large Language Models</strong>
-  </a><br>
-  <small><em>👤 First author: Yuda Song</em></small><br>
-  <small><em>📍 Origin: ICLR (2025)</em></small><br>
-  📝 Note: studies self-verification, filtering and reweighting of generated training data through the generation-verification gap.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2012.11460">
-    <strong>SENTRY: Selective Entropy Optimization via Committee Consistency for Unsupervised Domain Adaptation</strong>
-  </a><br>
-  <small><em>👤 First author: Viraj Prabhu</em></small><br>
-  <small><em>📍 Origin: ICCV (2021)</em></small><br>
-  📝 Note: uses consistency across image transformations to identify reliable target examples for selective entropy optimization.
-</div>
-
-## Data influence over training
-<div>
-  <a href="https://arxiv.org/abs/2412.09538">
-    <strong>Capturing the Temporal Dependence of Training Data Influence</strong>
-  </a><br>
-  <small><em>👤 First author: Jiachen T. Wang</em></small><br>
-  <small><em>📍 Origin: ICLR (2025)</em></small><br>
-  📝 Note: embeds trajectory-specific training-data influence to account for example ordering and identify influential training phases.
 </div>

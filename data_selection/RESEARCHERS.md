@@ -232,18 +232,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Analyzing similarity metrics for data selection for language model pretraining](https://proceedings.neurips.cc/paper_files/paper/2025/hash/c6b508249ffd707720885d7a5bba5cb5-Abstract-Conference.html)
 <br>
 
-## 👤 Cathy Jiao
-📍 Affiliation: Carnegie Mellon University
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Effective Synthetic Data Curation Requires Group-Level Signals](https://arxiv.org/abs/2610.00779)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [DATE-LM: Benchmarking Data Attribution Evaluation for Large Language Models](https://arxiv.org/abs/2507.09424)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Fairshare Data Pricing via Data Valuation for Large Language Models](https://arxiv.org/abs/2502.00198)
-<br>
-
 ## 👤 Chenyan Xiong
 📍 Affiliation: Carnegie Mellon University
 <br>
@@ -253,83 +241,7 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [DATE-LM: Benchmarking Data Attribution Evaluation for Large Language Models](https://arxiv.org/abs/2507.09424)
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Fairshare Data Pricing via Data Valuation for Large Language Models](https://arxiv.org/abs/2502.00198)
-<br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [Group-Level Data Selection for Efficient Pretraining](https://arxiv.org/abs/2502.14709)
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models](https://arxiv.org/abs/2406.06046)
-<br>
-
-## 👤 Jiaxing Wang
-📍 Affiliation: JD.com
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Advancement or Acceleration? How Data Curation Improves LLM Training](https://arxiv.org/abs/2610.36983)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [BLADE: Scalable Bi-level Adaptive Data Selection for LLM Training](https://arxiv.org/abs/2606.18650)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [TANDEM: Bi-Level Data Mixture Optimization with Twin Networks](https://arxiv.org/abs/2606.04401)
-<br>
-
-## 👤 Judy Hoffman
-📍 Affiliation: University of California, Irvine
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [FACTS: First Amplify Correlations and Then Slice to Discover Bias](https://arxiv.org/abs/2309.17430)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Active Domain Adaptation via Clustering Uncertainty-weighted Embeddings](https://arxiv.org/abs/2010.08666)
-<br>
-
-## 👤 Viraj Prabhu
-📍 Affiliation: Salesforce Research
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [FACTS: First Amplify Correlations and Then Slice to Discover Bias](https://arxiv.org/abs/2309.17430)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Active Domain Adaptation via Clustering Uncertainty-weighted Embeddings](https://arxiv.org/abs/2010.08666)
-<br>
-
-## 👤 James Zou
-📍 Affiliation: Stanford University
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Domino: Discovering Systematic Errors with Cross-Modal Embeddings](https://arxiv.org/abs/2203.14960)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Rethinking Data Shapley for Data Selection Tasks: Misleads and Merits](https://arxiv.org/abs/2405.03875)
-<br>
-
-## 👤 Christopher Ré
-📍 Affiliation: Stanford University
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Domino: Discovering Systematic Errors with Cross-Modal Embeddings](https://arxiv.org/abs/2203.14960)
-<br>
-
-## 👤 David Grangier
-📍 Affiliation: Apple
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Which Data Matter? Embedding-Based Data Selection for Speech Recognition](https://arxiv.org/abs/2603.05819)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Assessing the Role of Data Quality in Training Bilingual Language Models](https://arxiv.org/abs/2506.12966)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [On the Complementarity of Data Selection and Fine Tuning for Domain Adaptation](https://arxiv.org/abs/2109.07591)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [The Trade-offs of Domain Adaptation for Neural Language Models](https://arxiv.org/abs/2109.10274)
-<br>
-
-## 👤 Benjamin Roth
-📍 Affiliation: University of Vienna
-<br>
-📚 Interesting papers:
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Select or Project? Evaluating Lower-dimensional Vectors for LLM Training Data Explanations](https://arxiv.org/abs/2601.16651)
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;📄 [Compact Example-Based Explanations for Language Models](https://arxiv.org/abs/2601.03786)
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models](https://proceedings.neurips.cc/paper_files/paper/2024/hash/c4bec0d2fd217e6c2c3eafeced432582-Abstract-Conference.html)
 <br>

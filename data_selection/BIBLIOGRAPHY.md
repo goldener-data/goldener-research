@@ -109,6 +109,15 @@
 
 ### Smarter selection
 <div>
+  <a href="https://aclanthology.org/2025.findings-acl.977/">
+    <strong>Training Bilingual LMs with Data Constraints in the Targeted Language</strong>
+  </a><br>
+  <small><em>👤 First author: Skyler Seto</em></small><br>
+  <small><em>📍 Origin: Findings of the Association for Computational Linguistics: ACL 2025</em></small><br>
+  📝 Note: studies auxiliary-language data quality and upsampling strategies for language-model training with limited target-language data.
+</div>
+<br>
+<div>
   <a href="https://arxiv.org/abs/2109.10274">
     <strong>The Trade-offs of Domain Adaptation for Neural Language Models</strong>
   </a><br>
@@ -163,39 +172,12 @@
 </div>
 <br>
 <div>
-  <a href="https://arxiv.org/abs/2406.06046">
-    <strong>MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models</strong>
-  </a><br>
-  <small><em>👤 First author: Zichun Yu</em></small><br>
-  <small><em>📍 Origin: arXiv (2024)</em></small><br>
-  📝 Note: continually updates a data influence model to select examples suited to the current pretraining stage.
-</div>
-<br>
-<div>
   <a href="https://arxiv.org/abs/2502.14709">
     <strong>Group-Level Data Selection for Efficient Pretraining</strong>
   </a><br>
   <small><em>👤 First author: Zichun Yu</em></small><br>
   <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
   📝 Note: models relationships among examples to approximate group-level influence and select useful pretraining data.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2502.00198">
-    <strong>Fairshare Data Pricing via Data Valuation for Large Language Models</strong>
-  </a><br>
-  <small><em>👤 First author: Luyang Zhang</em></small><br>
-  <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
-  📝 Note: uses data valuation to price training examples and align data purchasing with downstream model utility.
-</div>
-<br>
-<div>
-  <a href="https://www.llamaindex.ai/ocria/ocria-1-technical-report.pdf">
-    <strong>OCRia-1 Technical Report</strong>
-  </a><br>
-  <small><em>👤 First author: Aman Rangapur</em></small><br>
-  <small><em>📍 Origin: LlamaIndex technical report (2026)</em></small><br>
-  📝 Note: describes quality- and diversity-focused document curation, synthetic pages with exact ground truth and PDF-grounded real-page transcription.
 </div>
 <br>
 <div>
@@ -213,7 +195,7 @@
   </a><br>
   <small><em>👤 First author: Qiaosheng Chen</em></small><br>
   <small><em>📍 Origin: arXiv (2026)</em></small><br>
-  📝 Note: retrieves training datasets through typed search plans, hybrid retrieval and provenance-grounded constraint verification.
+  📝 Note: retrieves training datasets with provenance-grounded constraint checks and evaluates their utility through controlled downstream training experiments.
 </div>
 <br>
 <div>
@@ -1008,30 +990,12 @@
 
 ## Slice discovery and training-data attribution
 <div>
-  <a href="https://arxiv.org/abs/2601.03786">
-    <strong>Compact Example-Based Explanations for Language Models</strong>
-  </a><br>
-  <small><em>👤 First author: Loris Schoenegger</em></small><br>
-  <small><em>📍 Origin: arXiv (2026)</em></small><br>
-  📝 Note: evaluates compact sets of influential training documents with a retraining-free relevance score validated by fine-tuning.
-</div>
-<br>
-<div>
   <a href="https://arxiv.org/abs/2507.09424">
     <strong>DATE-LM: Benchmarking Data Attribution Evaluation for Large Language Models</strong>
   </a><br>
   <small><em>👤 First author: Cathy Jiao</em></small><br>
   <small><em>📍 Origin: NeurIPS (2025)</em></small><br>
   📝 Note: benchmarks training-data attribution through selection, toxicity and bias filtering, and factual attribution tasks.
-</div>
-<br>
-<div>
-  <a href="https://arxiv.org/abs/2601.16651">
-    <strong>Select or Project? Evaluating Lower-dimensional Vectors for LLM Training Data Explanations</strong>
-  </a><br>
-  <small><em>👤 First author: Lukas Hinterleitner</em></small><br>
-  <small><em>📍 Origin: KONVENS (2026)</em></small><br>
-  📝 Note: compares component selection with random gradient projection for efficient retrieval of influential training examples.
 </div>
 <br>
 <div>
