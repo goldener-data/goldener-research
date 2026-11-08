@@ -43,9 +43,9 @@ instead of fetching an unverified host; leave unresolved links unprocessed.
 3. Fetch abstracts and full author lists. Confirm relevance using the shared
    criteria. Record canonical IDs, venue/year, evidence, and destination topics.
 4. Deduplicate identities against the whole repository and current batch,
-   then compare placements per destination. Existing placement elsewhere is
-   not a reason to omit a separately justified topic placement. Report an
-   already-covered input even when it yields no new entry.
+   across all destinations. For an existing paper, leave it in place or
+   propose a better location; never add another copy. Report an already-covered
+   input even when it yields no new entry.
 5. Write confirmed entries using the canonical bibliography format. Every
    confirmed seed, new or duplicate, starts co-author expansion at level 0.
    Apply shared three-paper qualification, identity checks, depth/breadth
