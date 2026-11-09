@@ -23,3 +23,35 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [BoxShrink: From Bounding Boxes to Segmentation Masks](https://arxiv.org/abs/2208.03142)
 <br>
+
+## 👤 Guotai Wang
+📍 Affiliation: University of Electronic Science and Technology of China (UESTC) and Shanghai AI Laboratory
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [VLM-CPL: Consensus Pseudo-Labels From Vision-Language Models for Annotation-Free Pathological Image Classification](https://doi.org/10.1109/TMI.2025.3595111)
+<br>
+
+## 👤 Shaoting Zhang
+📍 Affiliation: University of Electronic Science and Technology of China (UESTC) and Shanghai AI Laboratory
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [VLM-CPL: Consensus Pseudo-Labels From Vision-Language Models for Annotation-Free Pathological Image Classification](https://doi.org/10.1109/TMI.2025.3595111)
+<br>
+
+## 👤 Christian Ledig
+📍 Affiliation: University of Bamberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [An Embedding is Worth a Thousand Noisy Labels](https://arxiv.org/abs/2408.14358)
+<br>
+
+## 👤 Francesco Di Salvo
+📍 Affiliation: University of Bamberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [An Embedding is Worth a Thousand Noisy Labels](https://arxiv.org/abs/2408.14358)
+<br>

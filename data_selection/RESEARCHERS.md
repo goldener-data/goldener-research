@@ -245,3 +245,25 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [MATES: Model-Aware Data Selection for Efficient Pretraining with Data Influence Models](https://proceedings.neurips.cc/paper_files/paper/2024/hash/c4bec0d2fd217e6c2c3eafeced432582-Abstract-Conference.html)
 <br>
+
+## 👤 Guotai Wang
+📍 Affiliation: University of Electronic Science and Technology of China (UESTC) and Shanghai AI Laboratory
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Dual-Space Cold-Start Active Learning Guided by SAM3 for Medical Image Segmentation](https://papers.miccai.org/miccai-2026/0315-Paper4655.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [VRUGA: Visual and Reasoning Uncertainty Guided Active Learning for Medical MLLM Post-training](https://papers.miccai.org/miccai-2026/1145-Paper3198.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [OpenPath: Open-Set Active Learning for Pathology Image Classification via Pre-trained Vision-Language Models](https://arxiv.org/abs/2506.15318)
+<br>
+
+## 👤 Shaoting Zhang
+📍 Affiliation: University of Electronic Science and Technology of China (UESTC) and Shanghai AI Laboratory
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [VRUGA: Visual and Reasoning Uncertainty Guided Active Learning for Medical MLLM Post-training](https://papers.miccai.org/miccai-2026/1145-Paper3198.html)
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [OpenPath: Open-Set Active Learning for Pathology Image Classification via Pre-trained Vision-Language Models](https://arxiv.org/abs/2506.15318)
+<br>

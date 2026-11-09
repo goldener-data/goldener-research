@@ -33,3 +33,19 @@
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;📄 [How Faithful is your Synthetic Data? Sample-level Metrics for Evaluating and Auditing Generative Models](https://arxiv.org/abs/2102.08921)
 <br>
+
+## 👤 Christian Ledig
+📍 Affiliation: University of Bamberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Embedding-Based Federated Data Sharing via Differentially Private Conditional VAEs](https://arxiv.org/abs/2507.02671)
+<br>
+
+## 👤 Francesco Di Salvo
+📍 Affiliation: University of Bamberg
+<br>
+📚 Interesting papers:
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;📄 [Embedding-Based Federated Data Sharing via Differentially Private Conditional VAEs](https://arxiv.org/abs/2507.02671)
+<br>

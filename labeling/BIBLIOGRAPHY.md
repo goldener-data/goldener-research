@@ -268,6 +268,24 @@
   <small><em>📍 Origin: European Conference on Computer Vision Workshops (ECCVW) (2026)</em></small><br>
   📝 Note: speeds up label spreading on large image datasets with fast neighborhood-graph construction and algebraic multigrid solvers, producing accurate labels from few annotated samples.
 </div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0615-Paper1221.html">
+    <strong>Mask to Concept: Auto-Promptable SAM3 via Efficient Test-Time Concept Embedding Search for Few-Shot Annotation</strong>
+  </a><br>
+  <small><em>👤 First author: Quan Zhou</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: turns SAM3 into an automatic medical annotator by searching transferable concept embeddings inside its frozen architecture from a few labeled images.
+</div>
+<br>
+<div>
+  <a href="https://doi.org/10.1109/TMI.2025.3595111">
+    <strong>VLM-CPL: Consensus Pseudo-Labels From Vision-Language Models for Annotation-Free Pathological Image Classification</strong>
+  </a><br>
+  <small><em>👤 First author: Lanfeng Zhong</em></small><br>
+  <small><em>📍 Origin: IEEE Transactions on Medical Imaging (TMI) (2025)</em></small><br>
+  📝 Note: keeps only VLM zero-shot pseudo-labels that agree with labels from clustering in the VLM feature space, enabling annotation-free pathology classification.
+</div>
 
 ---
 
@@ -289,4 +307,13 @@
   <small><em>👤 First author: Yaqi Zhao</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: picks the most plausible label among partial candidates using nearest-neighbor density in pretrained feature space and batch-level optimal transport.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2408.14358">
+    <strong>An Embedding is Worth a Thousand Noisy Labels</strong>
+  </a><br>
+  <small><em>👤 First author: Francesco Di Salvo</em></small><br>
+  <small><em>📍 Origin: Transactions on Machine Learning Research (TMLR) (2024)</em></small><br>
+  📝 Note: handles label noise with a weighted adaptive nearest-neighbor vote over foundation model embeddings, guided by a per-sample label reliability score.
 </div>

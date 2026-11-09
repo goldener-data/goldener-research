@@ -104,3 +104,21 @@
   <small><em>📍 Origin: International Conference on Machine Learning (ICML) (2020)</em></small><br>
   📝 Note: proposes density and coverage, computed from k-NN neighbourhoods of real-sample embeddings, as outlier-robust measures of how well generated samples match the real data.
 </div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0877-Paper3998.html">
+    <strong>Remixing Embeddings for Patient Augmentation in Data Scarce Multiple Instance Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Muhammed Furkan Dasdelen</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: generates synthetic patients directly in embedding space by sampling instance embeddings from Gaussian mixture clusters according to learned disease-specific recipes.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2507.02671">
+    <strong>Embedding-Based Federated Data Sharing via Differentially Private Conditional VAEs</strong>
+  </a><br>
+  <small><em>👤 First author: Francesco Di Salvo</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2025)</em></small><br>
+  📝 Note: trains a differentially private conditional VAE on foundation model embeddings across clients to share a privacy-aware synthetic embedding distribution usable for many downstream tasks.
+</div>

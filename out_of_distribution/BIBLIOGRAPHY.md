@@ -100,3 +100,75 @@
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: revisits unsupervised image outlier detection beyond frozen natural-image features by exploiting distribution priors, covering industrial, medical and natural domains.
 </div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0614-Paper0289.html">
+    <strong>MaRS: Robust Out-of-Distribution Detection via Mahalanobis Residual Scoring</strong>
+  </a><br>
+  <small><em>👤 First author: Francesco Di Salvo</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: scores reconstruction residuals of frozen foundation model embeddings with a Mahalanobis distance instead of an L2 norm, making latent reconstruction a robust label-free OOD detector.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0827-Paper4773.html">
+    <strong>PROTON: Prototype-Based Test-Time Online OOD Detection for Medical VLMs</strong>
+  </a><br>
+  <small><em>👤 First author: Abhijit Das</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: keeps an online bank of embedding prototypes from confident test predictions and fuses prototype distance with concept matching to catch covariate shifts invisible in softmax space.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0163-Paper1242.html">
+    <strong>CHILD: Human-in-the-Loop OOD Detection for Safe Clinical Deployment</strong>
+  </a><br>
+  <small><em>👤 First author: Jinlun Ye</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: sends only the most decision-uncertain streaming samples to physicians and calibrates OOD scores by retrieval over a compact feature cache of the reviewed samples.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/1147-Paper0474.html">
+    <strong>Wasserstein-Aligned Localisation for VLM-Based Distributional OOD Detection in Medical Imaging</strong>
+  </a><br>
+  <small><em>👤 First author: Bernhard Kainz</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: selects healthy reference images by sliced Wasserstein distance between DINOv3 patch distributions to improve zero-shot VLM anomaly localisation.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2606.21386">
+    <strong>VLA-FAIL: Efficient Task Failure Detection for Finetuned Vision-Language-Action Models</strong>
+  </a><br>
+  <small><em>👤 First author: Florian Seligmann</em></small><br>
+  <small><em>📍 Origin: Conference on Robot Learning (CoRL) (2026)</em></small><br>
+  📝 Note: detects runtime failures of vision-language-action policies without failure data, notably with a token-wise last-layer Mahalanobis distance to training features.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2508.03108">
+    <strong>Pseudo-label Induced Subspace Representation Learning for Robust Out-of-Distribution Detection</strong>
+  </a><br>
+  <small><em>👤 First author: Tarhib Al Azad</em></small><br>
+  <small><em>📍 Origin: IEEE International Conference on Image Processing (ICIP) (2026)</em></small><br>
+  📝 Note: learns a pseudo-label-induced subspace of the feature space with a subspace-distance regularizer to separate in-distribution and OOD samples.
+</div>
+<br>
+<div>
+  <a href="https://people.cs.nycu.edu.tw/~yushuen/data/CBAM_OOD_26.pdf">
+    <strong>Out-of-Distribution Detection with Angular-Magnitude Likelihood and Targeted Feature Refinement</strong>
+  </a><br>
+  <small><em>👤 First author: Atik Garg</em></small><br>
+  <small><em>📍 Origin: IEEE International Conference on Image Processing (ICIP) (2026)</em></small><br>
+  📝 Note: fuses the angular (confidence) and magnitude (feature norm) components of the feature vector into one likelihood score, with attention-refined layers making feature norms more reliable.
+</div>
+<br>
+<div>
+  <a href="https://doi.org/10.1109/ISBI53787.2023.10230433">
+    <strong>Fine-Grained Out-of-Distribution Detection of Medical Images using Combination of Feature Uncertainty and Mahalanobis Distance</strong>
+  </a><br>
+  <small><em>👤 First author: Jie Wei</em></small><br>
+  <small><em>📍 Origin: IEEE International Symposium on Biomedical Imaging (ISBI) (2023)</em></small><br>
+  📝 Note: combines multi-scale feature uncertainty with the Mahalanobis distance to training class distributions in feature space to flag unseen fine-grained disease classes.
+</div>
