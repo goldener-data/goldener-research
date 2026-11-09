@@ -904,6 +904,33 @@
   <small><em>📍 Origin: NeurIPS Workshop on Table Representation Learning (TRL) (2024)</em></small><br>
   📝 Note: scales TabPFN to large tables by embedding data points in a learned space and using each query's nearest neighbors as context.
 </div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0729-Paper3438.html">
+    <strong>One-Shot Data Selection for Medical Image Classification via Graph Coverage</strong>
+  </a><br>
+  <small><em>👤 First author: Zahiriddin Rustamov</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: prunes a labeled medical training pool in one shot by running greedy facility location on a heat-diffusion coverage kernel built over a k-NN graph of frozen foundation model embeddings.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2602.02739">
+    <strong>TopoPrune: Robust Data Pruning via Unified Latent Space Topology</strong>
+  </a><br>
+  <small><em>👤 First author: Arjun Roy</em></small><br>
+  <small><em>📍 Origin: Stanford Data-Centric AI Workshop (2026)</em></small><br>
+  📝 Note: ranks samples for pruning with a topology-aware manifold embedding of pretrained features refined by differentiable persistent homology, making geometric pruning stable across architectures and feature noise.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2605.18012">
+    <strong>SAS: Semantic-aware Sampling for Generative Dataset Distillation</strong>
+  </a><br>
+  <small><em>👤 First author: Mingzhuo Li</em></small><br>
+  <small><em>📍 Origin: IEEE Open Journal of Signal Processing (OJSP), presented at ICIP (2026)</em></small><br>
+  📝 Note: uses CLIP as a semantic prior to post-sample generated images so the distilled dataset stays compact, class-discriminative and diverse.
+</div>
 
 ### Smarter selection based on clustering
 <div>
@@ -950,6 +977,15 @@
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: downsamples large and upsamples small semantic clusters of image-text pairs at each epoch, cutting VLM pre-training cost while better covering long-tail concepts.
 </div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0640-Paper1141.html">
+    <strong>MedQ-Engine: A Closed-Loop Data Engine for Evolving MLLMs in Medical Image Quality Assessment</strong>
+  </a><br>
+  <small><em>👤 First author: Jiyao Liu</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: clusters model failures into prototypes and uses them as retrieval anchors over a million-scale image pool to drive human-in-the-loop annotation and fine-tuning.
+</div>
 
 ### Active learning:
 <div>
@@ -986,6 +1022,51 @@
   <small><em>👤 First author: Zhaoyang Wang</em></small><br>
   <small><em>📍 Origin: European Conference on Computer Vision (ECCV) (2026)</em></small><br>
   📝 Note: fuses prototype-based image-level and box-level uncertainties with fuzzy inference to pick samples from industrial defect-detection streams for annotation.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0315-Paper4655.html">
+    <strong>Dual-Space Cold-Start Active Learning Guided by SAM3 for Medical Image Segmentation</strong>
+  </a><br>
+  <small><em>👤 First author: Ping Ye</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: selects the first samples to annotate by scoring typicality with centroid affinity and cluster balancing in image feature space, plus shape diversity in a SAM3 pseudo-mask descriptor space.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/1145-Paper3198.html">
+    <strong>VRUGA: Visual and Reasoning Uncertainty Guided Active Learning for Medical MLLM Post-training</strong>
+  </a><br>
+  <small><em>👤 First author: Boyi Xiao</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: combines visual-grounding and reasoning uncertainty with diversity sampling over decoder hidden-state embeddings to pick the expert-labeled set for medical MLLM post-training.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0820-Paper5058.html">
+    <strong>PromptGate: Client-Adaptive Vision–Language Gating for Open-Set Federated Active Learning</strong>
+  </a><br>
+  <small><em>👤 First author: Adea Nesturi</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: adapts a frozen BiomedCLIP with federated learnable prompts to filter out-of-distribution samples from unlabeled pools before active learning queries.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0027-Paper2507.html">
+    <strong>Active Source-free Domain Adaptation in Open-set Medical Image Segmentation via Decomposed Uncertainty and Prototype Discrepancy</strong>
+  </a><br>
+  <small><em>👤 First author: Jin Yang</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: queries target-domain samples for adaptation by combining decomposed uncertainty with a class-agnostic prototype discrepancy that favors diverse samples.
+</div>
+<br>
+<div>
+  <a href="https://arxiv.org/abs/2506.15318">
+    <strong>OpenPath: Open-Set Active Learning for Pathology Image Classification via Pre-trained Vision-Language Models</strong>
+  </a><br>
+  <small><em>👤 First author: Lanfeng Zhong</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2025)</em></small><br>
+  📝 Note: uses task-specific VLM prompts for the first query and prototype-based in-distribution candidate selection afterwards, so active learning avoids spending budget on out-of-distribution pathology images.
 </div>
 
 ## Slice discovery and training-data attribution

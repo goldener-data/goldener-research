@@ -179,3 +179,22 @@
   <small><em>📍 Origin: Transactions on Machine Learning Research (TMLR) (2023)</em></small><br>
   📝 Note: No note provided.
 </div>
+
+### Model and algorithm selection
+<div>
+  <a href="https://arxiv.org/abs/2604.19753">
+    <strong>Algorithm Selection with Zero Domain Knowledge via Text Embeddings</strong>
+  </a><br>
+  <small><em>👤 First author: Stefan Szeider</em></small><br>
+  <small><em>📍 Origin: International Conference on Automated Machine Learning (AutoML) (2026)</em></small><br>
+  📝 Note: selects solvers by embedding raw problem instance files with a pretrained text embedding model and voting with weighted k-nearest neighbors, beating hand-crafted instance features.
+</div>
+<br>
+<div>
+  <a href="https://papers.miccai.org/miccai-2026/0917-Paper4643.html">
+    <strong>SAM-Cluster and SAM-LP: Structure-Aware Evaluation Metrics for Selecting WSI Feature Extractors Without MIL Training</strong>
+  </a><br>
+  <small><em>👤 First author: Juhyeon Kim</em></small><br>
+  <small><em>📍 Origin: Medical Image Computing and Computer Assisted Intervention (MICCAI) (2026)</em></small><br>
+  📝 Note: ranks candidate whole-slide image feature extractors by evaluating their embeddings at bag level with SAM-derived tissue structure, avoiding repeated MIL training.
+</div>
