@@ -82,7 +82,10 @@ No secret values or raw authentication-command errors belong in reports.
 
 Discover top-level topic directories containing a README, excluding hidden
 directories and `skills`. Read each Context and explicit exclusions, root
-README, and current Goldener feature documentation. Prioritize papers whose abstracts show embeddings improving an AI lifecycle
+README, and current Goldener feature documentation. A paper is relevant when
+its fetched abstract supports a specific topic/feature, or shows use of
+pretrained/foundation-model embeddings to improve an AI lifecycle step.
+Prioritize papers whose abstracts show embeddings improving an AI lifecycle
 step. Also include reference papers offering competing approaches to embeddings
 in their field when explicitly listed in an issue or sufficiently highly cited.
 Judge citation counts in context, record the evidence, and do not invent a
@@ -99,8 +102,10 @@ Paper identity and file placement are separate. Match DOI, arXiv identifier,
 OpenReview ID, or source-confirmed relationships between preprint and published
 versions. Normalize equivalent abstract/PDF links and whitespace/case in
 titles as candidate matches; title equality alone does not override conflicting
-authors/metadata. Deduplicate the live batch and existing documents. Do not add a paper already present anywhere in the repository. Leave it
-in place or propose a better location; never add a second bibliography copy.
+authors/metadata. Deduplicate the live batch and existing documents. A paper
+may appear in multiple justified topics, once per destination file; never add
+a second copy to the same file. For an existing entry, leave it in place or
+propose a better location.
 
 Author identity uses ORCID, DBLP PID, OpenReview/Scholar/index IDs, or a
 publication page linking the relevant works. Distinct identifier types require
@@ -113,7 +118,8 @@ working only for for-profit companies. A qualifying joint affiliation is
 sufficient. Record affiliation source/date; if it cannot be verified, leave
 the researcher unresolved rather than guessing from an old paper.
 
-Place a new paper once in its best fitting existing topic. Root is for general/cross-cutting work.
+Place a paper in its best fitting existing topic, or multiple topics only
+when its evidence supports each. Root is for general/cross-cutting work.
 Create no new topic folder. If none fits, leave the item unresolved and
 report the placement ambiguity; do not force it into root or an unrelated
 topic. A structural change requires an explicit user request. Prefer an existing appropriate subsection;

@@ -25,7 +25,9 @@ Optional resources/disclosure can go in the last post; count them too.
 ## Visual and engaging style
 
 Apply this when the user asks for emojis, or for a prettier, more engaging,
-more visual or scannable draft. Otherwise keep ordinary text.
+more visual or scannable draft. Otherwise keep ordinary text. An explicit
+emoji quantity or "sparingly" request wins: then use only that many emojis,
+on the hook, key result and caveat first, and keep the rest of the layout.
 
 - Start each block with one emoji that labels its role, not decorates it:
   📊/🧠 hook, 📄 paper, ✍️ authors, 💡 idea, 🔍 key result, 🧩 data-centric
