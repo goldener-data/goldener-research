@@ -25,8 +25,9 @@
 
 - Do not duplicate a paper anywhere in the repository. If it is already listed,
   leave it in place or propose a better location rather than adding another copy.
-  A verified existing paper counts once toward an author's three-publication
-  qualification threshold.
+  For a discovered researcher, a verified existing paper counts once toward the
+  three-publication qualification threshold; direct researcher nominations may
+  qualify with one relevant paper.
 - Add researchers affiliated with a public institution or research institute;
   do not add researchers who work only for for-profit companies. Verify current
   affiliations, including an eligible affiliation for jointly affiliated authors.
