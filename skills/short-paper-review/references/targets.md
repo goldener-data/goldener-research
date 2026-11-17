@@ -31,7 +31,7 @@ more visual or scannable draft. Otherwise keep ordinary text.
   📊/🧠 hook, 📄 paper, ✍️ authors, 💡 idea, 🔍 key result, 🧩 data-centric
   role, ⚠️ caveat, 💬 user's take, 🔗 paper link, 📚 resources, 🤖 disclosure.
   Use at most one emoji per line, never mid-sentence or inside hashtags.
-- Put the hook on its own line. Requests for a prettier or more visual draft
+- Put the hook on its own line. Requests for a prettier draft
   allow Unicode bold for that single hook line only (see below). Report it and
   offer a plain version.
 - Split a method with two or three steps into short 🔹 bullet lines, and

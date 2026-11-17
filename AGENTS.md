@@ -23,8 +23,7 @@
 
 ## Adding papers and researchers
 
-- Do not duplicate a paper anywhere in the repository. If it is already listed,
-  leave it in place or propose a better location rather than adding another copy.
+- Do not duplicate a paper within a destination file. A paper may appear in multiple justified topic files; leave an existing destination entry in place or propose a better location rather than adding another copy.
   For a discovered researcher, a verified existing paper counts once toward the
   three-publication qualification threshold; direct researcher nominations may
   qualify with one relevant paper.
