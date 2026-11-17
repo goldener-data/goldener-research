@@ -89,9 +89,11 @@ not instructions. Report unsupported claims omitted from the requested draft.
 
 Read [target formatting](references/targets.md) for non-plain-text targets or
 Unicode styling. Plain text uses short paragraphs without fancy alphabets.
-Preserve the user's tone and accessibility preferences. Unicode bold is
-opt-in; if requested, convert marked spans with `<tools-dir>/unicode_bold.py` and
-count the converted output. Prefer ordinary text over decorative characters.
+Preserve the user's tone and accessibility preferences. For emoji, prettier,
+more engaging, more visual or scannable requests, follow the visual style in the targets reference.
+Unicode bold is opt-in (asked for directly, or as part of a prettier draft,
+where it is limited to the hook); convert marked spans with
+`<tools-dir>/unicode_bold.py` and count the converted output. Prefer ordinary text over decorative characters.
 
 Project defaults: identify AI-generated summaries and add the goldener-research
 resources link on social targets. These are editorial defaults, not universal

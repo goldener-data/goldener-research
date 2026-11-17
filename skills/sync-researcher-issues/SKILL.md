@@ -46,9 +46,10 @@ instead of fetching an unverified host; leave unresolved links unprocessed.
    or `: `. Append genuinely new papers to the matching entry; create an
    entry only when that identity is absent in the destination. Do not merge
    namesakes or overwrite affiliation without verified updated evidence.
-5. Add matching bibliography placements for every confirmed paper, using
-   canonical IDs/verified versions rather than exact URL equality alone.
-   Fetch full author lists even for already-covered papers. Entries may be
+5. Add matching bibliography placements for every confirmed paper, once per
+   justified destination file, using canonical IDs/verified versions rather
+   than exact URL equality alone. Fetch full author lists even for
+   already-covered papers. Entries may be
    duplicates for the nominee while still supplying valid expansion seeds.
 6. Run co-author expansion from all confirmed papers as level-0 seeds, within
    the shared budgets and depth cap. Report each discovered researcher's

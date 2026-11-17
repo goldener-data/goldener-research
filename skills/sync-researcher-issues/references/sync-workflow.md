@@ -85,7 +85,13 @@ directories and `skills`. Read each Context and explicit exclusions, root
 README, and current Goldener feature documentation. A paper is relevant when
 its fetched abstract supports a specific topic/feature, or shows use of
 pretrained/foundation-model embeddings to improve an AI lifecycle step.
-Titles only shortlist candidates. A failed fetch is not negative evidence.
+Prioritize papers whose abstracts show embeddings improving an AI lifecycle
+step. Also include reference papers offering competing approaches to embeddings
+in their field when explicitly listed in an issue or sufficiently highly cited.
+Judge citation counts in context, record the evidence, and do not invent a
+universal cutoff. An issue naming a broad venue, lab, or theme does not itself
+list each paper. Titles only shortlist candidates. A failed fetch is not
+negative evidence.
 
 Record actual title, full author list, venue/year, abstract source and
 relevance reason for every confirmed paper. Never invent missing metadata;
@@ -97,15 +103,20 @@ OpenReview ID, or source-confirmed relationships between preprint and published
 versions. Normalize equivalent abstract/PDF links and whitespace/case in
 titles as candidate matches; title equality alone does not override conflicting
 authors/metadata. Deduplicate the live batch and existing documents. A paper
-may appear in multiple justified topics, once per destination file.
+may appear in multiple justified topics, once per destination file; never add
+a second copy to the same file. For an existing entry, leave it in place or
+propose a better location.
 
 Author identity uses ORCID, DBLP PID, OpenReview/Scholar/index IDs, or a
 publication page linking the relevant works. Distinct identifier types require
 evidence linking them. Name/diacritic normalization, affiliation and co-author
 overlap find candidates but do not alone prove identity. Apply this rule to
 direct nominations, existing entries, counts and recursive queues alike.
-Keep ambiguous namesakes separate. Record affiliation source/date; unknown
-is preferable to guessing a current employer from an old paper.
+Keep ambiguous namesakes separate. Verify a current affiliation with a public
+institution or research institute before adding a researcher; exclude authors
+working only for for-profit companies. A qualifying joint affiliation is
+sufficient. Record affiliation source/date; if it cannot be verified, leave
+the researcher unresolved rather than guessing from an old paper.
 
 Place a paper in its best fitting existing topic, or multiple topics only
 when its evidence supports each. Root is for general/cross-cutting work.
