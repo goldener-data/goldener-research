@@ -18,9 +18,29 @@ weighted counts or rendered emoji length from raw code points alone.
 | Slack/Teams | Short paragraphs or 3–5 useful bullets | Native link/emphasis syntax where supported |
 
 For unknown targets use the user's specification or verify official guidance.
-Use emoji sparingly when requested. Never guess mentions or trending tags.
+Never guess mentions or trending tags.
 Each thread post should make sense in context and fit with its `1/n` marker.
 Optional resources/disclosure can go in the last post; count them too.
+
+## Visual and engaging style
+
+Apply this when the user asks for emojis, or for a prettier, more engaging,
+more visual or scannable draft. Otherwise keep ordinary text.
+
+- Start each block with one emoji that labels its role, not decorates it:
+  📊/🧠 hook, 📄 paper, ✍️ authors, 💡 idea, 🔍 key result, 🧩 data-centric
+  role, ⚠️ caveat, 💬 user's take, 🔗 paper link, 📚 resources, 🤖 disclosure.
+  Use at most one emoji per line, never mid-sentence or inside hashtags.
+- Put the hook on its own line. Requests for a prettier or more visual draft
+  allow Unicode bold for that single hook line only (see below). Report it and
+  offer a plain version.
+- Split a method with two or three steps into short 🔹 bullet lines, and
+  keep each block to one or two sentences so it reads well on a phone.
+- Make it engaging with a concrete contrast or number from the review, not
+  with hype. Avoid 🚀/🔥/🤯 and superlatives for modest or uncertain results.
+- Give the caveat its own ⚠️ block, as visible as the headline result.
+- Emojis do not replace words: every line must still make sense to a screen
+  reader. Count emojis in the length check, with the platform's rules.
 
 Unicode mathematical alphabets are not semantic bold and can impair reading,
 search and accessibility. Use them only when requested. Mark short spans with
